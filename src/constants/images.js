@@ -1,4 +1,4 @@
-[
+const images = [
   {
     id: 1,
     name: "recipe book",
@@ -24,4 +24,11 @@
     name: "gif",
     link: "https://firebasestorage.googleapis.com/v0/b/cooking-11f7b.appspot.com/o/logos%2FRectangle%2016.gif?alt=media&token=178ca331-0c68-4f46-b4c0-e62b4de1d30e",
   },
+  {
+    id: 6,
+    name: "login",
+    link: "https://firebasestorage.googleapis.com/v0/b/cooking-11f7b.appspot.com/o/logos%2Fb448a288-0225-416b-8532-b8edae994df0.png?alt=media&token=a798eeec-b3db-42b2-93f8-81308eb31718",
+  },
 ];
+
+export default images;
