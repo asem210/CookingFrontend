@@ -1,9 +1,29 @@
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  Navigate,
+} from "react-router-dom";
+import { useState, useEffect } from "react";
+
 function App() {
   return (
-    <>
-      <p className="font-belleza text-[30px]">Hola mundo</p>
-      <p className="text-[30px]">Hola mundo</p>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<div>Hola</div>} />
+        <Route path="/j" element={<div>holan't</div>} />
+        {/* <Route
+          path="*"
+          element={
+            <Navigate
+              to={userLoggedIn ? "/brisasMarinas/Usuario" : "/brisasMarinas"}
+            />
+          }
+        /> */}
+      </Routes>
+    </BrowserRouter>
   );
 }
 
