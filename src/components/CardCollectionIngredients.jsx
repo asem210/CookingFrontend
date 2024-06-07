@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { IoIosArrowForward } from 'react-icons/io';
-import { IoIosArrowBack } from 'react-icons/io';
+import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
 
 const CardCollectionIngredients = ({ title, ingredientes }) => {
   const [startIndex, setStartIndex] = useState(0);
+  const [selectedArray, setSelectedArray] = useState([]);
+
   const itemsPerPage = 4;
+
   const nextItem = () => {
     setStartIndex((prevIndex) => (prevIndex + 1) % ingredientes.length);
   };
 
-  const previewItem = () => {
-    if (startIndex !== 0) setStartIndex((prevIndex) => (prevIndex - 1) % ingredientes.length);
+  const previousItem = () => {
+    setStartIndex((prevIndex) => (prevIndex - 1 + ingredientes.length) % ingredientes.length);
   };
 
   const getVisibleItems = () => {
-    if (ingredientes.length <= itemsPerPage) {
-      return ingredientes;
-    }
-
     const visibleItems = [];
+    if (ingredientes.length <= itemsPerPage) return ingredientes;
+
     for (let i = 0; i < itemsPerPage; i++) {
       visibleItems.push(ingredientes[(startIndex + i) % ingredientes.length]);
     }
@@ -27,8 +27,14 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
     return visibleItems;
   };
 
-  const visible = () => {
-    arrow.classList.remove('hover:cursor-pointer');
+  const toggleSelection = (id) => {
+    setSelectedArray((prevArray) => {
+      if (prevArray.includes(id)) {
+        return prevArray.filter((elemento) => elemento !== id);
+      } else {
+        return [...prevArray, id];
+      }
+    });
   };
 
   const visibleItems = getVisibleItems();
@@ -40,29 +46,30 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
         <HiMagnifyingGlass className="mr-4 hover:cursor-pointer" size="22px" />
       </div>
       <div className="flex w-full items-center">
-        <IoIosArrowBack size="30px" className="hover:cursor-pointer" onClick={previewItem} />
+        <IoIosArrowBack size="30px" className="hover:cursor-pointer" onClick={previousItem} />
         <div className="grid grid-cols-4 overflow-x-hidden mt-2 w-[90%]">
-          {visibleItems.map((item, index) => (
+          {visibleItems.map((item) => (
             <div
-              key={index}
+              key={item.id}
               className="flex flex-col items-center justify-center"
               id={item.id}
             >
               <img
                 src={item.img}
-                className="border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 items-center hover:cursor-pointer"
+                className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 items-center hover:cursor-pointer ${
+                  selectedArray.includes(item.id) ? 'grayscale' : ''
+                }`}
                 alt={item.name}
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleSelection(item.id);
+                }}
               />
               <p className="font-belleza">{item.name}</p>
             </div>
           ))}
         </div>
-        <IoIosArrowForward
-          size="30px"
-          className="hover:cursor-pointer"
-          onClick={nextItem}
-          id="ArrowLeft"
-        />
+        <IoIosArrowForward size="30px" className="hover:cursor-pointer" onClick={nextItem} />
       </div>
     </div>
   );

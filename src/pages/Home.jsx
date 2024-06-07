@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import images from '../constants/images';
 import CardCollectionIngredients from '../components/CardCollectionIngredients';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
+import ModalOptions from '../components/ModalOptions';
 const Home = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const getObjectById = (id) => {
     return images.find((item) => item.id === id);
   };
@@ -10,6 +17,7 @@ const Home = () => {
   const step1 = getObjectById(4);
   const step2 = getObjectById(1);
   const step3 = getObjectById(2);
+  const gif = getObjectById(5);
 
   const ingredientes = [
     { name: 'Tomate', img: 'https://freesvg.org/img/tomate-2010.png', id: 1 },
@@ -31,29 +39,53 @@ const Home = () => {
     {
       name: 'Queso123',
       img: 'https://covica.es/wp-content/uploads/2022/11/QUESOS_36-removebg-preview.png',
-      id: 4,
+      id: 5,
     },
     {
       name: 'Queaaso',
       img: 'https://covica.es/wp-content/uploads/2022/11/QUESOS_36-removebg-preview.png',
-      id: 5,
+      id: 6,
     },
     {
       name: 'Quesoaa',
       img: 'https://covica.es/wp-content/uploads/2022/11/QUESOS_36-removebg-preview.png',
-      id: 6,
+      id: 7,
     },
   ];
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-x-hidden">
-      <div className="nav w-screen  bg-red-200 h-[10%]">NAV</div>
+    <div className="flex flex-col  h-auto w-screen overflow-x-hidden overflow-y-auto ">
+      {/* //nav provisonal */}
+      <ModalOptions isOpen={isModalOpen} onClose={closeModal} />
+      <nav className=" w-screen min-h-16  h-[10%] flex justify-between">
+        <figure className=" w-1/5 items-center flex">
+          <img
+            src={logo.link}
+            className="h-4/5  rounded-xl   ml-[25%] hover:cursor-pointer hover:shadow-sm"
+          />
+        </figure>
+        <div>
+          <button
+            className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10"
+            onClick={openModal}
+          >
+            Iniciar Sesión / Registrarse
+          </button>
+        </div>
+      </nav>
       <div className=" w-screen h-[80%] flex flex-col items-center">
         <h2 className="font-belleza text-[30px] ">Bienvenido a </h2>
+        <figure className="overflow-y-hidden  items-center justify-center flex h-20 w-full mt-[-10px]">
+          <img src={gif.link} alt="Loading..." className="h-[400%] " />
+        </figure>
+
         <p className="font-belleza text-[18px] ">
           Encuentra la receta perfecta con los ingredientes que tienes en casa
         </p>
-        <input className="border border-black rounded-md  p-1.5  w-1/4 my-2 "></input>
+        <div className="w-1/4  my-2 flex items-center relative">
+          <input className="border border-black rounded-md  p-1.5 w-full  "></input>
+          <HiMagnifyingGlass className="absolute left-[92%]" />
+        </div>
 
         <p className="font-belleza text-[18px] ">
           es fácil , solo tienes que seguir tres sencillos pasos
@@ -65,7 +97,7 @@ const Home = () => {
               Seleccionar los ingredientes que tengas en tu hogar
             </p>
           </div>
-          <div className="w-1/4 h-full flex flex-col  justify-end  items-center">
+          <div className="w-1/4 h-full flex flex-col  justify-end  items-center mt-14">
             <img src={step2.link} className="w-[180px] h-3/4 " />
             <p className=" h-1/4 font-belleza  text-[18px] ">
               Elegir la receta que más te guste
@@ -76,13 +108,18 @@ const Home = () => {
             <p className=" h-1/4  font-belleza text-[18px]">Disfrutar de tu comida</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 grid-flow-row   w-[70%] gap-4 mt-2">
+        <div className="grid grid-cols-2 grid-flow-row   w-[70%] gap-4 mt-4">
           <CardCollectionIngredients title="Verduras" ingredientes={ingredientes} />
           <CardCollectionIngredients title="Verduras" ingredientes={ingredientes} />
           <CardCollectionIngredients title="Verduras" ingredientes={ingredientes} />
         </div>
+        <button className="bg-naranja py-3 px-10 rounded-2xl text-white mt-4 hover:bg-red-500">
+          Seleccionar ingredientes{' '}
+        </button>
       </div>
-      {/* <div className="nav w-screen  h-[10%] bg-[#1D3139]"> FOOTER</div> */}
+      <div className="nav w-screen  min-h-16 h-[20%] bg-[#1D3139]  mt-10 text-center content-center">
+        <p className="font-belleza text-white ">Todos los derechos reservados para CooKing</p>
+      </div>
     </div>
   );
 };
