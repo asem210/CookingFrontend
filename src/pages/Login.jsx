@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import images from "../constants/images";
+import LoginForm from "../components/forms";
+import SwitchButtonLogin from "../components/switchButton";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("login");
@@ -19,67 +23,54 @@ const Login = () => {
       <div className="w-1/2">
         <img src={imageObject.link} alt="logo" className="w-full h-full" />
       </div>
-      <div className="w-1/2 px-10 py-10">
+      <div className="w-1/2 pl-[160px]  pr-[160px] py-10">
         <div>
           <div className="flex justify-end">
             <img src={logo.link} alt="Cooking logo" />
           </div>
         </div>
-        <div className="flex-col justify-center items-center bg-blue-200">
-          <div className="flex pt-5">
-            <p className="font-belleza text-[16px] text-negro">
+        <div className="flex flex-col justify-center items-center">
+          <div className="flex pt-8 pb-5">
+            <p className="font-belleza text-[28px] text-negro">
               Bienvenido a Cooking
             </p>
           </div>
-          <div className="flex flex-col items-center justify-center py-6">
-            <nav className="flex overflow justify-center items-center-x-auto items-center p-1 space-x-1 rtl:space-x-reverse text-sm text-gray-600 bg-gray-500/5 rounded-xl w-[329px]">
-              <button
-                role="tab"
-                type="button"
-                className={`flex whitespace-nowrap items-center h-8 px-5 font-medium rounded-lg outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-inset shadow ${
-                  selectedOption === "login"
-                    ? "bg-yellow-600 text-white"
-                    : "bg-white text-yellow-600"
-                }`}
-                onClick={() => handleOptionClick("login")}
-              >
-                Login
-              </button>
-              <button
-                role="tab"
-                type="button"
-                className={`flex whitespace-nowrap items-center h-8 px-5 font-medium rounded-lg outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-inset hover:text-gray-800 ${
-                  selectedOption === "register"
-                    ? "bg-yellow-600 text-white"
-                    : "bg-white text-yellow-600"
-                }`}
-                onClick={() => handleOptionClick("register")}
-              >
-                Register
-              </button>
-            </nav>
-          </div>
+
+          <SwitchButtonLogin
+            handleClick={handleOptionClick}
+            option={selectedOption}
+          />
+
           {selectedOption == "login" ? (
-            <div className="flex flex-col  ">
+            <div className="flex flex-col pt-10 ">
               <div className="">
                 <p className="font-belleza text-[16px] text-negro text-start">
                   Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry.
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s.
                 </p>
-              </div>
-              <div className="flex flex-row bg-slate-500 w-3/4">
-                <div className=" w-3/4 bg-black">
-                  <p>Hola</p>
-                </div>
-                <div className="w-1/4">
-                  <p>Hola</p>
-                </div>
+
+                <LoginForm />
+
+                <LoginSocialMedia />
               </div>
             </div>
           ) : (
             <div className="w-3/4">hOLAN'T</div>
           )}
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const LoginSocialMedia = () => {
+  return (
+    <div className="flex flex-col font-belleza w-full justify-center items-center">
+      <p>o continúa con</p>
+      <div className="flex flex-row">
+        <FcGoogle />
+        <FaFacebook />
       </div>
     </div>
   );
