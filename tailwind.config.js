@@ -19,6 +19,7 @@ module.exports = {
         negroclaro: "#333333",
         verde: "#32CD32",
         rojo: "#FF0000",
+        textoalt: "#B5B5B5",
       },
     },
   },

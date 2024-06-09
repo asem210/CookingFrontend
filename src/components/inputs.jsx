@@ -3,12 +3,21 @@ import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { FiCheckSquare, FiSquare } from "react-icons/fi";
 
-export const InputDefault = ({ label, placeholder, action, name }) => {
+export const InputDefault = ({
+  label,
+  placeholder,
+  action,
+  name,
+  // campo,
+  // cambio,
+}) => {
   return (
     <div className="flex flex-col w-full">
       <label className=" pb-3">{label}</label>
-      <div className="w-full h-[46px] border border-black rounded-[40px] flex items-center justify-start">
+      <div className="w-full h-[44px] border border-black rounded-[40px] flex items-center justify-start">
         <input
+          // value={campo}
+          // onChange={(event) => cambio(event.target.value)}
           {...action(name)}
           placeholder={placeholder}
           className="outline-none border-none mx-8 h-full w-full"
@@ -18,7 +27,14 @@ export const InputDefault = ({ label, placeholder, action, name }) => {
   );
 };
 
-export const InputPassword = ({ label, placeholder, action, name }) => {
+export const InputPassword = ({
+  label,
+  placeholder,
+  action,
+  name,
+  // campo,
+  // cambio,
+}) => {
   const [clickedIn, setClickedIn] = useState(false);
 
   const tooglePasswordVisibility = () => {
@@ -32,11 +48,13 @@ export const InputPassword = ({ label, placeholder, action, name }) => {
   return (
     <div className="flex flex-col">
       <label className="pb-3">{label}</label>
-      <div className="w-full h-[46px] border border-black rounded-[40px] flex items-center justify-start relative">
+      <div className="w-full h-[44px] border border-black rounded-[40px] flex items-center justify-start relative">
         <input
           type={clickedIn ? "text" : "password"}
           {...action(name)}
           placeholder={placeholder}
+          // value={campo}
+          // onChange={(event) => cambio(event.target.value)}
           className="outline-none border-none h-full w-full ml-8 mr-10"
         />
         <div
