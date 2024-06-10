@@ -5,9 +5,12 @@ import SwitchButtonLogin from "../components/switchButton";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
 import { GoogleLogin } from "@react-oauth/google";
+import { useForm } from "react-hook-form";
+import { FaAngleRight } from "react-icons/fa6";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("login");
+  const [userData, setUserData] = useState({});
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -43,7 +46,11 @@ const Login = () => {
           />
 
           <div className="flex flex-col pt-5 w-3/4">
-            {selectedOption === "login" ? <LoginForm /> : <RegisterForm />}
+            {selectedOption === "login" ? (
+              <LoginForm />
+            ) : (
+              <RegisterForm action={setUserData} data={userData} />
+            )}
             <LoginSocialMedia />
           </div>
         </div>

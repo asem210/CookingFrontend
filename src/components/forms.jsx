@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { InputDefault, InputPassword } from "./inputs";
+import { InputDefault, InputPassword, InputPhone } from "./inputs";
 import userService from "../apis/user";
 
 export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
-  const [data, setData] = useState("");
 
   const onSubmit = async (formData) => {
     try {
@@ -42,7 +41,7 @@ export const LoginForm = () => {
           label={"Usuario o correo electrónico"}
           placeholder={"Ingrese su usuario"}
           action={register}
-          name={"email"}
+          name="email"
           // campo={user}
           // cambio={setUser}
         />
@@ -63,52 +62,62 @@ export const LoginForm = () => {
         Olvidaste la contraseña? Haz click aquí
       </a>
 
-      <input
+      <button
         type="submit"
         className="w-full h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer"
-      />
+      >
+        Iniciar Sesión{" "}
+      </button>
     </form>
   );
 };
 
-export const RegisterForm = () => {
+export const RegisterForm = ({ action, data }) => {
   const { register, handleSubmit } = useForm();
-  const [data, setData] = useState("");
+  const [phone, setPhone] = useState("");
 
-  const handleLoginFailure = (response) => {
-    console.error("Google login failed:", response);
+  const onSubmit = async (formData) => {
+    try {
+      console.log(formData);
+      action(formData); // Llama a la función pasada como prop para actualizar el estado
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
     <form
       className="flex flex-col font-belleza text-negro text-[16px] w-full"
-      onSubmit={handleSubmit((data) => setData(JSON.stringify(data)))}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="pt-5 space-y-4">
         <InputDefault
           label={"Correo electrónico"}
           placeholder={"Ingrese su correo electrónico"}
           action={register}
-          name={"email"}
+          name="email"
         />
         <InputDefault
           label={"Nombre de usuario"}
           placeholder={"Ingrese su nombre de usuario"}
           action={register}
-          name={"username"}
+          name="username"
         />
-
         <InputPassword
           label={"Contraseña"}
           placeholder={"Ingrese su contraseña"}
           action={register}
-          name={"password"}
+          name="password"
         />
 
-        <input
+        <InputPhone phone={phone} setPhone={setPhone} />
+
+        <button
           type="submit"
           className="w-full h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer"
-        />
+        >
+          Continuar
+        </button>
       </div>
     </form>
   );
