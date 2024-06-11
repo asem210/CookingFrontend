@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import images from "../constants/images";
-import LoginForm from "../components/forms";
+import { LoginForm, RegisterForm } from "../components/forms";
 import SwitchButtonLogin from "../components/switchButton";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
+import { GoogleLogin } from "@react-oauth/google";
+import { useForm } from "react-hook-form";
+import { FaAngleRight } from "react-icons/fa6";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("login");
+  const [userData, setUserData] = useState({});
 
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -19,17 +23,17 @@ const Login = () => {
   const imageObject = getObjectById(6);
   const logo = getObjectById(3);
   return (
-    <div className="flex h-screen w-screen ">
+    <div className="flex h-screen w-screen">
       <div className="w-1/2">
         <img src={imageObject.link} alt="logo" className="w-full h-full" />
       </div>
-      <div className="w-1/2 pl-[160px]  pr-[160px] py-10">
+      <div className="w-1/2 pl-[160px] pr-[160px] py-10">
         <div>
           <div className="flex justify-end">
             <img src={logo.link} alt="Cooking logo" />
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center">
+        <div className="flex flex-col justify-center items-center w-full">
           <div className="flex pt-8 pb-5">
             <p className="font-belleza text-[28px] text-negro">
               Bienvenido a Cooking
@@ -41,23 +45,14 @@ const Login = () => {
             option={selectedOption}
           />
 
-          {selectedOption == "login" ? (
-            <div className="flex flex-col pt-10 ">
-              <div className="">
-                <p className="font-belleza text-[16px] text-negro text-start">
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s.
-                </p>
-
-                <LoginForm />
-
-                <LoginSocialMedia />
-              </div>
-            </div>
-          ) : (
-            <div className="w-3/4">hOLAN'T</div>
-          )}
+          <div className="flex flex-col pt-5 w-3/4">
+            {selectedOption === "login" ? (
+              <LoginForm />
+            ) : (
+              <RegisterForm action={setUserData} data={userData} />
+            )}
+            <LoginSocialMedia />
+          </div>
         </div>
       </div>
     </div>
@@ -66,11 +61,17 @@ const Login = () => {
 
 export const LoginSocialMedia = () => {
   return (
-    <div className="flex flex-col font-belleza w-full justify-center items-center">
-      <p>o continúa con</p>
-      <div className="flex flex-row">
-        <FcGoogle />
-        <FaFacebook />
+    <div className="flex flex-col font-belleza w-full justify-center items-center pt-5 text-[16px] ">
+      <p className=" text-textoalt">o continúa con</p>
+      <div className="flex flex-row space-x-5 mt-2">
+        <GoogleLogin
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log("Login Failed");
+          }}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputDefault, InputPassword } from './inputs';
+import { InputDefault, InputPassword, InputPhone  } from './inputs';
 import userService from '../apis/user';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +15,16 @@ const LoginForm = () => {
 
   const onSubmit = async (formData) => {
     try {
+      if (!formData.email) {
+        alert("Complete el campo del usuario");
+        return;
+      }
+
+      if (!formData.password) {
+        alert("Complete el campo de la contraseña");
+        return;
+      }
+
       const result = await userService.login(formData.email, formData.password);
 
       if (result.success == false) {
