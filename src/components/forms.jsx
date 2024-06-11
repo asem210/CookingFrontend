@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputDefault, InputPassword, InputPhone  } from './inputs';
+import { InputDefault, InputPassword, InputPhone } from './inputs';
 import userService from '../apis/user';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../hooks/authHook';
 
-const LoginForm = () => {
+export const LoginForm = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const { login } = useAuth();
   const { register, handleSubmit } = useForm();
@@ -16,12 +16,12 @@ const LoginForm = () => {
   const onSubmit = async (formData) => {
     try {
       if (!formData.email) {
-        alert("Complete el campo del usuario");
+        alert('Complete el campo del usuario');
         return;
       }
 
       if (!formData.password) {
-        alert("Complete el campo de la contraseña");
+        alert('Complete el campo de la contraseña');
         return;
       }
 
@@ -303,6 +303,60 @@ export const FormCrearPaso = () => {
           }}
         >
           <ImCross size={'28px'} />
+        </button>
+      </div>
+    </form>
+  );
+};
+export const RegisterForm = ({ action, data }) => {
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+
+  const onSubmit = async (formData) => {
+    try {
+      if (!formData.email || !formData.username || !formData.password) {
+        alert('Faltan campos');
+        return;
+      }
+
+      action(formData); // Llama a la función pasada como prop para actualizar el estado
+      Cookies.set('userData', JSON.stringify(data)); // Convertir el objeto a una cadena JSON antes de guardarlo en la cookie
+
+      // Para obtener userData de la cookie
+      const retrievedUserData = Cookies.get('userData');
+      const userDataObject = JSON.parse(retrievedUserData); // Convertir la cadena JSON de vuelta a un objeto
+      console.log(userDataObject); // Acceder a la propiedad email del objeto recuperado
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  return (
+    <form
+      className="flex flex-col font-belleza text-negro text-[16px] w-full"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="pt-5 space-y-4">
+        <InputDefault
+          label={'Correo electrónico'}
+          placeholder={'Ingrese su correo electrónico'}
+          action={register}
+          name="email"
+        />
+        <InputDefault
+          label={'Nombre de usuario'}
+          placeholder={'Ingrese su nombre de usuario'}
+          action={register}
+          name="username"
+        />
+        <InputPassword
+          label={'Contraseña'}
+          placeholder={'Ingrese su contraseña'}
+          action={register}
+          name="password"
+        />
+        <button className="w-full h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer">
+          Continuar
         </button>
       </div>
     </form>
