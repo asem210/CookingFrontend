@@ -1,13 +1,30 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../redux/slices/userSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { addUser, clearState } from "../redux/slices/userSlice";
 
 export const useUser = () => {
-  const { name, surname, email, phone, image } = useSelector((state) => state.user);
+  const { name, surname, email, phone, image, password, username } =
+    useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
-  const addMainUser = (name, surname, email, phone, image) => {
-    dispatch(addUser({ name, surname, email, phone, image }));
+  const addMainUser = (
+    name,
+    surname,
+    email,
+    phone,
+    image,
+    password,
+    username
+  ) => {
+    dispatch(
+      addUser({ name, surname, email, phone, image, password, username })
+    );
+  };
+
+  const clearStateUser = () => {
+    dispatch(
+      clearState({ name, surname, email, phone, image, password, username })
+    );
   };
 
   return {
@@ -17,7 +34,10 @@ export const useUser = () => {
     email,
     phone,
     image,
+    password,
+    username,
     // functions
     addMainUser,
+    clearStateUser,
   };
 };

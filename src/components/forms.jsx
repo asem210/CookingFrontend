@@ -5,7 +5,7 @@ import userService from "../apis/user";
 import { useNavigate } from "react-router-dom";
 import { ImageUploader } from "./uploadImage";
 import Cookies from "js-cookie";
-
+import { useUser } from "../hooks/userHook";
 import { useAuth } from "../hooks/authHook";
 
 export const LoginForm = () => {
@@ -14,6 +14,7 @@ export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
   const [data, setData] = useState("");
   const navigate = useNavigate();
+  const { showNewMessage } = useMessage();
 
   const onSubmit = async (formData) => {
     try {
@@ -35,7 +36,7 @@ export const LoginForm = () => {
       }
 
       login();
-      alert("Usuario Logeado");
+      showNewMessage("success", "Usuario Logeado");
       navigate(name_proyect + "/home");
     } catch (error) {
       console.log(error.message);
@@ -320,23 +321,36 @@ export const FormCrearPaso = () => {
   );
 };
 export const RegisterForm = ({ action, data }) => {
+  const name_proyect = import.meta.env.VITE_NAME_PAGE;
+  const { addMainUser } = useUser();
+
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
+  const { showNewMessage } = useMessage();
 
   const onSubmit = async (formData) => {
     try {
       if (!formData.email || !formData.username || !formData.password) {
-        alert("Faltan campos");
+        showNewMessage("error", "Faltan campos");
         return;
       }
 
       action(formData); // Llama a la función pasada como prop para actualizar el estado
-      Cookies.set("userData", JSON.stringify(data)); // Convertir el objeto a una cadena JSON antes de guardarlo en la cookie
+      // await Cookies.set("userData", JSON.stringify(data)); // Convertir el objeto a una cadena JSON antes de guardarlo en la cookie
 
-      // Para obtener userData de la cookie
-      const retrievedUserData = Cookies.get("userData");
-      const userDataObject = JSON.parse(retrievedUserData); // Convertir la cadena JSON de vuelta a un objeto
-      console.log(userDataObject); // Acceder a la propiedad email del objeto recuperado
+      // // Para obtener userData de la cookie
+      // const retrievedUserData = Cookies.get("userData");
+      // const userDataObject = JSON.parse(retrievedUserData); // Convertir la cadena JSON de vuelta a un objeto
+      // console.log(userDataObject); // Acceder a la propiedad email del objeto recuperado
+      addMainUser(
+        "",
+        "",
+        formData.email,
+        "",
+        "",
+        formData.password,
+        formData.username
+      );
       navigate(name_proyect + "/register");
     } catch (error) {
       console.log(error.message);
@@ -379,42 +393,35 @@ export const MoreInfo = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [phone, setPhone] = useState("");
-  const [userData, setUserData] = useState({});
   const [imageUrl, setImageUrl] = useState("");
-
-  useEffect(() => {
-    const retrievedUserData = Cookies.get("userData");
-    if (retrievedUserData) {
-      setUserData(JSON.parse(retrievedUserData));
-    }
-    console.log(JSON.parse(retrievedUserData));
-  }, []); // El array vacío asegura que este efecto se ejecute solo una vez al montar el componente
+  const { email, username, password, clearStateUser } = useUser();
+  const { showNewMessage } = useMessage();
+  const name_proyect = import.meta.env.VITE_NAME_PAGE;
 
   const onSubmit = async (formData) => {
     try {
       if (!formData.name || !formData.surname || !phone) {
-        alert("Faltan campos");
+        showNewMessage("error", "Faltan campos");
         return;
       }
 
       const result = await userService.register(
         formData.name,
         formData.surname,
-        userData.email,
-        userData.password,
+        email,
+        password,
         phone,
         imageUrl
       );
 
-      console.log(result);
-
       if (result.success === false) {
-        alert(result.message);
+        showNewMessage("error", result.message);
         return;
       }
 
-      alert("Usuario registrado");
-      navigate("/register"); // Redirige al usuario después del registro
+      clearStateUser();
+      showNewMessage("success", "Usuario registrado");
+      navigate(name_proyect + "/login");
     } catch (error) {
       console.log(error.message);
     }
