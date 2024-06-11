@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { InputDefault, InputPassword, InputPhone } from "./inputs";
 import userService from "../apis/user";
+import { useNavigate } from "react-router-dom";
+import { ImageUploader } from "./uploadImage";
+import Cookies from "js-cookie";
 
 export const LoginForm = () => {
   const { register, handleSubmit } = useForm();
@@ -73,13 +76,24 @@ export const LoginForm = () => {
 };
 
 export const RegisterForm = ({ action, data }) => {
+  const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const [phone, setPhone] = useState("");
 
   const onSubmit = async (formData) => {
     try {
-      console.log(formData);
+      if (!formData.email || !formData.username || !formData.password) {
+        alert("Faltan campos");
+        return;
+      }
+
       action(formData); // Llama a la función pasada como prop para actualizar el estado
+      Cookies.set("userData", JSON.stringify(data)); // Convertir el objeto a una cadena JSON antes de guardarlo en la cookie
+
+      // Para obtener userData de la cookie
+      const retrievedUserData = Cookies.get("userData");
+      const userDataObject = JSON.parse(retrievedUserData); // Convertir la cadena JSON de vuelta a un objeto
+      console.log(userDataObject); // Acceder a la propiedad email del objeto recuperado
+      navigate("register");
     } catch (error) {
       console.log(error.message);
     }
@@ -109,14 +123,88 @@ export const RegisterForm = ({ action, data }) => {
           action={register}
           name="password"
         />
+        <button className="w-full h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer">
+          Continuar
+        </button>
+      </div>
+    </form>
+  );
+};
 
-        <InputPhone phone={phone} setPhone={setPhone} />
+export const MoreInfo = () => {
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const [phone, setPhone] = useState("");
+  const [userData, setUserData] = useState({});
+  const [imageUrl, setImageUrl] = useState("");
 
+  useEffect(() => {
+    const retrievedUserData = Cookies.get("userData");
+    if (retrievedUserData) {
+      setUserData(JSON.parse(retrievedUserData));
+    }
+    console.log(JSON.parse(retrievedUserData));
+  }, []); // El array vacío asegura que este efecto se ejecute solo una vez al montar el componente
+
+  const onSubmit = async (formData) => {
+    try {
+      if (!formData.name || !formData.surname || !phone) {
+        alert("Faltan campos");
+        return;
+      }
+
+      const result = await userService.register(
+        formData.name,
+        formData.surname,
+        userData.email,
+        userData.password,
+        phone,
+        imageUrl
+      );
+
+      console.log(result);
+
+      if (result.success === false) {
+        alert(result.message);
+        return;
+      }
+
+      alert("Usuario registrado");
+      navigate("/register"); // Redirige al usuario después del registro
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  return (
+    <form
+      className="flex flex-col font-belleza text-negro text-[16px] w-full"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <div className="pt-3 space-y-2 w-full">
+        <div className="flex flex-row space-x-2">
+          <InputDefault
+            label={"Nombres completos"}
+            placeholder={"Ingrese sus nombres"}
+            action={register}
+            name="name"
+          />
+          <InputDefault
+            label={"Apellidos completos"}
+            placeholder={"Ingrese sus apellidos"}
+            action={register}
+            name="surname"
+          />
+        </div>
+        <div className="w-full">
+          <InputPhone phone={phone} setPhone={setPhone} action={register} />
+        </div>
+        <ImageUploader imageUrl={imageUrl} setImageUrl={setImageUrl} />
         <button
           type="submit"
-          className="w-full h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer"
+          className="w-full h-[36px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer"
         >
-          Continuar
+          Registrar usuario
         </button>
       </div>
     </form>

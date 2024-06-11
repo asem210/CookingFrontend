@@ -2,11 +2,7 @@ import React, { useState } from "react";
 import images from "../constants/images";
 import { LoginForm, RegisterForm } from "../components/forms";
 import SwitchButtonLogin from "../components/switchButton";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebook } from "react-icons/fa";
 import { GoogleLogin } from "@react-oauth/google";
-import { useForm } from "react-hook-form";
-import { FaAngleRight } from "react-icons/fa6";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("login");

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { FiCheckSquare, FiSquare } from "react-icons/fi";
 import "react-international-phone/style.css"; // Asegúrate de importar los estilos por defecto
 import { PhoneInput } from "react-international-phone";
+import { PhoneNumberUtil } from "google-libphonenumber";
+
 export const InputDefault = ({
   label,
   placeholder,
@@ -73,20 +73,24 @@ export const InputPassword = ({
   );
 };
 
-export const InputPhone = ({ phone, setPhone }) => {
+export const InputPhone = ({ phone, setPhone, action }) => {
   return (
-    <form className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col w-full space-y-3">
       <label className="text-[16px] ">Número de teléfono</label>
-      <PhoneInput
-        value={phone}
-        onChange={(value) => setPhone(value)}
-        defaultCountry="RU"
-        containerClassName="w-full"
-        inputClassName="border border-gray-300 rounded-lg px-4 py-2 w-full"
-        countrySelectProps={{
-          className: "border border-gray-300 rounded-l-lg px-4 py-2 w-full ",
-        }}
-      />
-    </form>
+      <div className="w-full h-[44px] flex items-center justify-start">
+        <PhoneInput
+          {...action("phone")}
+          className="text-[16px]"
+          value={phone}
+          onChange={(value) => setPhone(value)}
+          defaultCountry="pe"
+          containerClassName="w-full"
+          inputClassName="border border-gray-300 rounded-lg px-4 py-2 w-full"
+          countrySelectProps={{
+            className: "border border-gray-300 rounded-l-lg  py-5 w-max ",
+          }}
+        />
+      </div>
+    </div>
   );
 };
