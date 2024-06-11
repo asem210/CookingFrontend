@@ -2,18 +2,13 @@ import React, { useState } from 'react';
 import images from '../constants/images';
 import CardCollectionIngredients from '../components/CardCollectionIngredients';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
-import ModalOptions from '../components/ModalOptions';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 const Home = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-
   const getObjectById = (id) => {
     return images.find((item) => item.id === id);
   };
 
-  const logo = getObjectById(3);
   const step1 = getObjectById(4);
   const step2 = getObjectById(1);
   const step3 = getObjectById(2);
@@ -55,24 +50,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col  h-auto w-screen overflow-x-hidden overflow-y-auto ">
-      {/* //nav provisonal */}
-      <ModalOptions isOpen={isModalOpen} onClose={closeModal} />
-      <nav className=" w-screen min-h-16  h-[10%] flex justify-between">
-        <figure className=" w-1/5 items-center flex">
-          <img
-            src={logo.link}
-            className="h-4/5  rounded-xl   ml-[25%] hover:cursor-pointer hover:shadow-sm"
-          />
-        </figure>
-        <div>
-          <button
-            className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10"
-            onClick={openModal}
-          >
-            Iniciar Sesión / Registrarse
-          </button>
-        </div>
-      </nav>
+      <NavBar></NavBar>
       <div className=" w-screen h-[80%] flex flex-col items-center">
         <h2 className="font-belleza text-[30px] ">Bienvenido a </h2>
         <figure className="overflow-y-hidden  items-center justify-center flex h-20 w-full mt-[-10px]">
@@ -114,12 +92,10 @@ const Home = () => {
           <CardCollectionIngredients title="Verduras" ingredientes={ingredientes} />
         </div>
         <button className="bg-naranja py-3 px-10 rounded-2xl text-white mt-4 hover:bg-red-500">
-          Seleccionar ingredientes{' '}
+          Seleccionar ingredientes
         </button>
       </div>
-      <div className="nav w-screen  min-h-16 h-[20%] bg-[#1D3139]  mt-10 text-center content-center">
-        <p className="font-belleza text-white ">Todos los derechos reservados para CooKing</p>
-      </div>
+      <Footer></Footer>
     </div>
   );
 };
