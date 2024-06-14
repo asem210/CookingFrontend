@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import "react-international-phone/style.css"; // Asegúrate de importar los estilos por defecto
-import { PhoneInput } from "react-international-phone";
-import { PhoneNumberUtil } from "google-libphonenumber";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
+import 'react-international-phone/style.css'; // Asegúrate de importar los estilos por defecto
+import { PhoneInput } from 'react-international-phone';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export const InputDefault = ({
   label,
@@ -43,6 +43,7 @@ export const InputFormCreateIng = ({ label, placeholder, action, name }) => {
     </div>
   );
 };
+
 export const InputSelectFormCreateIng = ({
   label,
   placeholder,
@@ -54,7 +55,7 @@ export const InputSelectFormCreateIng = ({
   return (
     <div className="flex flex-col w-full">
       <label className="pb-2">{label}</label>
-      <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start">
+      {/* <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start">
         <input
           {...action(name)}
           placeholder={placeholder}
@@ -66,7 +67,20 @@ export const InputSelectFormCreateIng = ({
             <option key={index} value={item} />
           ))}
         </datalist>
-      </div>
+      </div> */}
+      <select
+        {...action(name)}
+        className="border border-black  rounded-xl flex items-center py-3 px-4 font-belleza outline-none"
+      >
+        <option value="" disabled>
+          {itemDefault || 'default'}
+        </option>
+        {items.map((item, index) => (
+          <option key={index} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
@@ -94,7 +108,7 @@ export const InputPassword = ({
       <label className="pb-3">{label}</label>
       <div className="w-full h-[44px] border border-black rounded-[40px] flex items-center justify-start relative">
         <input
-          type={clickedIn ? "text" : "password"}
+          type={clickedIn ? 'text' : 'password'}
           {...action(name)}
           placeholder={placeholder}
           // value={campo}
@@ -122,7 +136,7 @@ export const InputPhone = ({ phone, setPhone, action }) => {
       <label className="text-[16px] ">Número de teléfono</label>
       <div className="w-full h-[44px] flex items-center justify-start">
         <PhoneInput
-          {...action("phone")}
+          {...action('phone')}
           className="text-[16px]"
           value={phone}
           onChange={(value) => setPhone(value)}
@@ -130,7 +144,7 @@ export const InputPhone = ({ phone, setPhone, action }) => {
           containerClassName="w-full"
           inputClassName="border border-gray-300 rounded-lg px-4 py-2 w-full"
           countrySelectProps={{
-            className: "border border-gray-300 rounded-l-lg  py-5 w-max ",
+            className: 'border border-gray-300 rounded-l-lg  py-5 w-max ',
           }}
         />
       </div>

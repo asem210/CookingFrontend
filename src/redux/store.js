@@ -4,6 +4,7 @@ import authReducer from './slices/authSlice';
 import messageReducer from './slices/messageSlice';
 import ingredientReducer from './slices/ingredientSlice';
 import stepReducer from './slices/stepSlice';
+import recipeReducer from './slices/recipeSlice';
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -11,5 +12,6 @@ export const store = configureStore({
     message: messageReducer,
     ingredient: ingredientReducer,
     step: stepReducer,
+    recipe: recipeReducer,
   },
 });

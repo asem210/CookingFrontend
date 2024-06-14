@@ -45,31 +45,44 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
         <p className="font-belleza font-bold ml-4">{title}</p>
         <HiMagnifyingGlass className="mr-4 hover:cursor-pointer" size="22px" />
       </div>
-      <div className="flex w-full items-center">
-        <IoIosArrowBack size="30px" className="hover:cursor-pointer" onClick={previousItem} />
-        <div className="grid grid-cols-4 overflow-x-hidden mt-2 w-[90%]">
-          {visibleItems.map((item) => (
-            <div
-              key={item.id}
-              className="flex flex-col items-center justify-center"
-              id={item.id}
-            >
-              <img
-                src={item.img}
-                className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 items-center hover:cursor-pointer ${
-                  selectedArray.includes(item.id) ? 'grayscale' : ''
-                }`}
-                alt={item.name}
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleSelection(item.id);
-                }}
-              />
-              <p className="font-belleza">{item.name}</p>
+      <div className="flex w-full items-center ">
+        {visibleItems.length !== 0 && (
+          <>
+            {' '}
+            <IoIosArrowBack
+              size="30px"
+              className="hover:cursor-pointer"
+              onClick={previousItem}
+            />
+            <div className="grid grid-cols-4 overflow-x-hidden mt-2 w-[90%] ">
+              {visibleItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center justify-center p-1"
+                  id={item.id}
+                >
+                  <img
+                    src={item.img}
+                    className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 hover:cursor-pointer ${
+                      selectedArray.includes(item.id) ? 'grayscale' : ''
+                    }`}
+                    alt={item.name}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleSelection(item.id);
+                    }}
+                  />
+                  <p className="font-belleza">{item.name}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <IoIosArrowForward size="30px" className="hover:cursor-pointer" onClick={nextItem} />
+            <IoIosArrowForward
+              size="30px"
+              className="hover:cursor-pointer"
+              onClick={nextItem}
+            />
+          </>
+        )}
       </div>
     </div>
   );

@@ -1,26 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  name: "",
-  surname: "",
-  email: "",
-  phone: "",
-  image: "",
-  password: "",
-  username: "",
+  name: '',
+  surname: '',
+  email: '',
+  phone: '',
+  image: '',
+  password: '',
+  username: '',
 };
 
 export const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState,
   reducers: {
     addUser: (state, action) => {
-      const { name, surname, email, phone, image, password, username } =
-        action.payload;
+      const { name, surname, email, phone, image, password, username } = action.payload;
       state.name = name;
       state.surname = surname;
       state.email = email;
-      (state.phone = phone), (state.image = image);
+      state.phone = phone;
+      state.image = image;
       state.password = password;
       state.username = username;
     },
@@ -29,13 +29,13 @@ export const userSlice = createSlice({
       state.email = action.payload;
     },
     clearState: (state) => {
-      state.email = "";
-      state.name = "";
-      state.surname = "";
-      state.password = "";
-      state.image = "";
-      state.phone = "";
-      state.username = "";
+      state.email = '';
+      state.name = '';
+      state.surname = '';
+      state.password = '';
+      state.image = '';
+      state.phone = '';
+      state.username = '';
     },
   },
 });

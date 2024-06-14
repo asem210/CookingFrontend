@@ -26,6 +26,10 @@ export const ingredientSlice = createSlice({
       state.ingredienteRecipe = {};
     },
 
+    clearIngredient: (state) => {
+      state.ingrediente = {};
+    },
+
     removeListIngredient: (state, action) => {
       const { id } = action.payload;
       state.listIngredient = state.listIngredient.filter((ingredient) => ingredient.id !== id);
@@ -49,8 +53,11 @@ export const ingredientSlice = createSlice({
       }
     },
 
+    addAllListIngredient: (state, action) => {
+      state.listIngredient = action.payload;
+    },
+
     addListIngredientRecipe: (state, action) => {
-      console.log(action.payload);
       const index = state.listIngredientRecipe.findIndex(
         (ingredientRecipe) => ingredientRecipe.id === action.payload.id
       );
@@ -72,5 +79,7 @@ export const {
   removeListIngredient,
   removeListIngredientRecipe,
   clearIngredientRecipe,
+  clearIngredient,
+  addAllListIngredient,
 } = ingredientSlice.actions;
 export default ingredientSlice.reducer;

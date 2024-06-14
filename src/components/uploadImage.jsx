@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { storage } from "../firebase/firebase"; // Asegúrate de que la ruta sea correcta
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
-import { getAuth, signInAnonymously } from "firebase/auth";
-
+import React, { useState } from 'react';
+import { storage } from '../firebase/firebase'; // Asegúrate de que la ruta sea correcta
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 } from 'uuid';
+import { getAuth, signInAnonymously } from 'firebase/auth';
+import { useRecipe } from '../hooks/recipeHook';
 export const ImageUploader = ({ imageUrl, setImageUrl }) => {
   const [imageUpload, setImageUpload] = useState(null);
   const [urlState, setUrlState] = useState(false);
@@ -13,7 +13,7 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
   const uploadImage = async (event) => {
     event.preventDefault(); // Evita que el formulario se envíe y recargue la página
     if (!imageUpload) {
-      alert("No se seleccionó ningún archivo");
+      alert('No se seleccionó ningún archivo');
       return;
     }
 
@@ -23,15 +23,15 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
 
       const imageRef = ref(storage, `platillo/${imageUpload.name + v4()}`);
       await uploadBytes(imageRef, imageUpload);
-      console.log("Imagen subida correctamente");
+      console.log('Imagen subida correctamente');
 
       const url = await getDownloadURL(imageRef);
-      console.log("URL de la imagen:", url);
+      console.log('URL de la imagen:', url);
       setImageUrl(url);
       setUrlState(true);
     } catch (error) {
-      console.error("Error subiendo la imagen:", error);
-      alert("Error subiendo la imagen: " + error.message);
+      console.error('Error subiendo la imagen:', error);
+      alert('Error subiendo la imagen: ' + error.message);
     }
   };
 
@@ -45,16 +45,10 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
       return (
         <div className=" mt-4">
           <div className="">
-            <h1 className="text-[16px] font-bold">
-              Previsualización de la Imagen
-            </h1>
+            <h1 className="text-[16px] font-bold">Previsualización de la Imagen</h1>
           </div>
           <div className="mt-2">
-            <img
-              className="w-full max-w-[180px] mx-auto"
-              src={imageUrl}
-              alt="Imagen subida"
-            />
+            <img className="w-full max-w-[180px] mx-auto" src={imageUrl} alt="Imagen subida" />
           </div>
         </div>
       );
@@ -79,6 +73,53 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
         </button>
       </div>
       {mostrarImagen()}
+    </div>
+  );
+};
+
+export const ImageUploaderRecipe = () => {
+  const { changeImgRecipe } = useRecipe();
+  const [imageUpload, setImageUpload] = useState(null);
+  const auth = getAuth();
+
+  const handleOnChange = (event) => {
+    const file = event.target.files[0];
+    setImageUpload(file);
+  };
+
+  const uploadImage = async () => {
+    if (!imageUpload) {
+      showNewMessage('warning', 'No se seleccionó ninguna imagen');
+      return;
+    }
+
+    try {
+      await signInAnonymously(auth);
+      const imageRef = ref(storage, `platillo/${imageUpload.name + v4()}`);
+      await uploadBytes(imageRef, imageUpload);
+      const url = await getDownloadURL(imageRef);
+      changeImgRecipe(url);
+    } catch (error) {
+      showNewMessage('error', 'Error subiendo la imagen: ' + error.message);
+    }
+  };
+
+  return (
+    <div className="flex gap-5 items-center mb-2 ">
+      <p className="font-belleza">Previsualización de la receta:</p>
+      <input
+        type="file"
+        onChange={handleOnChange}
+        className="font-belleza bg-gray-600 text-white rounded-md py-1 px-3 hover:bg-gray-500"
+      />
+      <button
+        className="font-belleza bg-blue-600 text-white rounded-md py-1 px-3 hover:bg-blue-500"
+        onClick={() => {
+          uploadImage();
+        }}
+      >
+        Subir Imagen
+      </button>
     </div>
   );
 };

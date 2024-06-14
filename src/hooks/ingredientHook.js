@@ -4,10 +4,11 @@ import {
   addIngredientRecipe,
   addListIngredient,
   addListIngredientRecipe,
-  ingredientSlice,
   removeListIngredient,
   removeListIngredientRecipe,
   clearIngredientRecipe,
+  clearIngredient,
+  addAllListIngredient,
 } from '../redux/slices/ingredientSlice';
 
 export const useIngredient = () => {
@@ -21,8 +22,12 @@ export const useIngredient = () => {
     dispatch(addIngredientRecipe(ing));
   };
 
-  const clearIngredientRecipe = () => {
-    dispatch(addIngredientRecipe());
+  const addAllListIngredientHook = (ing) => {
+    dispatch(addAllListIngredient(ing));
+  };
+
+  const clearIngredientRecipeHook = () => {
+    dispatch(clearIngredientRecipe());
   };
 
   const addIngredientRecipeToList = (ing) => {
@@ -31,6 +36,22 @@ export const useIngredient = () => {
 
   const deleteIngredientRecipeOfList = (id) => {
     dispatch(removeListIngredientRecipe({ id }));
+  };
+
+  const addIngredienteHook = (ing) => {
+    dispatch(addIngredient(ing));
+  };
+
+  const clearIngredientHook = () => {
+    dispatch(clearIngredient());
+  };
+
+  const addIngredientToList = (ing) => {
+    dispatch(addListIngredient(ing));
+  };
+
+  const deleteIngredientOfList = (id) => {
+    dispatch(removeListIngredient({ id }));
   };
 
   return {
@@ -43,6 +64,11 @@ export const useIngredient = () => {
     addIngredientRecipeToList,
     deleteIngredientRecipeOfList,
     addIngredienteRecipe,
-    clearIngredientRecipe,
+    clearIngredientRecipeHook,
+    addIngredienteHook,
+    deleteIngredientOfList,
+    addIngredientToList,
+    clearIngredientHook,
+    addAllListIngredientHook,
   };
 };

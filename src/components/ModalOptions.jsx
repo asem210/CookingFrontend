@@ -8,7 +8,7 @@ import { useUser } from '../hooks/userHook';
 import { useAuth } from '../hooks/authHook';
 const ModalOptions = ({ isOpen, onClose }) => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
-  const { name, surname } = useUser();
+  const { name, surname, image } = useUser();
   const { logOut } = useAuth();
   const navigate = useNavigate();
 
@@ -18,13 +18,17 @@ const ModalOptions = ({ isOpen, onClose }) => {
         <div className="fixed inset-0 flex items-center justify-end z-50">
           <div className="inset-0 bg-[#2E2C2C] opacity-[0.90] absolute"></div>
           <div className="bg-white p-8 shadow-lg z-10 relative w-[22%] h-full ">
-            <div className="w-full flex justify-between items-center mb-5">
+            <div className="w-full flex justify-between items-center mb-4">
               <p className="text-[24px] font-belleza">{name + ' ' + surname}</p>
-              <img
-                src="https://static-00.iconduck.com/assets.00/profile-default-icon-2048x2045-u3j7s5nj.png"
-                className="w-[20%] h-auto"
-                alt="profile"
-              />
+              <figure className=" rounded-full  overflow-hidden flex items-center  border-2 border-naranja mr-1">
+                <img
+                  src={
+                    image ||
+                    'https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg'
+                  }
+                  className="w-[65px]  h-[65px]"
+                />
+              </figure>
             </div>
             <div className="w-full flex flex-col gap-3.5">
               <div className="w-full flex items-center cursor-pointer hover:text-gray-500">
