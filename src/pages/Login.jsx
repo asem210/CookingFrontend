@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import images from "../constants/images";
 import { LoginForm, RegisterForm } from "../components/forms";
 import SwitchButtonLogin from "../components/switchButton";
-import { GoogleLogin } from "@react-oauth/google";
+import { LoginSocialMedia } from "../components/GoogleLogin";
 
 const Login = () => {
   const [selectedOption, setSelectedOption] = useState("login");
@@ -50,24 +50,6 @@ const Login = () => {
             <LoginSocialMedia />
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-export const LoginSocialMedia = () => {
-  return (
-    <div className="flex flex-col font-belleza w-full justify-center items-center pt-5 text-[16px] ">
-      <p className=" text-textoalt">o continúa con</p>
-      <div className="flex flex-row space-x-5 mt-2">
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log("Login Failed");
-          }}
-        />
       </div>
     </div>
   );
