@@ -10,6 +10,7 @@ import ModalNotification from './components/ModalNotification';
 import userService from './apis/user';
 import { useAuth } from './hooks/authHook';
 import ShowRecipe from './pages/ShowRecipe';
+import Results from './pages/Results';
 
 const RutasContent = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE || '';
@@ -49,13 +50,14 @@ const RutasContent = () => {
             <Route path={`${name_proyect}/home`} element={<Home />} />
             <Route path={`${name_proyect}/home/:id`} element={<ShowRecipe />} />
             <Route path={`${name_proyect}/recipe/create`} element={<CreateRecipe />} />
+            <Route path={`${name_proyect}/results`} element={<Results />} />
           </>
         ) : (
           <>
             <Route path={`${name_proyect}/login`} element={<Login />} />
             <Route path={`${name_proyect}/home`} element={<Home />} />
             <Route path={`${name_proyect}/home/:id`} element={<ShowRecipe />} />
-
+            <Route path={`${name_proyect}/results`} element={<Results />} />
             <Route path={`${name_proyect}/register`} element={<RegisterPage />} />
           </>
         )}
