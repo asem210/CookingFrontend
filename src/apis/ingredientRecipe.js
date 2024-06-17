@@ -6,7 +6,7 @@ if (!BASE_URL) {
   throw new Error('BASE_URL is not defined');
 }
 const ingredientRecipeService = {
-  create: async (cantidad, medicion, especificacion, ingrediente_id, receta_id) => {
+  create: async (cantidad, medicion, especificacion, ingrediente_id, receta_id, priority) => {
     try {
       const requestData = {
         cantidad,
@@ -14,6 +14,7 @@ const ingredientRecipeService = {
         especificacion,
         ingrediente_id,
         receta_id,
+        priority,
       };
       const { data } = await axios.post(BASE_URL + '/ingredienteReceta/create', requestData, {
         headers: { token: localStorage.token },

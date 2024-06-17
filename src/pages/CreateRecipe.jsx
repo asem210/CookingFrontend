@@ -74,7 +74,8 @@ const CreateRecipe = () => {
         ing.medicion,
         ing.especificacion,
         ing.id_ingrediente,
-        id_receta
+        id_receta,
+        ing.priority
       );
     } catch (error) {
       showNewMessage('error', 'Error al asignar un ingrediente a la receta' + error);
@@ -210,8 +211,9 @@ const CreateRecipe = () => {
           <div className="flex w-full justify-center ">
             <ul className="w-3/4 grid  grid-flow-row grid-cols-2  mt-5 p-4  gap-y-1  font-belleza">
               {listIngredientRecipe.map((ingrediente, index) => (
-                <li key={index} className="flex gap-2 justify-around hover:text-gray-600">
-                  {`${ingrediente.cantidad} ${ingrediente.medicion} de ${ingrediente.name} ${ingrediente.especificacion}`}
+                <li key={index} className="flex gap-2 justify-normal hover:text-gray-600">
+                  {`${ingrediente.cantidad} ${ingrediente.medicion} de ${ingrediente.name} ${ingrediente.especificacion} `}
+                  {ingrediente.priority === true && '(escencial)'}
                   <div className="flex">
                     <BiEditAlt
                       size={'20px'}
@@ -224,6 +226,7 @@ const CreateRecipe = () => {
                           especificacion: ingrediente.especificacion,
                           name: ingrediente.name,
                           id_ingrediente: 1,
+                          priority: ingrediente.priority,
                         });
                       }}
                     />

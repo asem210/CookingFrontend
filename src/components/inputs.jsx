@@ -38,7 +38,7 @@ export const InputFormCreateIng = ({
   width = 'w-full',
 }) => {
   return (
-    <div className={'flex flex-col ' + width}>
+    <div className={' flex flex-col ' + width}>
       <label className=" pb-2">{label}</label>
       <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start">
         <input
@@ -46,6 +46,21 @@ export const InputFormCreateIng = ({
           placeholder={placeholder}
           className="outline-none border-none mx-4 h-full w-full"
           readOnly={visible}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const CheckBoxFormCreateIng = ({ label, action, name, width = 'w-full' }) => {
+  return (
+    <div className={' items-center flex flex-col ' + width}>
+      <label className=" pb-2">{label}</label>
+      <div className="w-full h-[20px]  rounded-xl flex  justify-center  items-center">
+        <input
+          {...action(name)}
+          type="checkbox"
+          className="  mx-4 py-10 outline-none border-none  h-full w-full overflow-hidden text-[14px] mt-4  "
         />
       </div>
     </div>

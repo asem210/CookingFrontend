@@ -130,8 +130,9 @@ const ShowRecipe = () => {
             <ul className="grid  grid-flow-row grid-cols-2  mt-5 p-4  gap-y-1 font-belleza w-[70%] ">
               {listIngredientOfRecipe &&
                 listIngredientOfRecipe.map((ingrediente, index) => (
-                  <li key={index} className="flex gap-2 justify-around hover:text-gray-600">
+                  <li key={index} className="flex gap-2 justify-normal hover:text-gray-600">
                     {` ● ${ingrediente.cantidad} ${ingrediente.medicion} de ${ingrediente.ingrediente.name} ${ingrediente.especificacion}`}
+                    {ingrediente.priority === true && ' (escencial)'}
                   </li>
                 ))}
             </ul>

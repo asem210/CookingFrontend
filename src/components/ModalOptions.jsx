@@ -31,7 +31,10 @@ const ModalOptions = ({ isOpen, onClose }) => {
               </figure>
             </div>
             <div className="w-full flex flex-col gap-3.5">
-              <div className="w-full flex items-center cursor-pointer hover:text-gray-500">
+              <div
+                className="w-full flex items-center cursor-pointer hover:text-gray-500"
+                onClick={() => navigate(name_proyect + '/recipe/myRecipes')}
+              >
                 <PiChefHat size={'35px'} />
                 <p className="font-belleza ml-1 text-[22px]">Mis Recetas</p>
               </div>

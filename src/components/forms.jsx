@@ -90,11 +90,11 @@ import {
   InputFormCreateIng,
   InputSelectFormCreateIng,
   TextFormCreateIng,
+  CheckBoxFormCreateIng,
 } from '../components/inputs';
 import ingredientService from '../apis/ingredient';
 
 export const FormCrearIngrediente = () => {
-  // cambiar por las opciones reales
   const items = ['cdta', 'cda', 'tza', 'l', 'ml', 'g', 'kg', 'oz', 'lb', 'pt', 'und'];
   const [names, setnames] = useState([]);
   const { showNewMessage } = useMessage();
@@ -137,6 +137,7 @@ export const FormCrearIngrediente = () => {
           especificacion: formData.Especificación || '',
           name: formData.Ingrediente,
           id_ingrediente: getIdByName.id,
+          priority: formData.priority || false,
         };
       } else {
         const id_aux =
@@ -151,6 +152,7 @@ export const FormCrearIngrediente = () => {
           especificacion: formData.Especificación || '',
           name: formData.Ingrediente,
           id_ingrediente: getIdByName.id,
+          priority: formData.priority || false,
         };
       }
 
@@ -176,7 +178,6 @@ export const FormCrearIngrediente = () => {
       }
     };
     callIngredient();
-    console.log('asdasd');
     setnames(
       listIngredient.map((item) => {
         return item.name;
@@ -190,13 +191,14 @@ export const FormCrearIngrediente = () => {
       setValue('Cantidad', ingredienteRecipe.cantidad);
       setValue('Medición', ingredienteRecipe.medicion);
       setValue('Especificación', ingredienteRecipe.especificacion);
+      setValue('priority', ingredienteRecipe.priority || '');
     }
   }, [ingredienteRecipe]);
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-row font-belleza text-negro text-[16px] gap-6 mt-5"
+      className="flex flex-row font-belleza text-negro text-[16px] gap-3 mt-5"
     >
       <InputSelectFormCreateIng
         label={'Ingrediente'}
@@ -222,11 +224,18 @@ export const FormCrearIngrediente = () => {
         itemDefault={'Selecciona Medición'}
       />
       <InputFormCreateIng
-        label={'Especificación (opcional)'}
-        placeholder={'Ejemplo: en cuadritos'}
+        label={'Especificación'}
+        placeholder={'Opcional'}
         action={register}
         name={'Especificación'}
       />
+      <CheckBoxFormCreateIng
+        label={'Escencial'}
+        action={register}
+        name={'priority'}
+        width="w-1/3"
+      />
+
       <div className="flex gap-3 mt-[5%]">
         <button type="submit" className="text-lime-500 hover:text-lime-600">
           <FaCheck size={'30px'} />

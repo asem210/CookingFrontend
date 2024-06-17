@@ -35,9 +35,21 @@ const recipeService = {
       return null;
     }
   },
+
   getAll: async () => {
     try {
       const { data } = await axios.get(BASE_URL + '/receta/getall');
+      return data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  getAllOfUser: async () => {
+    try {
+      const { data } = await axios.get(BASE_URL + '/receta/getThisUser', {
+        headers: { token: localStorage.token },
+      });
       return data;
     } catch (error) {
       return null;

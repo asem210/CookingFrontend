@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa6';
 import { LuClock4 } from 'react-icons/lu';
 import { IoBookmarkOutline } from 'react-icons/io5';
@@ -12,31 +12,36 @@ const CardRecipe = ({
   name = 'plato xx',
   fitStep = 'Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada ',
   dificulty = 'medio',
+  idReceta,
+  saveRecipe = true,
 }) => {
   const [bookmarkSave, setBookmarkSave] = useState(false);
+  const navigate = useNavigate();
+  const name_proyect = import.meta.env.VITE_NAME_PAGE;
 
   return (
     <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden ">
       <figure className="relative overflow-hidden items-center justify-center flex h-1/2 w-full rounded-t-xl">
         <img src={img} className="h-full w-full" />
 
-        {bookmarkSave ? (
-          <FcBookmark
-            className="absolute text-naranja top-1 left-1 cursor-pointer"
-            size={'30px'}
-            onClick={() => {
-              setBookmarkSave(false);
-            }}
-          />
-        ) : (
-          <IoBookmarkOutline
-            className="absolute text-naranja top-1 left-1 cursor-pointer"
-            size={'30px'}
-            onClick={() => {
-              setBookmarkSave(true);
-            }}
-          />
-        )}
+        {saveRecipe &&
+          (bookmarkSave ? (
+            <FcBookmark
+              className="absolute text-naranja top-1 left-1 cursor-pointer"
+              size={'30px'}
+              onClick={() => {
+                setBookmarkSave(false);
+              }}
+            />
+          ) : (
+            <IoBookmarkOutline
+              className="absolute text-naranja top-1 left-1 cursor-pointer"
+              size={'30px'}
+              onClick={() => {
+                setBookmarkSave(true);
+              }}
+            />
+          ))}
 
         <p className="absolute text-white font-belleza  top-[80%]  left-[5%] text-[17px]">
           {dificulty}
@@ -54,7 +59,12 @@ const CardRecipe = ({
           </div>
           <p className="text-[12px] mx-5 mt-2 max-h-14 overflow-hidden ">{fitStep}</p>
         </div>
-        <div className="font-belleza text-naranja flex items-center justify-center gap-2 mt-2 hover:text-orange-400 cursor-pointer">
+        <div
+          className="font-belleza text-naranja flex items-center justify-center gap-2 mt-2 hover:text-orange-400 cursor-pointer"
+          onClick={() => {
+            navigate(name_proyect + '/home/' + idReceta);
+          }}
+        >
           <p>Ir a la receta</p>
           <FaArrowRight size={'28px'} />
         </div>

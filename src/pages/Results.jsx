@@ -1,9 +1,9 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
+import CardRecipe from '../components/CardRecipe';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import images from '../constants/images';
-import CardRecipe from '../components/CardRecipe';
 
 const Results = () => {
   const getObjectById = (id) => {
