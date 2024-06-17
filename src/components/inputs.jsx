@@ -29,15 +29,46 @@ export const InputDefault = ({
   );
 };
 
-export const InputFormCreateIng = ({ label, placeholder, action, name }) => {
+export const InputFormCreateIng = ({
+  label,
+  placeholder,
+  action,
+  name,
+  visible = false,
+  width = 'w-full',
+}) => {
   return (
-    <div className="flex flex-col w-full">
+    <div className={'flex flex-col ' + width}>
       <label className=" pb-2">{label}</label>
       <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start">
         <input
           {...action(name)}
           placeholder={placeholder}
           className="outline-none border-none mx-4 h-full w-full"
+          readOnly={visible}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const TextFormCreateIng = ({
+  label,
+  placeholder,
+  action,
+  name,
+  visible = false,
+  width = 'w-full',
+}) => {
+  return (
+    <div className={'flex flex-col ' + width}>
+      <label className=" pb-2">{label}</label>
+      <div className="w-full h-[90px] border border-black rounded-xl flex  justify-center  items-center">
+        <textarea
+          {...action(name)}
+          placeholder={placeholder}
+          className="  mx-4 py-10 outline-none border-none  h-full w-full overflow-hidden text-[14px]  "
+          readOnly={visible}
         />
       </div>
     </div>
@@ -55,19 +86,6 @@ export const InputSelectFormCreateIng = ({
   return (
     <div className="flex flex-col w-full">
       <label className="pb-2">{label}</label>
-      {/* <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start">
-        <input
-          {...action(name)}
-          placeholder={placeholder}
-          className="outline-none border-none mx-4 h-full w-full"
-          list={`${name}-datalist`}
-        />
-        <datalist id={`${name}-datalist`} className="relative">
-          {items.map((item, index) => (
-            <option key={index} value={item} />
-          ))}
-        </datalist>
-      </div> */}
       <select
         {...action(name)}
         className="border border-black  rounded-xl flex items-center py-3 px-4 font-belleza outline-none"

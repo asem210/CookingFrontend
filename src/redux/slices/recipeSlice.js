@@ -11,6 +11,7 @@ const initialState = {
   id: '',
   listIngredientOfRecipe: [],
   listStepOfRecipe: [],
+  imgUpload: 'https://semantic-ui.com/images/wireframe/image.png',
 };
 
 export const recipeSlice = createSlice({
@@ -47,7 +48,7 @@ export const recipeSlice = createSlice({
     },
 
     changeImg: (state, action) => {
-      state.img = action.payload;
+      state.imgUpload = action.payload;
     },
   },
 });

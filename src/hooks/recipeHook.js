@@ -19,6 +19,7 @@ export const useRecipe = () => {
     listIngredientOfRecipe,
     listStepOfRecipe,
     id,
+    imgUpload,
   } = useSelector((state) => state.recipe);
 
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ export const useRecipe = () => {
     name,
     description,
     img,
+    imgUpload,
     dificultad,
     porcion,
     time,

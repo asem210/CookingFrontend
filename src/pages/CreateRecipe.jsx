@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { MdOutlineDeleteForever } from 'react-icons/md';
@@ -22,7 +22,7 @@ const CreateRecipe = () => {
   const { listIngredientRecipe, deleteIngredientRecipeOfList, addIngredienteRecipe } =
     useIngredient();
   const { addStepHook, listStep, deleteStepOfList } = useStep();
-  const { img } = useRecipe();
+  const { imgUpload } = useRecipe();
   const { showNewMessage } = useMessage();
   const navigate = useNavigate();
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
@@ -86,7 +86,7 @@ const CreateRecipe = () => {
       const resReceta = await recipeService.create(
         name,
         'No hay desc',
-        img,
+        imgUpload,
         dificultad,
         time,
         porcion,
@@ -111,7 +111,7 @@ const CreateRecipe = () => {
   };
 
   const handleSubmit = () => {
-    if (img === 'https://semantic-ui.com/images/wireframe/image.png') {
+    if (imgUpload === 'https://semantic-ui.com/images/wireframe/image.png') {
       showNewMessage('warning', 'Por favor ingrese una imagen de la receta');
       return;
     }
@@ -169,6 +169,20 @@ const CreateRecipe = () => {
     }
   };
 
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      const message = 'hello unsaved changes. Are you sure you want to leave?';
+      event.returnValue = message;
+      return message;
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col h-auto w-screen overflow-x-hidden overflow-y-auto">
       <NavBar />
@@ -176,10 +190,10 @@ const CreateRecipe = () => {
         <section className="w-[60%]">
           <ImageUploaderRecipe />
           <figure className="w-full h-[300px] overflow-hidden relative rounded-md mt-5">
-            <img src={img} className="w-full h-full object-cover object-center" />
+            <img src={imgUpload} className="w-full h-full object-cover object-center" />
           </figure>
         </section>
-        <section className="w-[60%] flex gap-4 items-center">
+        <section className="w-[60%] flex gap-4 items-center mt-3">
           <p className="font-belleza text-[20px] ">Nombre de la receta:</p>
           <input
             type="text"
@@ -187,7 +201,7 @@ const CreateRecipe = () => {
             value={inputValues.name}
             onChange={handleChange}
             placeholder="Ingrese el nombre de la receta"
-            className="py-1 px-3 w-1/2 font-bold font-belleza text-[24px]"
+            className="border border-black  rounded-lg  py-1 px-3 w-1/2 font-bold font-belleza text-[24px]"
           />
         </section>
         <section className="w-[60%] flex flex-col">

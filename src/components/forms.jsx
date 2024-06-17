@@ -86,7 +86,11 @@ import { useMessage } from '../hooks/messageHook';
 import { FaCheck } from 'react-icons/fa';
 import { ImCross } from 'react-icons/im';
 import { useIngredient } from '../hooks/ingredientHook';
-import { InputFormCreateIng, InputSelectFormCreateIng } from '../components/inputs';
+import {
+  InputFormCreateIng,
+  InputSelectFormCreateIng,
+  TextFormCreateIng,
+} from '../components/inputs';
 import ingredientService from '../apis/ingredient';
 
 export const FormCrearIngrediente = () => {
@@ -172,13 +176,13 @@ export const FormCrearIngrediente = () => {
       }
     };
     callIngredient();
-
+    console.log('asdasd');
     setnames(
       listIngredient.map((item) => {
         return item.name;
       })
     );
-  }, []);
+  }, [listIngredient]);
 
   useEffect(() => {
     if (ingredienteRecipe) {
@@ -292,26 +296,38 @@ export const FormCrearPaso = () => {
   };
 
   useEffect(() => {
-    if (step) {
+    if (step.name !== undefined) {
       setValue('name', step.name);
       setValue('description', step.description);
       setValue('number', step.number);
     }
   }, [step]);
 
+  useEffect(() => {
+    setValue('number', listStep.length + 1);
+  }, [listStep]);
+
   return (
     <form
-      className="flex flex-row font-belleza text-negro text-[16px] gap-6 mt-5"
+      className="flex flex-row font-belleza text-negro text-[16px] gap-6 mt-5 items-center"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <InputFormCreateIng label={'N°'} placeholder={'-'} action={register} name={'number'} />
+      <InputFormCreateIng
+        label={'N°'}
+        placeholder={'-'}
+        action={register}
+        name={'number'}
+        visible={true}
+        width={'1/3'}
+      />
+
       <InputFormCreateIng
         label={'Nombre'}
         placeholder={'Ingrese el nombre'}
         action={register}
         name={'name'}
       />
-      <InputFormCreateIng
+      <TextFormCreateIng
         label={'Descripción'}
         placeholder={'Ingrese la descripción'}
         action={register}
