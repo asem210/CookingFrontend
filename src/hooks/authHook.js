@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { onLogin, onLogout } from '../redux/slices/authSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { onLogin, onLogout, onChange } from "../redux/slices/authSlice";
 
 export const useAuth = () => {
   const { token, status } = useSelector((state) => state.auth);
@@ -13,6 +13,9 @@ export const useAuth = () => {
     dispatch(onLogin());
   };
 
+  const change = () => {
+    dispatch(onChange());
+  };
   return {
     //properties
     token,
@@ -20,5 +23,6 @@ export const useAuth = () => {
     //functions
     logOut,
     login,
+    change,
   };
 };

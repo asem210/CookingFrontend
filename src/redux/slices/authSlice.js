@@ -1,12 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   status: false,
-  token: '',
+  token: "",
 };
 
 export const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     onLogin: (state) => {
@@ -15,14 +15,18 @@ export const authSlice = createSlice({
       // state.token = token;
     },
 
+    onChange: (state, action) => {
+      state.token = action.payload();
+    },
+
     onLogout: (state) => {
       state.status = false;
-      if (localStorage.getItem('token') !== null) {
-        localStorage.removeItem('token');
+      if (localStorage.getItem("token") !== null) {
+        localStorage.removeItem("token");
       }
     },
   },
 });
 
-export const { onLogin, onLogout } = authSlice.actions;
+export const { onLogin, onLogout, onChange } = authSlice.actions;
 export default authSlice.reducer;

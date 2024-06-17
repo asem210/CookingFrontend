@@ -1,25 +1,31 @@
-import { RegisterPage } from './pages/Register';
-import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import CreateRecipe from './pages/CreateRecipe';
-import ModalNotification from './components/ModalNotification';
-import userService from './apis/user';
-import { useAuth } from './hooks/authHook';
-import ShowRecipe from './pages/ShowRecipe';
-import Results from './pages/Results';
+import { RegisterPage } from "./pages/Register";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./redux/store";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import CreateRecipe from "./pages/CreateRecipe";
+import ModalNotification from "./components/ModalNotification";
+import userService from "./apis/user";
+import { useAuth } from "./hooks/authHook";
+import ShowRecipe from "./pages/ShowRecipe";
+import Results from "./pages/Results";
 
 const RutasContent = () => {
-  const name_proyect = import.meta.env.VITE_NAME_PAGE || '';
-  const { login, status, logOut } = useAuth();
+  const name_proyect = import.meta.env.VITE_NAME_PAGE || "";
+  const { login, status, logOut, token, change } = useAuth();
   const [loading, setLoading] = useState(true);
+  const [moved, setMoved] = useState(token);
+
+  // useEffect(() => {
+  //   VerifyLoggedIn();
+  // }, [moved]);
 
   const VerifyLoggedIn = async () => {
     try {
       const resultVerify = await userService.verify();
+      console.log(resultVerify);
       if (resultVerify.success) {
         login();
       } else {
@@ -35,7 +41,7 @@ const RutasContent = () => {
 
   useEffect(() => {
     VerifyLoggedIn();
-  }, [status]);
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -49,7 +55,10 @@ const RutasContent = () => {
           <>
             <Route path={`${name_proyect}/home`} element={<Home />} />
             <Route path={`${name_proyect}/home/:id`} element={<ShowRecipe />} />
-            <Route path={`${name_proyect}/recipe/create`} element={<CreateRecipe />} />
+            <Route
+              path={`${name_proyect}/recipe/create`}
+              element={<CreateRecipe />}
+            />
             <Route path={`${name_proyect}/results`} element={<Results />} />
           </>
         ) : (
@@ -58,7 +67,10 @@ const RutasContent = () => {
             <Route path={`${name_proyect}/home`} element={<Home />} />
             <Route path={`${name_proyect}/home/:id`} element={<ShowRecipe />} />
             <Route path={`${name_proyect}/results`} element={<Results />} />
-            <Route path={`${name_proyect}/register`} element={<RegisterPage />} />
+            <Route
+              path={`${name_proyect}/register`}
+              element={<RegisterPage />}
+            />
           </>
         )}
         <Route path="*" element={<Navigate to={`${name_proyect}/home`} />} />
