@@ -1,28 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaArrowRight } from 'react-icons/fa6';
 import { LuClock4 } from 'react-icons/lu';
 import { IoBookmarkOutline } from 'react-icons/io5';
 import { FcBookmark } from 'react-icons/fc';
-
+import { TbAntennaBars1 } from 'react-icons/tb';
+import { useRecipe } from '../hooks/recipeHook';
+import { data } from 'autoprefixer';
+import ingredientRecipeService from '../apis/ingredientRecipe';
+import { useIngredient } from '../hooks/ingredientHook';
+import stepService from '../apis/step';
+import { useStep } from '../hooks/stepHook';
 const CardRecipe = ({
   img = 'https://static.vecteezy.com/system/resources/previews/004/639/366/non_2x/error-404-not-found-text-design-vector.jpg',
   time = 'xx',
   porcion = 'x',
   name = 'plato xx',
+  date = 'dd/mm/yyyy',
   fitStep = 'Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada ',
   dificulty = 'medio',
   idReceta,
   saveRecipe = true,
+  editable = false,
 }) => {
+  const { changeImgRecipe, addItemDataEdit } = useRecipe();
   const [bookmarkSave, setBookmarkSave] = useState(false);
   const navigate = useNavigate();
+  const [isdisplayed, setisdisplayed] = useState(false);
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
+  const { addAllListIngredientRecipeHook } = useIngredient();
+  const { addAllListStepHook } = useStep();
+  const toggleIsDisplayed = (event) => {
+    event.preventDefault();
+    setisdisplayed((prevIsDisplayed) => !prevIsDisplayed);
+  };
+
+  const callPartsRecipe = async () => {
+    const resIngredient = await ingredientRecipeService.getOfRecipe(idReceta);
+    if (resIngredient) {
+      resIngredient.data.map((item) => {
+        item.name = item.ingrediente.name;
+      });
+      addAllListIngredientRecipeHook(resIngredient.data ?? []);
+    }
+
+    const resStep = await stepService.getOfRecipe(idReceta);
+    if (resStep) {
+      addAllListStepHook(resStep.data ?? []);
+    }
+  };
+
+  const handleClick = () => {
+    try {
+      callPartsRecipe();
+      addItemDataEdit(idReceta, name, dificulty, porcion, time, date);
+      changeImgRecipe(img);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigate(name_proyect + '/recipe/edit');
+    }
+  };
 
   return (
     <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden ">
-      <figure className="relative overflow-hidden items-center justify-center flex h-1/2 w-full rounded-t-xl">
-        <img src={img} className="h-full w-full" />
+      <figure className="relative overflow-hidden items-center justify-center flex h-1/2 w-full rounded-t-xl  ">
+        <img src={img} className="h-full w-full filter brightness-75  " />
 
         {saveRecipe &&
           (bookmarkSave ? (
@@ -43,10 +86,33 @@ const CardRecipe = ({
             />
           ))}
 
-        <p className="absolute text-white font-belleza  top-[80%]  left-[5%] text-[17px]">
+        {editable && (
+          <div className="absolute top-[-10%]  left-[80%]">
+            <TbAntennaBars1
+              className=" text-white  cursor-pointer"
+              size={'50px'}
+              onClick={toggleIsDisplayed}
+            />
+            {isdisplayed && (
+              <ul className="absolute left-[-75%] rounded-md overflow-hidden">
+                <li
+                  className="bg-white px-3 py-1 text-center hover:bg-slate-100 cursor-pointer"
+                  onClick={handleClick}
+                >
+                  Editar
+                </li>
+                <li className="bg-white px-3 py-1 text-center hover:bg-slate-100 cursor-pointer">
+                  Eliminar
+                </li>
+              </ul>
+            )}
+          </div>
+        )}
+
+        <p className="absolute text-white font-belleza  top-[75%]  left-[5%] text-[17px]">
           {dificulty}
         </p>
-        <div className="absolute text-white font-belleza items-center gap-2 flex top-[80%]  left-[65%] ">
+        <div className="absolute text-white font-belleza items-center gap-2 flex top-[75%]  left-[65%] ">
           <LuClock4 />
           <p className="text-[18px]"> {time + ' min.'}</p>
         </div>
@@ -54,7 +120,7 @@ const CardRecipe = ({
       <div className="mt-2 h-fit ">
         <div className="font-belleza ">
           <div className="flex justify-around font-belleza items-center">
-            <p className="font-semibold text-[18px]  w-1/2  h-5  overflow-hidden"> {name}</p>
+            <p className="font-semibold text-[16px]  w-1/2  h-5  overflow-hidden"> {name}</p>
             <p className="font-semibold">Porciones: {porcion} </p>
           </div>
           <p className="text-[12px] mx-5 mt-2 max-h-14 overflow-hidden ">{fitStep}</p>

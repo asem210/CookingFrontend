@@ -8,6 +8,8 @@ import {
   clearStepRecipe,
   removeListStep,
   removeListStepRecipe,
+  addAllListStep,
+  clearAllListStep,
 } from '../redux/slices/stepSlice';
 
 export const useStep = () => {
@@ -31,6 +33,14 @@ export const useStep = () => {
     dispatch(removeListStep({ id }));
   };
 
+  const addAllListStepHook = (steps) => {
+    dispatch(addAllListStep(steps));
+  };
+
+  const clearAllListStepHook = () => {
+    dispatch(clearAllListStep());
+  };
+
   return {
     //properties
     step,
@@ -42,5 +52,7 @@ export const useStep = () => {
     clearStepHook,
     addStepToList,
     deleteStepOfList,
+    addAllListStepHook,
+    clearAllListStepHook,
   };
 };

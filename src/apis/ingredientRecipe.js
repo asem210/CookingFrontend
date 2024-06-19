@@ -35,6 +35,18 @@ const ingredientRecipeService = {
       return null;
     }
   },
+
+  deleteIngsOfRecipe: async (id) => {
+    try {
+      const { data } = await axios.delete(`${BASE_URL}/pasos/deleteAll/${id}`, {
+        headers: { token: localStorage.token },
+      });
+      return data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
 };
 
 export default ingredientRecipeService;

@@ -286,7 +286,9 @@ export const FormCrearPaso = () => {
           name: formData.name,
         };
       } else {
-        const id_aux = listStep.length === 0 ? 0 : listStep[listStep.length - 1].id + 1;
+        console.log(listStep);
+
+        const id_aux = listStep?.length === 0 ? 0 : listStep[listStep?.length - 1].id + 1;
 
         nuevoStep = {
           id: id_aux,
@@ -300,7 +302,7 @@ export const FormCrearPaso = () => {
       reset();
     } catch (error) {
       console.log(error.message);
-      showNewMessage('error', 'Error al agregar Paso');
+      showNewMessage('error', 'Error al agregar Paso: ' + error.message);
     }
   };
 
@@ -313,7 +315,7 @@ export const FormCrearPaso = () => {
   }, [step]);
 
   useEffect(() => {
-    setValue('number', listStep.length + 1);
+    setValue('number', listStep?.length + 1 || 1);
   }, [listStep]);
 
   return (

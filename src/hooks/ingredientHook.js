@@ -9,6 +9,8 @@ import {
   clearIngredientRecipe,
   clearIngredient,
   addAllListIngredient,
+  addAllListIngredientRecipe,
+  clearAllListIngredientRecipe,
 } from '../redux/slices/ingredientSlice';
 
 export const useIngredient = () => {
@@ -53,6 +55,12 @@ export const useIngredient = () => {
   const deleteIngredientOfList = (id) => {
     dispatch(removeListIngredient({ id }));
   };
+  const addAllListIngredientRecipeHook = (ing) => {
+    dispatch(addAllListIngredientRecipe(ing));
+  };
+  const clearAllListIngredientRecipeHook = () => {
+    dispatch(clearAllListIngredientRecipe());
+  };
 
   return {
     //properties
@@ -70,5 +78,7 @@ export const useIngredient = () => {
     addIngredientToList,
     clearIngredientHook,
     addAllListIngredientHook,
+    addAllListIngredientRecipeHook,
+    clearAllListIngredientRecipeHook,
   };
 };

@@ -12,6 +12,15 @@ const initialState = {
   listIngredientOfRecipe: [],
   listStepOfRecipe: [],
   imgUpload: 'https://semantic-ui.com/images/wireframe/image.png',
+
+  editDataRecipe: {
+    id: '',
+    name: '',
+    dificultad: '',
+    porcion: '',
+    time: '',
+    date: '',
+  },
 };
 
 export const recipeSlice = createSlice({
@@ -30,6 +39,13 @@ export const recipeSlice = createSlice({
       state.id = id;
     },
 
+    addDataEdit: (state, action) => {
+      state.editDataRecipe = action.payload;
+    },
+    clearDataEdit: (state) => {
+      state.editDataRecipe = initialState.editDataRecipe;
+    },
+
     addAllListIngredient: (state, action) => {
       state.listIngredientOfRecipe = action.payload;
     },
@@ -45,6 +61,9 @@ export const recipeSlice = createSlice({
       state.porcion = '';
       state.time = '';
       state.date = '';
+      state.imgUpload = 'https://semantic-ui.com/images/wireframe/image.png';
+      state.listIngredientOfRecipe = [];
+      state.listStepOfRecipe = [];
     },
 
     changeImg: (state, action) => {
@@ -53,6 +72,13 @@ export const recipeSlice = createSlice({
   },
 });
 
-export const { addItem, changeImg, clearState, addAllListIngredient, addAllListStep } =
-  recipeSlice.actions;
+export const {
+  addItem,
+  changeImg,
+  clearState,
+  addAllListIngredient,
+  addAllListStep,
+  addDataEdit,
+  clearDataEdit,
+} = recipeSlice.actions;
 export default recipeSlice.reducer;

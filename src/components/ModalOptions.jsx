@@ -49,7 +49,10 @@ const ModalOptions = ({ isOpen, onClose }) => {
                 <BsBookmark size={'35px'} />
                 <p className="font-belleza ml-1 text-[22px]">Mis Favoritos</p>
               </div>
-              <div className="w-full flex items-center cursor-pointer hover:text-gray-500">
+              <div
+                className="w-full flex items-center cursor-pointer hover:text-gray-500"
+                onClick={() => navigate(name_proyect + '/user/info')}
+              >
                 <PiUserCircle size={'35px'} />
                 <p className="font-belleza ml-1 text-[22px]">Mi Perfil</p>
               </div>

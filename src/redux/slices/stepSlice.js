@@ -50,6 +50,14 @@ export const stepSlice = createSlice({
       }
     },
 
+    addAllListStep: (state, action) => {
+      state.listStep = action.payload;
+    },
+
+    clearAllListStep: (state) => {
+      state.listStep = [];
+    },
+
     addListStepRecipe: (state, action) => {
       const index = state.listStepRecipe.findIndex(
         (stepRecipe) => stepRecipe.id === action.payload.id
@@ -73,5 +81,7 @@ export const {
   clearStepRecipe,
   removeListStep,
   removeListStepRecipe,
+  addAllListStep,
+  clearAllListStep,
 } = stepSlice.actions;
 export default stepSlice.reducer;

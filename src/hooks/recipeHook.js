@@ -5,6 +5,8 @@ import {
   addItem,
   addAllListIngredient,
   addAllListStep,
+  addDataEdit,
+  clearDataEdit,
 } from '../redux/slices/recipeSlice';
 
 export const useRecipe = () => {
@@ -20,12 +22,17 @@ export const useRecipe = () => {
     listStepOfRecipe,
     id,
     imgUpload,
+    editDataRecipe,
   } = useSelector((state) => state.recipe);
 
   const dispatch = useDispatch();
 
   const addItemRecipe = (name, description, img, dificultad, porcion, time, date, id) => {
     dispatch(addItem({ name, description, img, dificultad, porcion, time, date, id }));
+  };
+
+  const addItemDataEdit = (id, name, dificultad, porcion, time, date) => {
+    dispatch(addDataEdit({ id, name, dificultad, porcion, time, date }));
   };
 
   const addAllListIngredientRecipeHook = (ing) => {
@@ -43,6 +50,10 @@ export const useRecipe = () => {
     dispatch(clearState());
   };
 
+  const clearStateDataEdit = () => {
+    dispatch(clearDataEdit());
+  };
+
   return {
     //properties
     id,
@@ -56,11 +67,14 @@ export const useRecipe = () => {
     date,
     listIngredientOfRecipe,
     listStepOfRecipe,
+    editDataRecipe,
     // functions
     addItemRecipe,
     clearStateRecipe,
     changeImgRecipe,
     addAllListIngredientRecipeHook,
     addAllListStepRecipeHook,
+    addItemDataEdit,
+    clearStateDataEdit,
   };
 };

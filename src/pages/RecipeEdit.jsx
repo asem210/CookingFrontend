@@ -18,24 +18,21 @@ import recipeService from '../apis/recipe';
 import ingredientRecipeService from '../apis/ingredientRecipe';
 import { useNavigate } from 'react-router-dom';
 
-const CreateRecipe = () => {
-  const {
-    listIngredientRecipe,
-    deleteIngredientRecipeOfList,
-    addIngredienteRecipe,
-    clearAllListIngredientRecipeHook,
-  } = useIngredient();
-  const { addStepHook, listStep, deleteStepOfList, clearAllListStepHook } = useStep();
-  const { imgUpload, clearStateRecipe } = useRecipe();
+const RecipeEdit = () => {
+  const { listIngredientRecipe, deleteIngredientRecipeOfList, addIngredienteRecipe } =
+    useIngredient();
+
+  const { addStepHook, listStep, deleteStepOfList } = useStep();
+  const { imgUpload, clearStateRecipe, editDataRecipe } = useRecipe();
   const { showNewMessage } = useMessage();
   const navigate = useNavigate();
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
 
   const [inputValues, setInputValues] = useState({
-    name: '',
-    dificultad: '',
-    porcion: '',
-    time: '',
+    name: editDataRecipe.name,
+    dificultad: editDataRecipe.dificultad,
+    porcion: editDataRecipe.porcion,
+    time: editDataRecipe.time,
   });
 
   const handleChange = (event) => {
@@ -44,21 +41,6 @@ const CreateRecipe = () => {
       ...inputValues,
       [name]: value,
     });
-  };
-
-  const getTodayDate = () => {
-    const today = new Date();
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    const year = today.getFullYear();
-
-    if (day < 10) day = '0' + day;
-
-    if (month < 10) month = '0' + month;
-
-    const formattedDate = `${day}/${month}/${year}`;
-
-    return formattedDate;
   };
 
   const PushDataSteps = async (step, id_receta, num) => {
@@ -72,6 +54,7 @@ const CreateRecipe = () => {
 
   const PushDataIngredientRecipe = async (ing, id_receta) => {
     try {
+      console.log(ing);
       await ingredientRecipeService.create(
         ing.cantidad,
         ing.medicion,
@@ -85,30 +68,50 @@ const CreateRecipe = () => {
     }
   };
 
+  const voltearFecha = (fecha) => {
+    let partes = fecha.split('-');
+    if (partes.length !== 3) {
+      throw new Error('Formato de fecha inválido. Debe ser YYYY-MM-DD');
+    }
+    let fechaVolteada = `${partes[2]}-${partes[1]}-${partes[0]}`;
+    return fechaVolteada;
+  };
+
+  const deletePartsRecipe = async (id) => {
+    try {
+      await stepService.deleteStepsOfRecipe(id);
+      await ingredientRecipeService.deleteIngsOfRecipe(id);
+    } catch (error) {
+      showNewMessage('error', 'Error al crear un paso' + error);
+    }
+  };
+
   const pushDataRecipe = async (name, time, dificultad, porcion) => {
     try {
-      const resReceta = await recipeService.create(
-        name,
+      const resReceta = await recipeService.editRecipe(
+        editDataRecipe.id,
         'No hay desc',
         imgUpload,
+        name,
         dificultad,
         time,
         porcion,
-        getTodayDate()
+        voltearFecha(editDataRecipe.date)
       );
 
       if (resReceta?.success === true) {
+        deletePartsRecipe(editDataRecipe.id);
         listStep.map((step, index) => {
-          PushDataSteps(step, resReceta.data.id, index + 1);
+          PushDataSteps(step, editDataRecipe.id, index + 1);
         });
 
         listIngredientRecipe.map((ing) => {
-          PushDataIngredientRecipe(ing, resReceta.data.id);
+          PushDataIngredientRecipe(ing, editDataRecipe.id);
         });
       }
 
-      showNewMessage('success', 'Receta creada con exito');
-      navigate(name_proyect + '/home/' + resReceta.data.id);
+      showNewMessage('success', 'Receta Editada con exito');
+      navigate(name_proyect + '/home/' + editDataRecipe.id);
     } catch (error) {
       showNewMessage('error', 'Error al crear la receta ' + error);
     }
@@ -181,9 +184,6 @@ const CreateRecipe = () => {
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
-    clearStateRecipe();
-    clearAllListIngredientRecipeHook();
-    clearAllListStepHook();
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
@@ -252,40 +252,41 @@ const CreateRecipe = () => {
           <FormCrearPaso />
           <div className="flex w-full justify-center  mt-5 ">
             <ul className="w-5/6 grid grid-flow-row ">
-              {listStep.map((step, index) => (
-                <li
-                  key={index}
-                  className="flex  justify-around hover:text-gray-600 font-belleza p-3 "
-                >
-                  <div className="flex items-center  w-full  ">
-                    <p className="flex flex-col font-semibold h-full w-1/4  justify-center text-[18px]">{`Paso ${
-                      index + 1
-                    }: ${step.name} `}</p>
+              {listStep &&
+                listStep.map((step, index) => (
+                  <li
+                    key={index}
+                    className="flex  justify-around hover:text-gray-600 font-belleza p-3 "
+                  >
+                    <div className="flex items-center  w-full  ">
+                      <p className="flex flex-col font-semibold h-full w-1/4  justify-center text-[18px]">{`Paso ${
+                        index + 1
+                      }: ${step.name} `}</p>
 
-                    <p className="w-3/4  text-sm ml-2">{step.description}</p>
-                  </div>
+                      <p className="w-3/4  text-sm ml-2">{step.description}</p>
+                    </div>
 
-                  <div className="flex items-center  h-full gap-2 ml-2">
-                    <BiEditAlt
-                      size={'30px'}
-                      className="text-orange-400 cursor-pointer hover:text-orange-600"
-                      onClick={() => {
-                        addStepHook({
-                          id: step.id,
-                          name: step.name,
-                          description: step.description,
-                          number: index + 1,
-                        });
-                      }}
-                    />
-                    <MdOutlineDeleteForever
-                      size={'30px'}
-                      className="text-red-700 cursor-pointer hover:text-red-600 "
-                      onClick={() => deleteStepOfList(step.id)}
-                    />
-                  </div>
-                </li>
-              ))}
+                    <div className="flex items-center  h-full gap-2 ml-2">
+                      <BiEditAlt
+                        size={'30px'}
+                        className="text-orange-400 cursor-pointer hover:text-orange-600"
+                        onClick={() => {
+                          addStepHook({
+                            id: step.id,
+                            name: step.name,
+                            description: step.description,
+                            number: index + 1,
+                          });
+                        }}
+                      />
+                      <MdOutlineDeleteForever
+                        size={'30px'}
+                        className="text-red-700 cursor-pointer hover:text-red-600 "
+                        onClick={() => deleteStepOfList(step.id)}
+                      />
+                    </div>
+                  </li>
+                ))}
             </ul>
           </div>
         </section>
@@ -359,7 +360,7 @@ const CreateRecipe = () => {
           className="bg-naranja py-3 px-32 rounded-2xl text-white mt-10 hover:bg-red-500 mr-10"
           onClick={handleSubmit}
         >
-          Crear Receta
+          Editar Receta
         </button>
       </div>
 
@@ -368,4 +369,4 @@ const CreateRecipe = () => {
   );
 };
 
-export default CreateRecipe;
+export default RecipeEdit;

@@ -61,7 +61,9 @@ const UserRecipe = () => {
                       name={item.name}
                       key={index}
                       idReceta={item.id}
+                      date={item.date}
                       saveRecipe={false}
+                      editable
                     ></CardRecipe>
                   );
                 })}

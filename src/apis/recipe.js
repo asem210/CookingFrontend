@@ -55,6 +55,26 @@ const recipeService = {
       return null;
     }
   },
+
+  editRecipe: async (id, description, img, name, dificultad, time, porcion, date) => {
+    try {
+      const requestData = {
+        description,
+        img,
+        name,
+        dificultad,
+        time,
+        porcion,
+        date,
+      };
+      const { data } = await axios.patch(BASE_URL + '/receta/edit/' + id, requestData, {
+        headers: { token: localStorage.token },
+      });
+      return data;
+    } catch (error) {
+      return null;
+    }
+  },
 };
 
 export default recipeService;

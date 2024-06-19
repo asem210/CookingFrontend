@@ -37,6 +37,18 @@ const stepService = {
       return null;
     }
   },
+
+  deleteStepsOfRecipe: async (id) => {
+    try {
+      const { data } = await axios.delete(`${BASE_URL}/pasos/deleteByRecipe/${id}`, {
+        headers: { token: localStorage.token },
+      });
+      return data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
 };
 
 export default stepService;

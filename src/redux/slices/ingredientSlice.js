@@ -57,6 +57,14 @@ export const ingredientSlice = createSlice({
       state.listIngredient = action.payload;
     },
 
+    addAllListIngredientRecipe: (state, action) => {
+      state.listIngredientRecipe = action.payload;
+    },
+
+    clearAllListIngredientRecipe: (state) => {
+      state.listIngredientRecipe = [];
+    },
+
     addListIngredientRecipe: (state, action) => {
       const index = state.listIngredientRecipe.findIndex(
         (ingredientRecipe) => ingredientRecipe.id === action.payload.id
@@ -81,5 +89,7 @@ export const {
   clearIngredientRecipe,
   clearIngredient,
   addAllListIngredient,
+  addAllListIngredientRecipe,
+  clearAllListIngredientRecipe,
 } = ingredientSlice.actions;
 export default ingredientSlice.reducer;
