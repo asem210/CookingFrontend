@@ -13,11 +13,11 @@ const UserRecipe = () => {
   const [showPanelExist, setshowPanelExist] = useState(false);
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const navigate = useNavigate();
+
   useEffect(() => {
     const callRecipeUser = async () => {
       try {
         const recipesUser = await recipeService.getAllOfUser();
-        console.log(recipesUser);
         if (recipesUser.success === true) {
           setRecetasUser(recipesUser.data);
         }

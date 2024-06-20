@@ -6,11 +6,13 @@ import { IoBookmarkOutline } from 'react-icons/io5';
 import { FcBookmark } from 'react-icons/fc';
 import { TbAntennaBars1 } from 'react-icons/tb';
 import { useRecipe } from '../hooks/recipeHook';
-import { data } from 'autoprefixer';
-import ingredientRecipeService from '../apis/ingredientRecipe';
 import { useIngredient } from '../hooks/ingredientHook';
 import stepService from '../apis/step';
+import recipeService from '../apis/recipe';
+import ingredientRecipeService from '../apis/ingredientRecipe';
 import { useStep } from '../hooks/stepHook';
+import ModalDelete from './ModalDelete';
+
 const CardRecipe = ({
   img = 'https://static.vecteezy.com/system/resources/previews/004/639/366/non_2x/error-404-not-found-text-design-vector.jpg',
   time = 'xx',
@@ -23,6 +25,7 @@ const CardRecipe = ({
   saveRecipe = true,
   editable = false,
 }) => {
+  const [showCard, setShowCard] = useState(true);
   const { changeImgRecipe, addItemDataEdit } = useRecipe();
   const [bookmarkSave, setBookmarkSave] = useState(false);
   const navigate = useNavigate();
@@ -30,6 +33,32 @@ const CardRecipe = ({
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const { addAllListIngredientRecipeHook } = useIngredient();
   const { addAllListStepHook } = useStep();
+  const [showModal, setShowModal] = useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+  const onhandleClick = (id) => {
+    const deleteRecipe = async (id) => {
+      console.log(id);
+      try {
+        const resI = await stepService.deleteStepsOfRecipe(id);
+        console.log(resI);
+        const r = await ingredientRecipeService.deleteIngsOfRecipe(id);
+        console.log(r);
+        const res = await recipeService.deleteRecipe(id);
+        console.log(res);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setShowCard(false);
+      }
+    };
+
+    deleteRecipe(id);
+  };
+
   const toggleIsDisplayed = (event) => {
     event.preventDefault();
     setisdisplayed((prevIsDisplayed) => !prevIsDisplayed);
@@ -62,8 +91,18 @@ const CardRecipe = ({
     }
   };
 
+  if (!showCard) {
+    return <></>;
+  }
   return (
     <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden ">
+      <ModalDelete
+        show={showModal}
+        onClose={toggleModal}
+        message={'¿Estas seguro de eliminar esta receta?, no hay vuelta atras'}
+        onsubmit={onhandleClick}
+        id_delete={idReceta}
+      ></ModalDelete>
       <figure className="relative overflow-hidden items-center justify-center flex h-1/2 w-full rounded-t-xl  ">
         <img src={img} className="h-full w-full filter brightness-75  " />
 
@@ -101,7 +140,10 @@ const CardRecipe = ({
                 >
                   Editar
                 </li>
-                <li className="bg-white px-3 py-1 text-center hover:bg-slate-100 cursor-pointer">
+                <li
+                  className="bg-white px-3 py-1 text-center hover:bg-slate-100 cursor-pointer"
+                  onClick={toggleModal}
+                >
                   Eliminar
                 </li>
               </ul>

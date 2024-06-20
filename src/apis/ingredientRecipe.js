@@ -38,7 +38,7 @@ const ingredientRecipeService = {
 
   deleteIngsOfRecipe: async (id) => {
     try {
-      const { data } = await axios.delete(`${BASE_URL}/pasos/deleteAll/${id}`, {
+      const { data } = await axios.delete(`${BASE_URL}/ingredienteReceta/deleteAll/${id}`, {
         headers: { token: localStorage.token },
       });
       return data;

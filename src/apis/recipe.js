@@ -75,6 +75,17 @@ const recipeService = {
       return null;
     }
   },
+
+  deleteRecipe: async (id) => {
+    try {
+      const { data } = await axios.delete(`${BASE_URL}/receta/delete/${id}`, {
+        headers: { token: localStorage.token },
+      });
+      return data;
+    } catch (error) {
+      return null;
+    }
+  },
 };
 
 export default recipeService;

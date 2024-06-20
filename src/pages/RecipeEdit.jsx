@@ -46,7 +46,8 @@ const RecipeEdit = () => {
   const PushDataSteps = async (step, id_receta, num) => {
     try {
       //poner la imagen del paso si hay --
-      await stepService.create(num, step.name, step.description, 'ss', id_receta);
+      const res = await stepService.create(num, step.name, step.description, 'ss', id_receta);
+      console.log(res);
     } catch (error) {
       showNewMessage('error', 'Error al crear un paso' + error);
     }
@@ -80,9 +81,19 @@ const RecipeEdit = () => {
   const deletePartsRecipe = async (id) => {
     try {
       await stepService.deleteStepsOfRecipe(id);
-      await ingredientRecipeService.deleteIngsOfRecipe(id);
+
+      const res = await ingredientRecipeService.deleteIngsOfRecipe(id);
+      console.log(res);
     } catch (error) {
       showNewMessage('error', 'Error al crear un paso' + error);
+    } finally {
+      listStep.map((step, index) => {
+        PushDataSteps(step, id, index + 1);
+      });
+
+      listIngredientRecipe.map((ing) => {
+        PushDataIngredientRecipe(ing, id);
+      });
     }
   };
 
@@ -101,13 +112,7 @@ const RecipeEdit = () => {
 
       if (resReceta?.success === true) {
         deletePartsRecipe(editDataRecipe.id);
-        listStep.map((step, index) => {
-          PushDataSteps(step, editDataRecipe.id, index + 1);
-        });
-
-        listIngredientRecipe.map((ing) => {
-          PushDataIngredientRecipe(ing, editDataRecipe.id);
-        });
+        // console.log(listStep);
       }
 
       showNewMessage('success', 'Receta Editada con exito');
