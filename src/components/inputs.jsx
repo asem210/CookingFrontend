@@ -40,12 +40,27 @@ export const InputFormCreateIng = ({
   return (
     <div className={' flex flex-col ' + width}>
       <label className=" pb-2">{label}</label>
-      <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start">
+      <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start ">
         <input
           {...action(name)}
           placeholder={placeholder}
-          className="outline-none border-none mx-4 h-full w-full"
+          className="outline-none border-none mx-4 h-full w-full "
           readOnly={visible}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const InputFormStatic = ({ label, width = 'w-full', value }) => {
+  return (
+    <div className={' flex flex-col ' + width}>
+      <label className=" pb-2">{label}</label>
+      <div className="w-full h-[44px] border border-black rounded-xl flex items-center justify-start bg-slate-100">
+        <input
+          className="outline-none border-none mx-4 h-full w-full bg-slate-100"
+          readOnly
+          value={value}
         />
       </div>
     </div>

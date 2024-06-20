@@ -8,6 +8,7 @@ const initialState = {
   image: '',
   password: '',
   username: '',
+  imgEdit: '',
 };
 
 export const userSlice = createSlice({
@@ -28,6 +29,15 @@ export const userSlice = createSlice({
     changeEmail: (state, action) => {
       state.email = action.payload;
     },
+
+    changeImgEdit: (state, action) => {
+      state.imgEdit = action.payload;
+    },
+
+    clearImgEdit: (state) => {
+      state.imgEdit = '';
+    },
+
     clearState: (state) => {
       state.email = '';
       state.name = '';
@@ -40,5 +50,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { addUser, changeEmail, clearState } = userSlice.actions;
+export const { addUser, changeEmail, clearState, clearImgEdit, changeImgEdit } =
+  userSlice.actions;
 export default userSlice.reducer;
