@@ -1,15 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import CardRecipe from '../components/CardRecipe';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import images from '../constants/images';
+import { useUser } from '../hooks/userHook';
+import recipeService from '../apis/recipe';
+import { ExistPanelRecip } from '../components/ExistPanel';
+import Loading from '../components/Loading';
+import saveRecipeService from '../apis/saveRecipe';
 
 const Results = () => {
+  const { userId } = useUser();
+  const [recetas, setRecetas] = useState([]);
+  const [showPanelExist, setshowPanelExist] = useState(false);
+  const [recetasSaveUser, setRecetasSaveUser] = useState([]);
+
   const getObjectById = (id) => {
     return images.find((item) => item.id === id);
   };
   const gif = getObjectById(5);
+
+  const findBookMark = (id) => {
+    if (recetasSaveUser.length !== 0) {
+      const r = recetasSaveUser.find((item) => item.receta_id === id);
+      return !!r;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    const callRecipes = async () => {
+      try {
+        const recipesUser = await recipeService.getAll();
+        if (recipesUser.success === true) {
+          setRecetas(recipesUser.data);
+        }
+        const resSaveRecipe = await saveRecipeService.getSaveRecipe();
+        console.log(resSaveRecipe);
+        if (resSaveRecipe.success === true) {
+          setRecetasSaveUser(resSaveRecipe.data);
+        }
+
+        if (recipesUser.data.length === 0) {
+          setTimeout(() => {
+            setshowPanelExist(true);
+          }, 1000);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    callRecipes();
+  }, []);
 
   return (
     <div className="flex flex-col  h-auto w-screen overflow-x-hidden overflow-y-auto ">
@@ -29,51 +73,50 @@ const Results = () => {
             <HiMagnifyingGlass className="absolute left-[92%]" />
           </div>
         </section>
-        <section className="w-4/5 ">
-          <div className="grid grid-cols-4 grid-flow-row gap-5">
-            <CardRecipe
-              img={
-                'https://content.skyscnr.com/m/2dcd7d0e6f086057/original/GettyImages-186142785.jpg?resize=2560px:1707px'
-              }
-              time="30"
-              porcion="4"
-              dificulty="medio"
-              fitStep="Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada"
-              name="Pollo a la naranja"
-            ></CardRecipe>
-
-            <CardRecipe
-              img={
-                'https://assets.elgourmet.com/wp-content/uploads/2023/03/kanel_rSsnyqvI3g8XNAhPiaECQJUOdG27Ho-1024x683.png.webp'
-              }
-              time="45"
-              porcion="6"
-              dificulty="fácil"
-              fitStep="Precalienta el horno a 180°C. En un tazón grande, mezcla la harina, el azúcar, la levadura y la sal. Agrega la mantequilla derretida y la leche tibia. Amasa hasta obtener una masa suave y elástica. Deja reposar durante 1 hora. Forma bollos con la masa y colócalos en una bandeja para hornear. Hornea durante 15 minutos o hasta que estén dorados."
-              name="Bollos de canela"
-            ></CardRecipe>
-            <CardRecipe
-              img={
-                'https://assets.tmecosys.com/image/upload/t_web767x639/img/recipe/ras/Assets/87bb52f6-15d5-4cd9-9253-04f01555491f/Derivates/d666b5c2-ba8c-4201-afc6-11f2f6990f23.jpg'
-              }
-              time="60"
-              porcion="8"
-              dificulty="medio"
-              fitStep="En un bol grande, mezcla la harina, el polvo de hornear, la sal y el azúcar. Agrega la leche, el huevo y el aceite. Mezcla hasta que quede suave. Calienta una sartén a fuego medio y vierte un cucharón de masa. Cocina hasta que aparezcan burbujas en la superficie, luego voltea y cocina por el otro lado. Repite con el resto de la masa."
-              name="Panqueques"
-            ></CardRecipe>
-
-            <CardRecipe
-              img={
-                'https://kikkomanusa.com/sabor/wp-content/uploads/sites/6/2023/02/14017_Easy-Weeknight-Stir-Fry-with-Noodles.jpg'
-              }
-              time="40"
-              porcion="6"
-              dificulty="fácil"
-              fitStep="Hierve agua en una olla grande. Agrega los fideos y cocina según las instrucciones del paquete. Mientras tanto, calienta aceite en una sartén grande y saltea el ajo hasta que esté dorado. Agrega las verduras y saltea hasta que estén tiernas. Escurre los fideos cocidos y añádelos a la sartén. Agrega salsa de soja y revuelve bien. Sirve caliente."
-              name="Salteado de fideos y verduras"
-            ></CardRecipe>
-          </div>
+        <section className="w-4/5 min-h-[47vh]">
+          {recetas.length !== 0 ? (
+            <div className="grid grid-cols-4 grid-flow-row gap-5">
+              {recetasSaveUser.length !== 0 &&
+                recetas.map((item, index) => {
+                  return (
+                    <CardRecipe
+                      img={item.img}
+                      time={item.time}
+                      porcion={item.porcion}
+                      dificulty={item.dificultad}
+                      fitStep="Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada"
+                      name={item.name}
+                      key={index}
+                      idReceta={item.id}
+                      date={item.date}
+                      saveRecipe={userId !== item.user_id}
+                      editable={false}
+                      SavebookMark={() => {
+                        return findBookMark(item.id);
+                      }}
+                    ></CardRecipe>
+                  );
+                })}
+            </div>
+          ) : (
+            <div className="min-h-[47vh] items-center flex justify-center">
+              {showPanelExist ? (
+                <div className="flex flex-col items-center">
+                  <ExistPanelRecip title="No Existen recetes, se el primero en crearlas"></ExistPanelRecip>
+                  <button
+                    className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10"
+                    onClick={() => {
+                      navigate(name_proyect + '/recipe/create');
+                    }}
+                  >
+                    Crear una receta
+                  </button>
+                </div>
+              ) : (
+                <Loading size={90}></Loading>
+              )}
+            </div>
+          )}
         </section>
       </div>
 

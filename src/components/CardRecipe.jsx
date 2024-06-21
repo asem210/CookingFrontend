@@ -12,6 +12,7 @@ import recipeService from '../apis/recipe';
 import ingredientRecipeService from '../apis/ingredientRecipe';
 import { useStep } from '../hooks/stepHook';
 import ModalDelete from './ModalDelete';
+import saveRecipeService from '../apis/saveRecipe';
 
 const CardRecipe = ({
   img = 'https://static.vecteezy.com/system/resources/previews/004/639/366/non_2x/error-404-not-found-text-design-vector.jpg',
@@ -22,12 +23,13 @@ const CardRecipe = ({
   fitStep = 'Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada ',
   dificulty = 'medio',
   idReceta,
+  SavebookMark = false,
   saveRecipe = true,
   editable = false,
 }) => {
   const [showCard, setShowCard] = useState(true);
   const { changeImgRecipe, addItemDataEdit } = useRecipe();
-  const [bookmarkSave, setBookmarkSave] = useState(false);
+  const [bookmarkSave, setBookmarkSave] = useState(SavebookMark);
   const navigate = useNavigate();
   const [isdisplayed, setisdisplayed] = useState(false);
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
@@ -41,7 +43,6 @@ const CardRecipe = ({
 
   const onhandleClick = (id) => {
     const deleteRecipe = async (id) => {
-      console.log(id);
       try {
         const resI = await stepService.deleteStepsOfRecipe(id);
         console.log(resI);
@@ -55,7 +56,6 @@ const CardRecipe = ({
         setShowCard(false);
       }
     };
-
     deleteRecipe(id);
   };
 
@@ -77,6 +77,34 @@ const CardRecipe = ({
     if (resStep) {
       addAllListStepHook(resStep.data ?? []);
     }
+  };
+
+  const handleClickBookMark = (id) => {
+    const saveRecipe = async (id) => {
+      try {
+        const resSave = await saveRecipeService.create(id);
+        console.log(resSave);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setBookmarkSave(true);
+      }
+    };
+    saveRecipe(id);
+  };
+
+  const handleClickBookMarkNo = (id) => {
+    const unsaveRecipe = async (id) => {
+      try {
+        const resunSave = await saveRecipeService.delete(id);
+        console.log(resunSave);
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setBookmarkSave(false);
+      }
+    };
+    unsaveRecipe(id);
   };
 
   const handleClick = () => {
@@ -112,7 +140,7 @@ const CardRecipe = ({
               className="absolute text-naranja top-1 left-1 cursor-pointer"
               size={'30px'}
               onClick={() => {
-                setBookmarkSave(false);
+                handleClickBookMarkNo(idReceta);
               }}
             />
           ) : (
@@ -120,7 +148,7 @@ const CardRecipe = ({
               className="absolute text-naranja top-1 left-1 cursor-pointer"
               size={'30px'}
               onClick={() => {
-                setBookmarkSave(true);
+                handleClickBookMark(idReceta);
               }}
             />
           ))}

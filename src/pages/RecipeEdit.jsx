@@ -112,7 +112,6 @@ const RecipeEdit = () => {
 
       if (resReceta?.success === true) {
         deletePartsRecipe(editDataRecipe.id);
-        // console.log(listStep);
       }
 
       showNewMessage('success', 'Receta Editada con exito');

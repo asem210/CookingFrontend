@@ -15,6 +15,7 @@ import UserRecipe from './pages/UserRecipe';
 import UserInfo from './pages/UserInfo';
 import RecipeEdit from './pages/RecipeEdit';
 import UserEdit from './pages/UserEdit';
+import UserFavoriteRecipe from './pages/UserFavoriteRecipe';
 const RutasContent = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE || '';
   const { login, status, logOut, token, change } = useAuth();
@@ -62,6 +63,7 @@ const RutasContent = () => {
             <Route path={`${name_proyect}/results`} element={<Results />} />
             <Route path={`${name_proyect}/user/info`} element={<UserInfo />} />
             <Route path={`${name_proyect}/user/edit`} element={<UserEdit />} />
+            <Route path={`${name_proyect}/user/favorite`} element={<UserFavoriteRecipe />} />
             <Route path={`${name_proyect}/recipe/edit`} element={<RecipeEdit />} />
           </>
         ) : (
