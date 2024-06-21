@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 if (!BASE_URL) {
-  throw new Error('BASE_URL is not defined');
+  throw new Error("BASE_URL is not defined");
 }
 
 const recipeService = {
@@ -18,9 +18,13 @@ const recipeService = {
         porcion,
         date,
       };
-      const { data } = await axios.post(BASE_URL + '/receta/create', requestData, {
-        headers: { token: localStorage.token },
-      });
+      const { data } = await axios.post(
+        BASE_URL + "/receta/create",
+        requestData,
+        {
+          headers: { token: localStorage.token },
+        }
+      );
       return data;
     } catch (error) {
       return null;
@@ -36,9 +40,23 @@ const recipeService = {
     }
   },
 
+  getByIng: async (ingredientes) => {
+    try {
+      const requestData = { ingredientes };
+      const { data } = await axios.post(
+        `${BASE_URL}/receta/getByIng`,
+        requestData
+      );
+      return data;
+    } catch (error) {
+      console.error("Error al buscar recetas por ingredientes:", error);
+      return null;
+    }
+  },
+
   getAll: async () => {
     try {
-      const { data } = await axios.get(BASE_URL + '/receta/getall');
+      const { data } = await axios.get(BASE_URL + "/receta/getall");
       return data;
     } catch (error) {
       return null;
@@ -47,7 +65,7 @@ const recipeService = {
 
   getAllOfUser: async () => {
     try {
-      const { data } = await axios.get(BASE_URL + '/receta/getThisUser', {
+      const { data } = await axios.get(BASE_URL + "/receta/getThisUser", {
         headers: { token: localStorage.token },
       });
       return data;
@@ -56,7 +74,16 @@ const recipeService = {
     }
   },
 
-  editRecipe: async (id, description, img, name, dificultad, time, porcion, date) => {
+  editRecipe: async (
+    id,
+    description,
+    img,
+    name,
+    dificultad,
+    time,
+    porcion,
+    date
+  ) => {
     try {
       const requestData = {
         description,
@@ -67,9 +94,13 @@ const recipeService = {
         porcion,
         date,
       };
-      const { data } = await axios.patch(BASE_URL + '/receta/edit/' + id, requestData, {
-        headers: { token: localStorage.token },
-      });
+      const { data } = await axios.patch(
+        BASE_URL + "/receta/edit/" + id,
+        requestData,
+        {
+          headers: { token: localStorage.token },
+        }
+      );
       return data;
     } catch (error) {
       return null;

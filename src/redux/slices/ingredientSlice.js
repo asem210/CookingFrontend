@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   ingrediente: {},
@@ -8,10 +8,12 @@ const initialState = {
   ingredienteRecipe: {},
 
   listIngredientRecipe: [],
+
+  selectedIngredients: [], // Nuevo estado para los ingredientes seleccionados
 };
 
 export const ingredientSlice = createSlice({
-  name: 'ingredient',
+  name: "ingredient",
   initialState,
   reducers: {
     addIngredient: (state, action) => {
@@ -32,7 +34,9 @@ export const ingredientSlice = createSlice({
 
     removeListIngredient: (state, action) => {
       const { id } = action.payload;
-      state.listIngredient = state.listIngredient.filter((ingredient) => ingredient.id !== id);
+      state.listIngredient = state.listIngredient.filter(
+        (ingredient) => ingredient.id !== id
+      );
     },
     removeListIngredientRecipe: (state, action) => {
       const { id } = action.payload;
@@ -50,6 +54,20 @@ export const ingredientSlice = createSlice({
         state.listIngredient[index] = action.payload;
       } else {
         state.listIngredient.push(action.payload);
+      }
+    },
+
+    toggleIngredientSelection: (state, action) => {
+      const index = state.selectedIngredients.findIndex(
+        (ingredient) => ingredient.id === action.payload.id
+      );
+
+      if (index !== -1) {
+        // Si el ingrediente ya está seleccionado, lo eliminamos
+        state.selectedIngredients.splice(index, 1);
+      } else {
+        // Si el ingrediente no está seleccionado, lo agregamos
+        state.selectedIngredients.push(action.payload);
       }
     },
 
@@ -91,5 +109,6 @@ export const {
   addAllListIngredient,
   addAllListIngredientRecipe,
   clearAllListIngredientRecipe,
+  toggleIngredientSelection,
 } = ingredientSlice.actions;
 export default ingredientSlice.reducer;

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   addIngredient,
   addIngredientRecipe,
@@ -11,17 +11,26 @@ import {
   addAllListIngredient,
   addAllListIngredientRecipe,
   clearAllListIngredientRecipe,
-} from '../redux/slices/ingredientSlice';
+  toggleIngredientSelection,
+} from "../redux/slices/ingredientSlice";
 
 export const useIngredient = () => {
-  const { ingrediente, listIngredient, listIngredientRecipe, ingredienteRecipe } = useSelector(
-    (state) => state.ingredient
-  );
+  const {
+    ingrediente,
+    listIngredient,
+    listIngredientRecipe,
+    ingredienteRecipe,
+    selectedIngredients,
+  } = useSelector((state) => state.ingredient);
 
   const dispatch = useDispatch();
 
   const addIngredienteRecipe = (ing) => {
     dispatch(addIngredientRecipe(ing));
+  };
+
+  const toggleIngredientSelected = (ing) => {
+    dispatch(toggleIngredientSelection(ing));
   };
 
   const addAllListIngredientHook = (ing) => {
@@ -68,6 +77,7 @@ export const useIngredient = () => {
     listIngredient,
     listIngredientRecipe,
     ingredienteRecipe,
+    selectedIngredients,
     //functions
     addIngredientRecipeToList,
     deleteIngredientRecipeOfList,
@@ -80,5 +90,6 @@ export const useIngredient = () => {
     addAllListIngredientHook,
     addAllListIngredientRecipeHook,
     clearAllListIngredientRecipeHook,
+    toggleIngredientSelected,
   };
 };
