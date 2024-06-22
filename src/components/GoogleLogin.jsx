@@ -4,8 +4,11 @@ import { jwtDecode } from "jwt-decode";
 import userService from "../apis/user";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/authHook";
+import { useMessage } from "../hooks/messageHook";
 
 export const LoginSocialMedia = () => {
+  const { showNewMessage } = useMessage();
+
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const { login, status, logOut } = useAuth();
 
@@ -20,6 +23,7 @@ export const LoginSocialMedia = () => {
         const userData = await userService.getByEmail(email);
         if (userData.success) {
           const loginGoogle = await userService.loginGoogle(email);
+          showNewMessage("success", "Sesión iniciada con éxito");
           navigate(name_proyect + "/home");
         } else {
           console.log("2");
@@ -30,14 +34,16 @@ export const LoginSocialMedia = () => {
             decoded.picture
           );
           const loginGogle = await userService.loginGoogle(email);
+          showNewMessage("success", "Sesión iniciada con éxito");
+
           navigate(name_proyect + "/home");
         }
       } else {
         console.log("No email found in decoded token.");
-        alert("No hay una cuenta de google asociada");
+        showNewMessage("warning", "No hay cuenta de google asociada");
       }
     } catch (error) {
-      console.log("Error decoding token or fetching user: ", error);
+      showNewMessage("error", error.message);
     }
   };
 
