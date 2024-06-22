@@ -297,8 +297,6 @@ export const FormCrearPaso = () => {
           name: formData.name,
         };
       } else {
-        console.log(listStep);
-
         const id_aux =
           listStep?.length === 0 ? 0 : listStep[listStep?.length - 1].id + 1;
 
