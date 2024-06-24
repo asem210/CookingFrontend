@@ -23,6 +23,14 @@ const Home = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const navigate = useNavigate();
 
+  const getObjectById = (id) => {
+    return images.find((item) => item.id === id);
+  };
+
+  const step1 = getObjectById(4);
+  const step2 = getObjectById(1);
+  const step3 = getObjectById(2);
+
   // UseEffect para actualizar los nombres de los ingredientes seleccionados
   useEffect(() => {
     if (selectedIngredients.length > 0) {
