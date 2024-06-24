@@ -1,13 +1,11 @@
-import React, { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import userService from "../apis/user";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/authHook";
+import React, { useState } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import userService from '../apis/user';
+import { useNavigate } from 'react-router-dom';
 
-export const LoginSocialMedia = () => {
+export const LoginSocialMedia = ({ onlogin }) => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
-  const { login, status, logOut } = useAuth();
 
   const navigate = useNavigate();
   const loginSuccess = async (credentialResponse) => {
@@ -20,9 +18,10 @@ export const LoginSocialMedia = () => {
         const userData = await userService.getByEmail(email);
         if (userData.success) {
           const loginGoogle = await userService.loginGoogle(email);
-          navigate(name_proyect + "/home");
+          onlogin();
+          navigate(name_proyect + '/home');
         } else {
-          console.log("2");
+          console.log('2');
           const newUser = await userService.createGoogle(
             email,
             decoded.given_name,
@@ -30,14 +29,15 @@ export const LoginSocialMedia = () => {
             decoded.picture
           );
           const loginGogle = await userService.loginGoogle(email);
-          navigate(name_proyect + "/home");
+          onlogin();
+          navigate(name_proyect + '/home');
         }
       } else {
-        console.log("No email found in decoded token.");
-        alert("No hay una cuenta de google asociada");
+        console.log('No email found in decoded token.');
+        alert('No hay una cuenta de google asociada');
       }
     } catch (error) {
-      console.log("Error decoding token or fetching user: ", error);
+      console.log('Error decoding token or fetching user: ', error);
     }
   };
 
@@ -48,7 +48,7 @@ export const LoginSocialMedia = () => {
         <GoogleLogin
           onSuccess={loginSuccess}
           onError={() => {
-            console.log("Login Failed");
+            console.log('Login Failed');
           }}
         />
       </div>

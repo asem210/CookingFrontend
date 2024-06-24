@@ -1,33 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+//import components
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
-import { MdOutlineDeleteForever } from 'react-icons/md';
-import { BiEditAlt } from 'react-icons/bi';
 import { FormCrearIngrediente } from '../components/forms';
 import { FormCrearPaso } from '../components/forms';
 import { ImageUploaderRecipe } from '../components/uploadImage';
+// import react icons
+import { MdOutlineDeleteForever } from 'react-icons/md';
+import { BiEditAlt } from 'react-icons/bi';
+import { TbSquareChevronsRightFilled } from 'react-icons/tb';
+import { MdFamilyRestroom } from 'react-icons/md';
+import { MdAccessTimeFilled } from 'react-icons/md';
+//import hooks
 import { useRecipe } from '../hooks/recipeHook';
 import { useMessage } from '../hooks/messageHook';
 import { useIngredient } from '../hooks/ingredientHook';
 import { useStep } from '../hooks/stepHook';
-import { TbSquareChevronsRightFilled } from 'react-icons/tb';
-import { MdFamilyRestroom } from 'react-icons/md';
-import { MdAccessTimeFilled } from 'react-icons/md';
-import stepService from '../apis/step';
-import recipeService from '../apis/recipe';
-import ingredientRecipeService from '../apis/ingredientRecipe';
-import { useNavigate } from 'react-router-dom';
+//import helpers and utils
+import { editDataRecipeComplete } from '../helpers/stateHelper';
 
 const RecipeEdit = () => {
+  //hooks
   const { listIngredientRecipe, deleteIngredientRecipeOfList, addIngredienteRecipe } =
     useIngredient();
-
   const { addStepHook, listStep, deleteStepOfList } = useStep();
   const { imgUpload, clearStateRecipe, editDataRecipe } = useRecipe();
   const { showNewMessage } = useMessage();
+  //variables
   const navigate = useNavigate();
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
-
+  //usestate
   const [inputValues, setInputValues] = useState({
     name: editDataRecipe.name,
     dificultad: editDataRecipe.dificultad,
@@ -43,81 +46,28 @@ const RecipeEdit = () => {
     });
   };
 
-  const PushDataSteps = async (step, id_receta, num) => {
-    try {
-      //poner la imagen del paso si hay --
-      const res = await stepService.create(num, step.name, step.description, 'ss', id_receta);
-      console.log(res);
-    } catch (error) {
-      showNewMessage('error', 'Error al crear un paso' + error);
-    }
+  const handleBeforeUnload = (event) => {
+    const message = 'hello unsaved changes. Are you sure you want to leave?';
+    event.returnValue = message;
+    return message;
   };
 
-  const PushDataIngredientRecipe = async (ing, id_receta) => {
-    try {
-      console.log(ing);
-      await ingredientRecipeService.create(
-        ing.cantidad,
-        ing.medicion,
-        ing.especificacion,
-        ing.id_ingrediente,
-        id_receta,
-        ing.priority
-      );
-    } catch (error) {
-      showNewMessage('error', 'Error al asignar un ingrediente a la receta' + error);
-    }
-  };
+  const saveEditRecipe = async () => {
+    const idRecipe = await editDataRecipeComplete(
+      showNewMessage,
+      editDataRecipe,
+      inputValues.name,
+      parseInt(inputValues.time),
+      inputValues.dificultad,
+      parseInt(inputValues.porcion),
+      imgUpload,
+      listStep,
+      listIngredientRecipe
+    );
 
-  const voltearFecha = (fecha) => {
-    let partes = fecha.split('-');
-    if (partes.length !== 3) {
-      throw new Error('Formato de fecha inválido. Debe ser YYYY-MM-DD');
-    }
-    let fechaVolteada = `${partes[2]}-${partes[1]}-${partes[0]}`;
-    return fechaVolteada;
-  };
-
-  const deletePartsRecipe = async (id) => {
-    try {
-      await stepService.deleteStepsOfRecipe(id);
-
-      const res = await ingredientRecipeService.deleteIngsOfRecipe(id);
-      console.log(res);
-    } catch (error) {
-      showNewMessage('error', 'Error al crear un paso' + error);
-    } finally {
-      listStep.map((step, index) => {
-        PushDataSteps(step, id, index + 1);
-      });
-
-      listIngredientRecipe.map((ing) => {
-        PushDataIngredientRecipe(ing, id);
-      });
-    }
-  };
-
-  const pushDataRecipe = async (name, time, dificultad, porcion) => {
-    try {
-      const resReceta = await recipeService.editRecipe(
-        editDataRecipe.id,
-        'No hay desc',
-        imgUpload,
-        name,
-        dificultad,
-        time,
-        porcion,
-        voltearFecha(editDataRecipe.date)
-      );
-
-      if (resReceta?.success === true) {
-        deletePartsRecipe(editDataRecipe.id);
-      }
-
+    if (idRecipe !== -1) {
       showNewMessage('success', 'Receta Editada con exito');
-      navigate(name_proyect + '/home/' + editDataRecipe.id);
-    } catch (error) {
-      showNewMessage('error', 'Error al crear la receta ' + error);
+      navigate(name_proyect + '/home/' + idRecipe);
     }
   };
 
@@ -168,25 +118,10 @@ const RecipeEdit = () => {
       showNewMessage('warning', 'Tiempo en minutos ingresado no valida');
       return;
     }
-    try {
-      pushDataRecipe(
-        inputValues.name,
-        parseInt(inputValues.time),
-        inputValues.dificultad,
-        parseInt(inputValues.porcion)
-      );
-    } catch (error) {
-      showNewMessage('error', error);
-    }
+    saveEditRecipe();
   };
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      const message = 'hello unsaved changes. Are you sure you want to leave?';
-      event.returnValue = message;
-      return message;
-    };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
@@ -234,7 +169,7 @@ const RecipeEdit = () => {
                           medicion: ingrediente.medicion,
                           especificacion: ingrediente.especificacion,
                           name: ingrediente.name,
-                          id_ingrediente: 1,
+                          ingrediente_id: 1,
                           priority: ingrediente.priority,
                         });
                       }}

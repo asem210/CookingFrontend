@@ -50,7 +50,6 @@ const ShowRecipe = () => {
           );
 
           const resIngredient = await ingredientRecipeService.getOfRecipe(id);
-
           if (resIngredient) {
             addAllListIngredientRecipeHook(resIngredient.data);
           }
@@ -59,8 +58,6 @@ const ShowRecipe = () => {
           if (resStep) {
             addAllListStepRecipeHook(resStep.data);
           }
-
-          setexistRecipe(true);
         } else {
           setTimeout(() => {
             setshowPanelExist(true);
@@ -70,7 +67,9 @@ const ShowRecipe = () => {
         showNewMessage('error', error);
       }
     };
-    callRecipe();
+    callRecipe().then(() => {
+      setexistRecipe(true);
+    });
   }, []);
 
   return (

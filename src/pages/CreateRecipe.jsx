@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
+// import react icons
 import { MdOutlineDeleteForever } from 'react-icons/md';
 import { BiEditAlt } from 'react-icons/bi';
+import { TbSquareChevronsRightFilled } from 'react-icons/tb';
+import { MdFamilyRestroom } from 'react-icons/md';
+import { MdAccessTimeFilled } from 'react-icons/md';
+// import components
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
 import { FormCrearIngrediente } from '../components/forms';
 import { FormCrearPaso } from '../components/forms';
 import { ImageUploaderRecipe } from '../components/uploadImage';
+//import hooks
 import { useRecipe } from '../hooks/recipeHook';
 import { useMessage } from '../hooks/messageHook';
 import { useIngredient } from '../hooks/ingredientHook';
 import { useStep } from '../hooks/stepHook';
-import { TbSquareChevronsRightFilled } from 'react-icons/tb';
-import { MdFamilyRestroom } from 'react-icons/md';
-import { MdAccessTimeFilled } from 'react-icons/md';
-import stepService from '../apis/step';
-import recipeService from '../apis/recipe';
-import ingredientRecipeService from '../apis/ingredientRecipe';
-import { useNavigate } from 'react-router-dom';
+//import helpers and utils
+import { pushDataRecipeComplete } from '../helpers/stateHelper';
 
 const CreateRecipe = () => {
+  //hooks
   const {
     listIngredientRecipe,
     deleteIngredientRecipeOfList,
@@ -28,6 +31,7 @@ const CreateRecipe = () => {
   const { addStepHook, listStep, deleteStepOfList, clearAllListStepHook } = useStep();
   const { imgUpload, clearStateRecipe } = useRecipe();
   const { showNewMessage } = useMessage();
+  //variables
   const navigate = useNavigate();
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
 
@@ -46,71 +50,27 @@ const CreateRecipe = () => {
     });
   };
 
-  const getTodayDate = () => {
-    const today = new Date();
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    const year = today.getFullYear();
-
-    if (day < 10) day = '0' + day;
-
-    if (month < 10) month = '0' + month;
-
-    const formattedDate = `${day}/${month}/${year}`;
-
-    return formattedDate;
+  const handleBeforeUnload = (event) => {
+    const message = 'hello unsaved changes. Are you sure you want to leave?';
+    event.returnValue = message;
+    return message;
   };
 
-  const PushDataSteps = async (step, id_receta, num) => {
-    try {
-      //poner la imagen del paso si hay --
-      await stepService.create(num, step.name, step.description, 'ss', id_receta);
-    } catch (error) {
-      showNewMessage('error', 'Error al crear un paso' + error);
-    }
-  };
+  const saveCreateRecipe = async () => {
+    const idRecipe = await pushDataRecipeComplete(
+      showNewMessage,
+      inputValues.name,
+      parseInt(inputValues.time),
+      inputValues.dificultad,
+      parseInt(inputValues.porcion),
+      imgUpload,
+      listStep,
+      listIngredientRecipe
+    );
 
-  const PushDataIngredientRecipe = async (ing, id_receta) => {
-    try {
-      await ingredientRecipeService.create(
-        ing.cantidad,
-        ing.medicion,
-        ing.especificacion,
-        ing.id_ingrediente,
-        id_receta,
-        ing.priority
-      );
-    } catch (error) {
-      showNewMessage('error', 'Error al asignar un ingrediente a la receta' + error);
-    }
-  };
-
-  const pushDataRecipe = async (name, time, dificultad, porcion) => {
-    try {
-      const resReceta = await recipeService.create(
-        name,
-        'No hay desc',
-        imgUpload,
-        dificultad,
-        time,
-        porcion,
-        getTodayDate()
-      );
-
-      if (resReceta?.success === true) {
-        listStep.map((step, index) => {
-          PushDataSteps(step, resReceta.data.id, index + 1);
-        });
-
-        listIngredientRecipe.map((ing) => {
-          PushDataIngredientRecipe(ing, resReceta.data.id);
-        });
-      }
-
+    if (idRecipe !== -1) {
       showNewMessage('success', 'Receta creada con exito');
-      navigate(name_proyect + '/home/' + resReceta.data.id);
-    } catch (error) {
-      showNewMessage('error', 'Error al crear la receta ' + error);
+      navigate(name_proyect + '/home/' + idRecipe);
     }
   };
 
@@ -161,29 +121,16 @@ const CreateRecipe = () => {
       showNewMessage('warning', 'Tiempo en minutos ingresado no valida');
       return;
     }
-    try {
-      pushDataRecipe(
-        inputValues.name,
-        parseInt(inputValues.time),
-        inputValues.dificultad,
-        parseInt(inputValues.porcion)
-      );
-    } catch (error) {
-      showNewMessage('error', error);
-    }
+
+    saveCreateRecipe();
   };
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      const message = 'hello unsaved changes. Are you sure you want to leave?';
-      event.returnValue = message;
-      return message;
-    };
-
     window.addEventListener('beforeunload', handleBeforeUnload);
     clearStateRecipe();
     clearAllListIngredientRecipeHook();
     clearAllListStepHook();
+
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
@@ -230,7 +177,7 @@ const CreateRecipe = () => {
                           medicion: ingrediente.medicion,
                           especificacion: ingrediente.especificacion,
                           name: ingrediente.name,
-                          id_ingrediente: 1,
+                          ingrediente_id: 1,
                           priority: ingrediente.priority,
                         });
                       }}

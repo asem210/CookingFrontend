@@ -6,19 +6,19 @@ import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { useIngredient } from '../hooks/ingredientHook';
 import ingredientService from '../apis/ingredient';
-
+import { getObjectById } from '../utils/finderUtils';
+import { useMessage } from '../hooks/messageHook';
 const Home = () => {
+  //hooks
   const { listIngredient, addAllListIngredientHook } = useIngredient();
+  const { showNewMessage } = useMessage();
+  // variables
+  const step1 = getObjectById(images, 4);
+  const step2 = getObjectById(images, 1);
+  const step3 = getObjectById(images, 2);
+  const gif = getObjectById(images, 5);
 
-  const getObjectById = (id) => {
-    return images.find((item) => item.id === id);
-  };
-
-  const step1 = getObjectById(4);
-  const step2 = getObjectById(1);
-  const step3 = getObjectById(2);
-  const gif = getObjectById(5);
-
+  //remplazar por el helper callIngredient
   useEffect(() => {
     const callIngredient = async () => {
       try {

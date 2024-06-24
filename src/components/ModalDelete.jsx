@@ -8,7 +8,7 @@ const ModalDelete = ({ message, show, onClose, onsubmit, id_delete = -1 }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col gap-3">
         <h2 className="text-xl font-semibold mb-4 font-belleza">
-          La pagina web Cooking dice:{' '}
+          La pagina web Cooking dice:
         </h2>
         <p className="font-belleza">{message}</p>
         <div className="flex justify-center items-center gap-5 w-full">

@@ -136,7 +136,7 @@ export const FormCrearIngrediente = () => {
           medicion: formData.Medición,
           especificacion: formData.Especificación || '',
           name: formData.Ingrediente,
-          id_ingrediente: getIdByName.id,
+          ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
         };
       } else {
@@ -151,7 +151,7 @@ export const FormCrearIngrediente = () => {
           medicion: formData.Medición,
           especificacion: formData.Especificación || '',
           name: formData.Ingrediente,
-          id_ingrediente: getIdByName.id,
+          ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
         };
       }

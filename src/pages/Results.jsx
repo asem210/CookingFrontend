@@ -37,7 +37,6 @@ const Results = () => {
           setRecetas(recipesUser.data);
         }
         const resSaveRecipe = await saveRecipeService.getSaveRecipe();
-        console.log(resSaveRecipe);
         if (resSaveRecipe.success === true) {
           setRecetasSaveUser(resSaveRecipe.data);
         }

@@ -19,7 +19,6 @@ const UserFavoriteRecipe = () => {
     const callRecipes = async () => {
       try {
         const resSaveRecipe = await saveRecipeService.getSaveRecipe();
-        console.log(resSaveRecipe);
         if (resSaveRecipe.success === true) {
           setRecetasSaveUser(resSaveRecipe.data);
         }
@@ -51,7 +50,6 @@ const UserFavoriteRecipe = () => {
           <section className="w-4/5 ">
             <div className="grid grid-cols-4 grid-flow-row gap-5">
               {recetasSaveUser.map((item, index) => {
-                console.log(item);
                 return (
                   <CardRecipe
                     img={item.receta.img}

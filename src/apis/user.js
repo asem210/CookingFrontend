@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import { expirationTime } from '../utils/dateUtils';
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 if (!BASE_URL) {
@@ -72,6 +72,7 @@ const userService = {
       if (data.success) {
         const token = data.data.token;
         localStorage.setItem('token', token);
+        localStorage.setItem('timeExpired', JSON.stringify(expirationTime(60)));
       }
 
       return data;
@@ -91,6 +92,7 @@ const userService = {
       if (data.success) {
         const token = data.data.token;
         localStorage.setItem('token', token);
+        localStorage.setItem('timeExpired', JSON.stringify(expirationTime(60)));
       }
 
       return data;

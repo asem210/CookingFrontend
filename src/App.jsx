@@ -1,53 +1,46 @@
-import { RegisterPage } from './pages/Register';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import ModalNotification from './components/ModalNotification';
+//import hooks
+import { useAuth } from './hooks/authHook';
+import { useMessage } from './hooks/messageHook';
+//Import pages
 import Login from './pages/Login';
 import Home from './pages/Home';
-import CreateRecipe from './pages/CreateRecipe';
-import ModalNotification from './components/ModalNotification';
-import userService from './apis/user';
-import { useAuth } from './hooks/authHook';
+import { RegisterPage } from './pages/Register';
 import ShowRecipe from './pages/ShowRecipe';
 import Results from './pages/Results';
+import CreateRecipe from './pages/CreateRecipe';
 import UserRecipe from './pages/UserRecipe';
 import UserInfo from './pages/UserInfo';
 import RecipeEdit from './pages/RecipeEdit';
 import UserEdit from './pages/UserEdit';
 import UserFavoriteRecipe from './pages/UserFavoriteRecipe';
+//import helpers
+import { verifyLoggedIn, verifyExpiredToken } from './helpers/stateHelper';
+
 const RutasContent = () => {
-  const name_proyect = import.meta.env.VITE_NAME_PAGE || '';
-  const { login, status, logOut, token, change } = useAuth();
+  //hooks
+  const { showNewMessage } = useMessage();
+  const { login, status, logOut } = useAuth();
+  //usestate
   const [loading, setLoading] = useState(true);
-  const [moved, setMoved] = useState(token);
-
-  // useEffect(() => {
-  //   VerifyLoggedIn();
-  // }, [moved]);
-
-  const VerifyLoggedIn = async () => {
-    try {
-      const resultVerify = await userService.verify();
-      if (resultVerify.success) {
-        login();
-      } else {
-        logOut();
-      }
-    } catch (error) {
-      console.log(error);
-      logOut();
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  //variables
+  const name_proyect = import.meta.env.VITE_NAME_PAGE || '';
   useEffect(() => {
-    VerifyLoggedIn();
+    verifyLoggedIn(login, logOut).then(() => {
+      setLoading(false);
+    });
+
+    setInterval(() => {
+      verifyExpiredToken(showNewMessage, logOut);
+    }, 10000);
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (

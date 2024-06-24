@@ -1,11 +1,14 @@
-import React, { useState } from "react";
-import images from "../constants/images";
-import { LoginForm, RegisterForm } from "../components/forms";
-import SwitchButtonLogin from "../components/switchButton";
-import { LoginSocialMedia } from "../components/GoogleLogin";
+import React, { useState } from 'react';
+import images from '../constants/images';
+import { LoginForm, RegisterForm } from '../components/forms';
+import SwitchButtonLogin from '../components/switchButton';
+import { LoginSocialMedia } from '../components/GoogleLogin';
+import { useAuth } from '../hooks/authHook';
 
 const Login = () => {
-  const [selectedOption, setSelectedOption] = useState("login");
+  const { login, status, logOut } = useAuth();
+
+  const [selectedOption, setSelectedOption] = useState('login');
   const [userData, setUserData] = useState({});
 
   const handleOptionClick = (option) => {
@@ -31,23 +34,18 @@ const Login = () => {
         </div>
         <div className="flex flex-col justify-center items-center w-full">
           <div className="flex pt-8 pb-5">
-            <p className="font-belleza text-[28px] text-negro">
-              Bienvenido a Cooking
-            </p>
+            <p className="font-belleza text-[28px] text-negro">Bienvenido a Cooking</p>
           </div>
 
-          <SwitchButtonLogin
-            handleClick={handleOptionClick}
-            option={selectedOption}
-          />
+          <SwitchButtonLogin handleClick={handleOptionClick} option={selectedOption} />
 
           <div className="flex flex-col pt-5 w-3/4">
-            {selectedOption === "login" ? (
+            {selectedOption === 'login' ? (
               <LoginForm />
             ) : (
               <RegisterForm action={setUserData} data={userData} />
             )}
-            <LoginSocialMedia />
+            <LoginSocialMedia onlogin={login} />
           </div>
         </div>
       </div>
