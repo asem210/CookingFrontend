@@ -6,11 +6,13 @@ import { BiLogOut } from 'react-icons/bi';
 import { HiOutlineDocumentPlus } from 'react-icons/hi2';
 import { useUser } from '../hooks/userHook';
 import { useAuth } from '../hooks/authHook';
+import { useMessage } from '../hooks/messageHook';
 const ModalOptions = ({ isOpen, onClose }) => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const { name, surname, image } = useUser();
   const { logOut } = useAuth();
   const navigate = useNavigate();
+  const { showNewMessage } = useMessage();
 
   return (
     <>
@@ -64,6 +66,7 @@ const ModalOptions = ({ isOpen, onClose }) => {
                 onClick={() => {
                   logOut();
                   navigate('/');
+                  showNewMessage('success', 'Sesión cerrada con éxito');
                 }}
               >
                 <BiLogOut size={'35px'} />

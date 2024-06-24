@@ -18,6 +18,7 @@ import UserInfo from './pages/UserInfo';
 import RecipeEdit from './pages/RecipeEdit';
 import UserEdit from './pages/UserEdit';
 import UserFavoriteRecipe from './pages/UserFavoriteRecipe';
+import SearchRecipes from './pages/SearchRecipes';
 //import helpers
 import { verifyLoggedIn, verifyExpiredToken } from './helpers/stateHelper';
 
@@ -58,6 +59,7 @@ const RutasContent = () => {
             <Route path={`${name_proyect}/user/edit`} element={<UserEdit />} />
             <Route path={`${name_proyect}/user/favorite`} element={<UserFavoriteRecipe />} />
             <Route path={`${name_proyect}/recipe/edit`} element={<RecipeEdit />} />
+            <Route path={`${name_proyect}/recipe/search`} element={<SearchRecipes />} />
           </>
         ) : (
           <>
@@ -66,6 +68,7 @@ const RutasContent = () => {
             <Route path={`${name_proyect}/home/:id`} element={<ShowRecipe />} />
             <Route path={`${name_proyect}/results`} element={<Results />} />
             <Route path={`${name_proyect}/register`} element={<RegisterPage />} />
+            <Route path={`${name_proyect}/recipe/search`} element={<SearchRecipes />} />
           </>
         )}
         <Route path="*" element={<Navigate to={`${name_proyect}/home`} />} />

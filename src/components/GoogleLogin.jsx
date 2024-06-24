@@ -3,8 +3,11 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import userService from '../apis/user';
 import { useNavigate } from 'react-router-dom';
+import { useMessage } from '../hooks/messageHook';
 
-export const LoginSocialMedia = ({ onlogin }) => {
+export const LoginSocialMedia = () => {
+  const { showNewMessage } = useMessage();
+
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
 
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ export const LoginSocialMedia = ({ onlogin }) => {
           const loginGoogle = await userService.loginGoogle(email);
           onlogin();
           navigate(name_proyect + '/home');
+          showNewMessage('success', 'Sesión iniciada con éxito');
         } else {
           console.log('2');
           const newUser = await userService.createGoogle(
@@ -31,13 +35,14 @@ export const LoginSocialMedia = ({ onlogin }) => {
           const loginGogle = await userService.loginGoogle(email);
           onlogin();
           navigate(name_proyect + '/home');
+          showNewMessage('success', 'Sesión iniciada con éxito');
         }
       } else {
         console.log('No email found in decoded token.');
-        alert('No hay una cuenta de google asociada');
+        showNewMessage('warning', 'No hay cuenta de google asociada');
       }
     } catch (error) {
-      console.log('Error decoding token or fetching user: ', error);
+      showNewMessage('error', error.message);
     }
   };
 

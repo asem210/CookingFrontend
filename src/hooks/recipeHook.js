@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   changeImg,
   clearState,
@@ -7,7 +7,9 @@ import {
   addAllListStep,
   addDataEdit,
   clearDataEdit,
-} from '../redux/slices/recipeSlice';
+  searchRecipesByIngredient,
+  clearSearchResults,
+} from "../redux/slices/recipeSlice";
 
 export const useRecipe = () => {
   const {
@@ -23,16 +25,36 @@ export const useRecipe = () => {
     id,
     imgUpload,
     editDataRecipe,
+    searchedRecipes,
   } = useSelector((state) => state.recipe);
 
   const dispatch = useDispatch();
 
-  const addItemRecipe = (name, description, img, dificultad, porcion, time, date, id) => {
-    dispatch(addItem({ name, description, img, dificultad, porcion, time, date, id }));
+  const addItemRecipe = (
+    name,
+    description,
+    img,
+    dificultad,
+    porcion,
+    time,
+    date,
+    id
+  ) => {
+    dispatch(
+      addItem({ name, description, img, dificultad, porcion, time, date, id })
+    );
   };
 
   const addItemDataEdit = (id, name, dificultad, porcion, time, date) => {
     dispatch(addDataEdit({ id, name, dificultad, porcion, time, date }));
+  };
+
+  const saveSearchedRecipes = (recipe) => {
+    dispatch(searchRecipesByIngredient(recipe));
+  };
+
+  const clearSearch = () => {
+    dispatch(clearSearchResults());
   };
 
   const addAllListIngredientRecipeHook = (ing) => {
@@ -68,6 +90,7 @@ export const useRecipe = () => {
     listIngredientOfRecipe,
     listStepOfRecipe,
     editDataRecipe,
+    searchedRecipes,
     // functions
     addItemRecipe,
     clearStateRecipe,
@@ -76,5 +99,7 @@ export const useRecipe = () => {
     addAllListStepRecipeHook,
     addItemDataEdit,
     clearStateDataEdit,
+    saveSearchedRecipes,
+    clearSearch,
   };
 };
