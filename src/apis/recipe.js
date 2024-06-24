@@ -117,6 +117,20 @@ const recipeService = {
       return null;
     }
   },
+
+  getEqOrLess: async (ingredientes) => {
+    try {
+      const requestData = { ingredientes };
+      const { data } = await axios.post(
+        `${BASE_URL}/receta/getEqOrLess`,
+        requestData
+      );
+      return data;
+    } catch (error) {
+      console.error("Error al buscar recetas por ingredientes:", error);
+      return null;
+    }
+  },
 };
 
 export default recipeService;

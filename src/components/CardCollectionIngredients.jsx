@@ -7,11 +7,19 @@ import ingredientService from "../apis/ingredient";
 const CardCollectionIngredients = ({ title, ingredientes }) => {
   const [startIndex, setStartIndex] = useState(0);
   const [selectedArray, setSelectedArray] = useState([]);
-  const [ingredient, setIngredient] = useState([]);
+  const [ingredient, setIngredient] = useState(null); // Changed to null
   const { selectedIngredients, toggleIngredientSelected } = useIngredient();
   const [searchQuery, setSearchQuery] = useState("");
 
   const itemsPerPage = 4;
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setIngredient(null);
+    } else {
+      searchIngredients();
+    }
+  }, [searchQuery]);
 
   const nextItem = () => {
     setStartIndex((prevIndex) => (prevIndex + 1) % ingredientes.length);
@@ -59,6 +67,7 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
       searchIngredients();
     }
   };
+
   const visibleItems = getVisibleItems();
 
   return (
@@ -82,42 +91,62 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
         </div>
       </div>
       <div className="flex w-full items-center ">
-        {ingredientes.length > itemsPerPage && (
-          <IoIosArrowBack
-            size="30px"
-            className="hover:cursor-pointer"
-            onClick={previousItem}
-          />
-        )}
-        <div className="grid grid-cols-4 overflow-x-hidden mt-2 w-[90%] gap-4">
-          {visibleItems.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center justify-center p-1"
-              id={item.id}
-            >
-              <img
-                src={item.img}
-                className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 hover:cursor-pointer ${
-                  selectedArray.includes(item.id) ? "grayscale" : ""
-                }`}
-                alt={item.name}
-                onClick={(e) => {
-                  e.preventDefault();
-                  toggleSelection(item.id);
-                  toggleIngredientSelected(item);
-                }}
+        {ingredient ? (
+          <div className="flex flex-col items-center justify-center p-1">
+            <img
+              src={ingredient.img}
+              className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 hover:cursor-pointer ${
+                selectedArray.includes(ingredient.id) ? "grayscale" : ""
+              }`}
+              alt={ingredient.name}
+              onClick={(e) => {
+                e.preventDefault();
+                toggleSelection(ingredient.id);
+                toggleIngredientSelected(ingredient);
+              }}
+            />
+            <p className="font-belleza">{ingredient.name}</p>
+          </div>
+        ) : (
+          <>
+            {ingredientes.length > itemsPerPage && (
+              <IoIosArrowBack
+                size="30px"
+                className="hover:cursor-pointer"
+                onClick={previousItem}
               />
-              <p className="font-belleza">{item.name}</p>
+            )}
+            <div className="grid grid-cols-4 overflow-x-hidden mt-2 w-[90%] gap-4">
+              {visibleItems.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center justify-center p-1"
+                  id={item.id}
+                >
+                  <img
+                    src={item.img}
+                    className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 hover:cursor-pointer ${
+                      selectedArray.includes(item.id) ? "grayscale" : ""
+                    }`}
+                    alt={item.name}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleSelection(item.id);
+                      toggleIngredientSelected(item);
+                    }}
+                  />
+                  <p className="font-belleza">{item.name}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        {ingredientes.length > itemsPerPage && (
-          <IoIosArrowForward
-            size="30px"
-            className="hover:cursor-pointer"
-            onClick={nextItem}
-          />
+            {ingredientes.length > itemsPerPage && (
+              <IoIosArrowForward
+                size="30px"
+                className="hover:cursor-pointer"
+                onClick={nextItem}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

@@ -452,7 +452,7 @@ export const MoreInfo = () => {
 
   const onSubmit = async (formData) => {
     try {
-      if (!formData.name || !formData.surname || !phone) {
+      if (!formData.name || !formData.surname || !phone || !imageUrl) {
         showNewMessage("error", "Faltan campos");
         return;
       }
@@ -472,7 +472,7 @@ export const MoreInfo = () => {
       }
 
       clearStateUser();
-      showNewMessage("success", "Usuario registrado");
+      showNewMessage("success", "Usuario registrado con éxito");
       navigate(name_proyect + "/login");
     } catch (error) {
       console.log(error.message);

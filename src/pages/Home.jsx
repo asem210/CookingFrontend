@@ -8,6 +8,9 @@ import { useIngredient } from "../hooks/ingredientHook";
 import ingredientService from "../apis/ingredient";
 import recipeService from "../apis/recipe";
 import { useRecipe } from "../hooks/recipeHook";
+import { useNavigate } from "react-router-dom";
+import { useMessage } from "../hooks/messageHook";
+import Header from "../components/Header";
 
 const Home = () => {
   const { listIngredient, addAllListIngredientHook } = useIngredient();
@@ -15,6 +18,9 @@ const Home = () => {
   const { selectedIngredients, toggleIngredientSelected } = useIngredient();
   const { searchedRecipes, saveSearchedRecipes, clearSearch } = useRecipe();
   const [ingredientNames, setIngredientNames] = useState([]);
+  const { showNewMessage } = useMessage();
+  const name_proyect = import.meta.env.VITE_NAME_PAGE;
+  const navigate = useNavigate();
 
   // UseEffect para actualizar los nombres de los ingredientes seleccionados
   useEffect(() => {
@@ -58,13 +64,42 @@ const Home = () => {
   const searchRecipeByIngredients = async () => {
     try {
       if (selectedIngredients.length > 0) {
-        const searchResponse = await recipeService.getByIng(ingredientNames);
-        console.log(searchResponse);
+        const specificSearch = await recipeService.getByIng(ingredientNames);
+        const eqOrLess = await recipeService.getEqOrLess(ingredientNames);
+
+        if (specificSearch && eqOrLess) {
+          const updatedResponse = {
+            ...specificSearch,
+            tipo: "Exacto",
+          };
+
+          const responseEq = {
+            ...eqOrLess,
+            tipo: "Eq",
+          };
+
+          // Crear un array con ambos resultados
+          const combinedResponses = [updatedResponse, responseEq];
+
+          console.log(combinedResponses);
+
+          // Guarda el array combinado en el estado
+          saveSearchedRecipes(combinedResponses);
+
+          // Navega a la página de búsqueda de recetas
+          navigate(name_proyect + "/recipe/search");
+        } else {
+          showNewMessage("warning", "No se pudieron obtener las recetas.");
+        }
       } else {
-        alert("Seleccione como minimo un ingrediente");
+        showNewMessage(
+          "warning",
+          "Por favor seleccione como mínimo 1 ingrediente"
+        );
       }
     } catch (error) {
       console.log(error.message);
+      showNewMessage("error", "Error en la llamada a la API");
     }
   };
 
@@ -82,18 +117,7 @@ const Home = () => {
     <div className="flex flex-col  h-auto w-screen overflow-x-hidden overflow-y-auto ">
       <NavBar></NavBar>
       <div className=" w-screen h-[80%] flex flex-col items-center">
-        <h2 className="font-belleza text-[30px] ">Bienvenido a </h2>
-        <figure className="overflow-y-hidden  items-center justify-center flex h-20 w-full mt-[-10px]">
-          <img src={gif.link} alt="Loading..." className="h-[400%] " />
-        </figure>
-
-        <p className="font-belleza text-[18px] ">
-          Encuentra la receta perfecta con los ingredientes que tienes en casa
-        </p>
-        <div className="w-1/4  my-2 flex items-center relative">
-          <input className="border border-black rounded-md  p-1.5 w-full  "></input>
-          <HiMagnifyingGlass className="absolute left-[92%]" />
-        </div>
+        <Header />
 
         <p className="font-belleza text-[18px] ">
           es fácil , solo tienes que seguir tres sencillos pasos
