@@ -51,8 +51,8 @@ export const callUserData = async (showNewMessage, addMainUser) => {
     return;
   }
 
-  const { name, surname, email, phone, image, id } = resUserData.data;
-  addMainUser(name, surname, email, phone, image, '', '', id);
+  const { name, surname, email, phone, image, id, username } = resUserData.data;
+  addMainUser(name, surname, email, phone, image, '', username, id);
 };
 
 export const callIngredientData = async (showNewMessage, addAllListIngredientHook) => {

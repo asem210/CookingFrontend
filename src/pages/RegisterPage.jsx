@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 
-export default RegisterPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const getObjectById = (id) => {
     return images.find((item) => item.id === id);
@@ -42,3 +42,5 @@ export default RegisterPage = () => {
     </div>
   );
 };
+
+export default RegisterPage;

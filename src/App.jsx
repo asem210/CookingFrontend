@@ -13,7 +13,7 @@ import { useRecipe } from './hooks/recipeHook';
 import Home from './pages/Home';
 const UserInfo = lazy(() => import('./pages/UserInfo'));
 const Login = lazy(() => import('./pages/Login'));
-const RegisterPage = lazy(() => import('./pages/Register'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
 const ShowRecipe = lazy(() => import('./pages/ShowRecipe'));
 const Results = lazy(() => import('./pages/Results'));
 const CreateRecipe = lazy(() => import('./pages/CreateRecipe'));

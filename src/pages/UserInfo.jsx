@@ -22,7 +22,7 @@ const UserInfo = () => {
             <figure className="overflow-hidden  w-1/2  min-w-48 h-44 rounded-[100%] flex items-center max-sm:min-w-48  ">
               <img src={image} className="w-full h-full" />
             </figure>
-            <p>{'Username'} </p>
+            <p>{username || 'Username'} </p>
           </article>
 
           <div className="w-2/3  flex flex-col  items-center max-sm:w-full">

@@ -382,13 +382,7 @@ export const RegisterForm = ({ action, data }) => {
         return;
       }
 
-      action(formData); // Llama a la función pasada como prop para actualizar el estado
-      // await Cookies.set("userData", JSON.stringify(data)); // Convertir el objeto a una cadena JSON antes de guardarlo en la cookie
-
-      // // Para obtener userData de la cookie
-      // const retrievedUserData = Cookies.get("userData");
-      // const userDataObject = JSON.parse(retrievedUserData); // Convertir la cadena JSON de vuelta a un objeto
-      // console.log(userDataObject); // Acceder a la propiedad email del objeto recuperado
+      action(formData);
       addMainUser('', '', formData.email, '', '', formData.password, formData.username);
       navigate(name_proyect + '/register');
     } catch (error) {
@@ -450,7 +444,8 @@ export const MoreInfo = () => {
         email,
         password,
         phone,
-        imageUrl
+        imageUrl,
+        username
       );
 
       if (result.success === false) {
