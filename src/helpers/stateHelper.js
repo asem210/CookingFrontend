@@ -4,6 +4,7 @@ import ingredientService from '../apis/ingredient';
 import stepService from '../apis/step';
 import ingredientRecipeService from '../apis/ingredientRecipe';
 import recipeService from '../apis/recipe';
+import saveRecipeService from '../apis/saveRecipe';
 import { compareTimes, getCurrentTime, getTodayDate, flipDate } from '../utils/dateUtils';
 
 export const verifyLoggedIn = async (login, logOut) => {
@@ -62,6 +63,87 @@ export const callIngredientData = async (showNewMessage, addAllListIngredientHoo
     return;
   }
   addAllListIngredientHook(resIngredienteData.data);
+};
+
+export const callUserRecipe = async (showNewMessage, setshowPanelExist, setRecetasUser) => {
+  const recipesUser = await recipeService.getAllOfUser();
+
+  if (!recipesUser?.success) {
+    showNewMessage('error', recipesUser.message);
+    return;
+  }
+  setRecetasUser(recipesUser.data);
+  if (recipesUser.data.length === 0) {
+    setTimeout(() => {
+      setshowPanelExist(true);
+    }, 1000);
+  }
+};
+
+export const callUserSaveRecipe = async (
+  showNewMessage,
+  setshowPanelExist,
+  setRecetasSaveUser
+) => {
+  const recipesUserSaveRecipe = await saveRecipeService.getSaveRecipe();
+
+  if (!recipesUserSaveRecipe?.success) {
+    showNewMessage('error', recipesUserSaveRecipe.message);
+    return;
+  }
+  setRecetasSaveUser(recipesUserSaveRecipe.data);
+  if (recipesUserSaveRecipe.data.length === 0) {
+    setTimeout(() => {
+      setshowPanelExist(true);
+    }, 1000);
+  }
+};
+
+export const callRecipe = async (
+  idRecipe,
+  showNewMessage,
+  addItemRecipe,
+  addAllListIngredientRecipeHook,
+  addAllListStepRecipeHook,
+  setexistRecipe,
+  setshowPanelExist
+) => {
+  const resRecipe = await recipeService.getOne(idRecipe);
+
+  if (!resRecipe?.success) {
+    resRecipe.message !== 'Receta no encontrada' && showNewMessage('error', resRecipe.message);
+    setTimeout(() => {
+      setshowPanelExist(true);
+    }, 1000);
+    return;
+  }
+  const { name, description, img, dificultad, porcion, time, date, id, User } = resRecipe.data;
+
+  addItemRecipe(
+    name,
+    description,
+    img,
+    dificultad,
+    porcion,
+    time,
+    flipDate(date),
+    id,
+    User.name + ' ' + User.surname
+  );
+
+  const resIngredient = await ingredientRecipeService.getOfRecipe(id);
+
+  if (resIngredient) {
+    addAllListIngredientRecipeHook(resIngredient.data);
+  }
+
+  const resStep = await stepService.getOfRecipe(id);
+
+  if (resStep) {
+    addAllListStepRecipeHook(resStep.data);
+  }
+
+  setexistRecipe(true);
 };
 
 export const pushDataSteps = async (showNewMessage, step, id_receta, num) => {
@@ -186,6 +268,24 @@ export const editDataRecipeComplete = async (
       )
     );
     return reseditDataRecipe.data.id;
+  } catch (error) {
+    console.log(error.message);
+    return -1;
+  }
+};
+
+export const editDataUserComplete = async (showNewMessage, name, surname, phone, image) => {
+  try {
+    showNewMessage('loading', 'cargando');
+
+    const resEditUser = await userService.edit(name, surname, phone, image);
+    if (!resEditUser?.success) {
+      showNewMessage('error', resEditUser.message);
+      return -1;
+    }
+
+    showNewMessage('success', 'Información del usuario editado con exito');
+    return 1;
   } catch (error) {
     console.log(error.message);
     return -1;

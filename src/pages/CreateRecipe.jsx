@@ -137,31 +137,31 @@ const CreateRecipe = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-auto w-screen overflow-x-hidden overflow-y-auto">
+    <div className="container-page">
       <NavBar />
       <div className="w-screen h-[80%] flex flex-col items-center gap-1">
-        <section className="w-[60%]">
+        <section className="w-[60%] max-lg:w-4/5 mt-5">
           <ImageUploaderRecipe />
-          <figure className="w-full h-[300px] overflow-hidden relative rounded-md mt-5">
+          <figure className="w-full h-[300px] overflow-hidden relative rounded-md mt-5 max-md:h-[200px]">
             <img src={imgUpload} className="w-full h-full object-cover object-center" />
           </figure>
         </section>
-        <section className="w-[60%] flex gap-4 items-center mt-3">
-          <p className="font-belleza text-[20px] ">Nombre de la receta:</p>
+        <section className="w-[60%] flex gap-4 items-center mt-3 max-lg:w-4/5 ">
+          <p className="font-belleza text-[20px] max-md:text-[15px] ">Nombre de la receta:</p>
           <input
             type="text"
             name="name"
             value={inputValues.name}
             onChange={handleChange}
             placeholder="Ingrese el nombre de la receta"
-            className="border border-black  rounded-lg  py-1 px-3 w-1/2 font-bold font-belleza text-[24px]"
+            className="border border-black  rounded-lg  py-1 px-3 w-1/2 font-bold font-belleza text-[24px] max-md:w-full max-md:text-[20px]"
           />
         </section>
-        <section className="w-[60%] flex flex-col">
+        <section className="w-[60%] flex flex-col  max-lg:w-4/5">
           <p className="font-belleza text-[20px]">Ingredientes:</p>
           <FormCrearIngrediente />
           <div className="flex w-full justify-center ">
-            <ul className="w-3/4 grid  grid-flow-row grid-cols-2  mt-5 p-4  gap-y-1  font-belleza">
+            <ul className="w-3/4 grid  grid-flow-row grid-cols-2  mt-5 p-4  gap-y-1  font-belleza max-lg:text-[14px] max-lg:grid-cols-1 max-lg:w-1/2 max-lg:mx-auto   max-sm:w-full ">
               {listIngredientRecipe.map((ingrediente, index) => (
                 <li key={index} className="flex gap-2 justify-normal hover:text-gray-600">
                   {`${ingrediente.cantidad} ${ingrediente.medicion} de ${ingrediente.name} ${ingrediente.especificacion} `}
@@ -193,12 +193,12 @@ const CreateRecipe = () => {
             </ul>
           </div>
         </section>
-        <section className="w-[60%] flex flex-col">
+        <section className="w-[60%] flex flex-col  max-lg:w-4/5">
           <p className="font-belleza text-[20px]">Pasos:</p>
 
           <FormCrearPaso />
           <div className="flex w-full justify-center  mt-5 ">
-            <ul className="w-5/6 grid grid-flow-row ">
+            <ul className="w-5/6 grid grid-flow-row  max-sm:w-full">
               {listStep.map((step, index) => (
                 <li
                   key={index}
@@ -237,23 +237,27 @@ const CreateRecipe = () => {
           </div>
         </section>
 
-        <section className="w-[60%] flex flex-col">
+        <section className="w-[60%] flex flex-col  max-lg:w-4/5 ">
           <p className="font-belleza text-[20px]">Extras:</p>
-          <div className="flex justify-center items-center mt-5">
-            <div className=" flex flex-col items-center justify-center  gap-1">
-              <div className="flex items-center gap-1">
-                <TbSquareChevronsRightFilled
-                  className="text-lime-400 bg-white"
-                  size={'25px'}
-                />
-                <TbSquareChevronsRightFilled
-                  className="bg-white text-yellow-600"
-                  size={'25px'}
-                />
-                <TbSquareChevronsRightFilled className="text-red-600 bg-white" size={'25px'} />
+          <div className="flex justify-center items-center mt-5  max-sm:flex-col  max-sm:gap-y-4 max-sm:items-start  max-sm:mx-auto">
+            <div className=" flex flex-col items-center justify-center  gap-1 max-sm:flex-row max-sm:gap-5 ">
+              <div className="flex flex-col  w-full items-center ">
+                <div className="flex items-center gap-1">
+                  <TbSquareChevronsRightFilled
+                    className="text-lime-400 bg-white"
+                    size={'25px'}
+                  />
+                  <TbSquareChevronsRightFilled
+                    className="bg-white text-yellow-600"
+                    size={'25px'}
+                  />
+                  <TbSquareChevronsRightFilled
+                    className="text-red-600 bg-white"
+                    size={'25px'}
+                  />
+                </div>
+                <p className="font-bold font-belleza text-[15px]">DIFICULTAD</p>
               </div>
-              <p className="font-bold font-belleza text-[15px]">DIFICULTAD</p>
-
               <select
                 name="dificultad"
                 value={inputValues.dificultad}
@@ -269,11 +273,11 @@ const CreateRecipe = () => {
               </select>
             </div>
 
-            <div className=" flex flex-col items-center justify-center gap-1 ">
-              <div>
+            <div className=" flex flex-col items-center justify-center gap-1 max-sm:flex-row max-sm:gap-10   ">
+              <div className="flex flex-col items-center w-full max-sm:w-1/4  ">
                 <MdFamilyRestroom className="text-yellow-600" size={'30px'} />
+                <p className="font-bold font-belleza text-[15px]">PORCIÓN</p>
               </div>
-              <p className="font-bold font-belleza text-[15px]">PORCIÓN</p>
 
               <input
                 type="number"
@@ -282,13 +286,16 @@ const CreateRecipe = () => {
                 value={inputValues.porcion || ''}
                 onChange={handleChange}
                 placeholder="Porción"
-                className="border border-black  rounded-lg flex items-center  py-2 px-4 font-belleza outline-none w-1/2 "
+                className="border border-black  rounded-lg flex items-center  py-2 px-4 font-belleza outline-none w-1/2  max-sm:w-full"
               />
             </div>
-            <div className=" flex flex-col items-center justify-center gap-1">
-              <MdAccessTimeFilled className="text-yellow-600" size={'30px'} />
 
-              <p className="font-bold font-belleza text-[15px]">TIEMPO (min)</p>
+            <div className=" flex flex-col items-center justify-center gap-1 max-sm:flex-row max-sm:gap-4 ">
+              <div className="flex flex-col  w-full items-center max-sm:items-start">
+                <MdAccessTimeFilled className="text-yellow-600" size={'30px'} />
+                <p className="font-bold font-belleza text-[15px]">TIEMPO (min)</p>
+              </div>
+
               <input
                 type="number"
                 name="time"
@@ -303,7 +310,7 @@ const CreateRecipe = () => {
         </section>
 
         <button
-          className="bg-naranja py-3 px-32 rounded-2xl text-white mt-10 hover:bg-red-500 mr-10"
+          className="bg-naranja py-3 px-32 rounded-2xl text-white mt-10 hover:bg-red-500 mx-auto"
           onClick={handleSubmit}
         >
           Crear Receta

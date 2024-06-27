@@ -107,15 +107,15 @@ export const ImageUploaderRecipe = () => {
   };
 
   return (
-    <div className="flex gap-5 items-center mb-2 ">
-      <p className="font-belleza">Previsualización de la receta:</p>
+    <div className="flex gap-5 items-center mb-2  ">
+      <p className="font-belleza max-md:hidden">Previsualización de la receta:</p>
       <input
         type="file"
         onChange={handleOnChange}
-        className="font-belleza bg-gray-600 text-white rounded-md py-1 px-3 hover:bg-gray-500"
+        className="font-belleza bg-gray-600 text-white rounded-md py-1 px-3 hover:bg-gray-500 max-md:text-[12px] max-md:w-3/4"
       />
       <button
-        className="font-belleza bg-blue-600 text-white rounded-md py-1 px-3 hover:bg-blue-500"
+        className="font-belleza bg-blue-600 text-white rounded-md py-3 px-2 hover:bg-blue-500 text-xs h-full  max-md:text-[10px] max-md:w-1/4 max-md:py-2"
         onClick={() => {
           uploadImage();
         }}
@@ -156,14 +156,14 @@ export const ImageUploaderUser = () => {
   };
 
   return (
-    <div className="flex gap-3 items-center mt-5 ">
+    <div className="flex gap-3 items-center mt-5 w-full">
       <input
         type="file"
         onChange={handleOnChange}
-        className="font-belleza bg-gray-600 text-white rounded-md py-1 px-3 hover:bg-gray-500 "
+        className="font-belleza bg-gray-600 text-white rounded-md py-1 px-3 hover:bg-gray-500 w-3/4 max-lg:text-[12px]"
       />
       <button
-        className="font-belleza bg-blue-600 text-white rounded-md py-1 px-2 hover:bg-blue-500 text-xs h-full"
+        className="font-belleza bg-blue-600 text-white rounded-md py-1 px-2 hover:bg-blue-500 text-xs h-full w-1/4 max-lg:text-[10px]"
         onClick={() => {
           uploadImage();
         }}

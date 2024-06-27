@@ -1,38 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import components
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import CardRecipe from '../components/CardRecipe';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
 import Loading from '../components/Loading';
-import { useUser } from '../hooks/userHook';
-import recipeService from '../apis/recipe';
 import { ExistPanelRecip } from '../components/ExistPanel';
-import saveRecipeService from '../apis/saveRecipe';
+// import react icons
+import { HiMagnifyingGlass } from 'react-icons/hi2';
+// import hooks
+import { useUser } from '../hooks/userHook';
+import { useMessage } from '../hooks/messageHook';
+//import helpers
+import { callUserSaveRecipe } from '../helpers/stateHelper';
 
 const UserFavoriteRecipe = () => {
+  //hooks
   const { userId } = useUser();
+  const { showNewMessage } = useMessage();
+  //usesate
   const [showPanelExist, setshowPanelExist] = useState(false);
   const [recetasSaveUser, setRecetasSaveUser] = useState([]);
 
   useEffect(() => {
-    const callRecipes = async () => {
-      try {
-        const resSaveRecipe = await saveRecipeService.getSaveRecipe();
-        if (resSaveRecipe.success === true) {
-          setRecetasSaveUser(resSaveRecipe.data);
-        }
-        if (resSaveRecipe.data.length === 0) {
-          setTimeout(() => {
-            setshowPanelExist(true);
-          }, 1000);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    callRecipes();
+    callUserSaveRecipe(showNewMessage, setshowPanelExist, setRecetasSaveUser);
   }, []);
 
   return (
@@ -48,7 +39,7 @@ const UserFavoriteRecipe = () => {
             </div>
           </section>
           <section className="w-4/5 ">
-            <div className="grid grid-cols-4 grid-flow-row gap-5">
+            <div className="grid grid-cols-4 grid-flow-row gap-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 ">
               {recetasSaveUser.map((item, index) => {
                 return (
                   <CardRecipe

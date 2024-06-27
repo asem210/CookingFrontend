@@ -1,35 +1,36 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  name: "",
-  description: "",
-  img: "https://semantic-ui.com/images/wireframe/image.png",
-  dificultad: "",
-  porcion: "",
-  time: "",
-  date: "",
-  id: "",
+  name: '',
+  description: '',
+  img: 'https://semantic-ui.com/images/wireframe/image.png',
+  dificultad: '',
+  porcion: '',
+  time: '',
+  date: '',
+  id: '',
+  creatorName: '',
   listIngredientOfRecipe: [],
   listStepOfRecipe: [],
-  imgUpload: "https://semantic-ui.com/images/wireframe/image.png",
+  imgUpload: 'https://semantic-ui.com/images/wireframe/image.png',
 
   editDataRecipe: {
-    id: "",
-    name: "",
-    dificultad: "",
-    porcion: "",
-    time: "",
-    date: "",
+    id: '',
+    name: '',
+    dificultad: '',
+    porcion: '',
+    time: '',
+    date: '',
   },
   searchedRecipes: [],
 };
 
 export const recipeSlice = createSlice({
-  name: "recipe",
+  name: 'recipe',
   initialState,
   reducers: {
     addItem: (state, action) => {
-      const { id, name, description, img, dificultad, porcion, time, date } =
+      const { id, name, description, img, dificultad, porcion, time, date, creatorName } =
         action.payload;
       state.name = name;
       state.description = description;
@@ -39,6 +40,7 @@ export const recipeSlice = createSlice({
       state.time = time;
       state.date = date;
       state.id = id;
+      state.creatorName = creatorName;
     },
 
     addDataEdit: (state, action) => {
@@ -56,14 +58,14 @@ export const recipeSlice = createSlice({
     },
 
     clearState: (state) => {
-      state.name = "";
-      state.description = "";
-      state.img = "https://semantic-ui.com/images/wireframe/image.png";
-      state.dificultad = "";
-      state.porcion = "";
-      state.time = "";
-      state.date = "";
-      state.imgUpload = "https://semantic-ui.com/images/wireframe/image.png";
+      state.name = '';
+      state.description = '';
+      state.img = 'https://semantic-ui.com/images/wireframe/image.png';
+      state.dificultad = '';
+      state.porcion = '';
+      state.time = '';
+      state.date = '';
+      state.imgUpload = 'https://semantic-ui.com/images/wireframe/image.png';
       state.listIngredientOfRecipe = [];
       state.listStepOfRecipe = [];
     },

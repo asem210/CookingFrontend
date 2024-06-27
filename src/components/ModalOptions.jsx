@@ -19,10 +19,12 @@ const ModalOptions = ({ isOpen, onClose }) => {
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-end z-50">
           <div className="inset-0 bg-[#2E2C2C] opacity-[0.90] absolute"></div>
-          <div className="bg-white p-8 shadow-lg z-10 relative w-[22%] h-full ">
-            <div className="w-full flex justify-between items-center mb-4">
-              <p className="text-[22px] font-belleza">{name + ' ' + surname}</p>
-              <figure className=" w-[70px]   rounded-full  overflow-hidden flex items-center  border-2 border-naranja mr-1">
+          <div className="bg-white px-6  pt-6 shadow-lg z-10 relative w-[20%] min-w-64 h-full ">
+            <div className="w-full flex  items-center   mb-4 gap-1 ">
+              <p className="text-[21px] font-belleza font-bold  w-3/4 ">
+                {name + ' ' + surname}
+              </p>
+              <figure className=" w-1/4 min-w-20  rounded-full ml-1 overflow-hidden flex items-center  border-2 border-naranja mr-1 ">
                 <img
                   src={
                     image ||

@@ -1,39 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+//import components
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import CardRecipe from '../components/CardRecipe';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
-import recipeService from '../apis/recipe';
 import { ExistPanelRecip } from '../components/ExistPanel';
 import Loading from '../components/Loading';
+// import react icons
+import { HiMagnifyingGlass } from 'react-icons/hi2';
+//import hooks
 import { useUser } from '../hooks/userHook';
+import { useMessage } from '../hooks/messageHook';
+//import utils y helpers
+import { callUserRecipe } from '../helpers/stateHelper';
+
 const UserRecipe = () => {
+  //usesate
   const [recetasUser, setRecetasUser] = useState([]);
   const [showPanelExist, setshowPanelExist] = useState(false);
-  const name_proyect = import.meta.env.VITE_NAME_PAGE;
-  const { userId } = useUser();
+  //variables
   const navigate = useNavigate();
+  const name_proyect = import.meta.env.VITE_NAME_PAGE;
+  //hooks
+  const { showNewMessage } = useMessage();
+  const { userId } = useUser();
 
   useEffect(() => {
-    const callRecipeUser = async () => {
-      try {
-        const recipesUser = await recipeService.getAllOfUser();
-        if (recipesUser.success === true) {
-          setRecetasUser(recipesUser.data);
-        }
-
-        if (recipesUser.data.length === 0) {
-          setTimeout(() => {
-            setshowPanelExist(true);
-          }, 1000);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    callRecipeUser();
+    callUserRecipe(showNewMessage, setshowPanelExist, setRecetasUser);
   }, []);
 
   return (
@@ -49,7 +42,7 @@ const UserRecipe = () => {
             </div>
           </section>
           <section className="w-4/5 ">
-            <div className="grid grid-cols-4 grid-flow-row gap-5">
+            <div className="grid grid-cols-4 grid-flow-row gap-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1  ">
               {recetasUser &&
                 recetasUser.map((item, index) => {
                   return (

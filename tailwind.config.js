@@ -4,6 +4,11 @@ module.exports = {
   mode: 'jit',
   theme: {
     extend: {
+      // container:{
+      //   page :  " "
+
+      // },
+
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
         pacifico: ['Pacifico'],

@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import {
   changeImg,
   clearState,
@@ -9,7 +9,7 @@ import {
   clearDataEdit,
   searchRecipesByIngredient,
   clearSearchResults,
-} from "../redux/slices/recipeSlice";
+} from '../redux/slices/recipeSlice';
 
 export const useRecipe = () => {
   const {
@@ -23,6 +23,7 @@ export const useRecipe = () => {
     listIngredientOfRecipe,
     listStepOfRecipe,
     id,
+    creatorName,
     imgUpload,
     editDataRecipe,
     searchedRecipes,
@@ -38,10 +39,11 @@ export const useRecipe = () => {
     porcion,
     time,
     date,
-    id
+    id,
+    creatorName
   ) => {
     dispatch(
-      addItem({ name, description, img, dificultad, porcion, time, date, id })
+      addItem({ name, description, img, dificultad, porcion, time, date, id, creatorName })
     );
   };
 
@@ -87,6 +89,7 @@ export const useRecipe = () => {
     porcion,
     time,
     date,
+    creatorName,
     listIngredientOfRecipe,
     listStepOfRecipe,
     editDataRecipe,
