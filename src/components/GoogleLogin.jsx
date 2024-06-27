@@ -5,7 +5,7 @@ import userService from '../apis/user';
 import { useNavigate } from 'react-router-dom';
 import { useMessage } from '../hooks/messageHook';
 import { useAuth } from '../hooks/authHook';
-
+import {} from '../utils/othersUtils';
 export const LoginSocialMedia = () => {
   const { showNewMessage } = useMessage();
   const { login, logOut, token, status } = useAuth();
@@ -30,8 +30,8 @@ export const LoginSocialMedia = () => {
           console.log('2');
           const newUser = await userService.createGoogle(
             email,
-            decoded.given_name,
-            decoded.family_name,
+            capitalizeAllSentences(decoded.given_name),
+            capitalizeAllSentences(decoded.family_name),
             decoded.picture,
             String(email).split('@')[0]
           );

@@ -11,7 +11,7 @@ import { useUser } from '../hooks/userHook';
 import { useMessage } from '../hooks/messageHook';
 // Import utils y helpers
 import { editDataUserComplete } from '../helpers/stateHelper';
-
+import { capitalizeAllSentences } from '../utils/othersUtils';
 const UserEdit = () => {
   //hooks
   const { name, username, surname, phone, image, email, imgEdit, changeImgEditHook } =
@@ -33,8 +33,8 @@ const UserEdit = () => {
   const onSubmit = async (formData) => {
     const resEdit = await editDataUserComplete(
       showNewMessage,
-      formData.name,
-      formData.surname,
+      capitalizeAllSentences(formData.name),
+      capitalizeAllSentences(formData.surname),
       formData.phone,
       imgEdit
     );

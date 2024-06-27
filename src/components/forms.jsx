@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ImageUploader } from './uploadImage';
 import { useAuth } from '../hooks/authHook';
 import { useUser } from '../hooks/userHook';
-import { capitalize, lowerText } from '../utils/othersUtils';
+import { capitalize, lowerText, capitalizeAllSentences } from '../utils/othersUtils';
 
 export const LoginForm = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
@@ -439,8 +439,8 @@ export const MoreInfo = () => {
       }
 
       const result = await userService.register(
-        formData.name,
-        formData.surname,
+        capitalizeAllSentences(formData.name),
+        capitalizeAllSentences(formData.surname),
         email,
         password,
         phone,

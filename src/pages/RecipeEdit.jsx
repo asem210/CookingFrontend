@@ -21,7 +21,7 @@ import { useIngredient } from '../hooks/ingredientHook';
 import { useStep } from '../hooks/stepHook';
 //import helpers and utils
 import { editDataRecipeComplete } from '../helpers/stateHelper';
-
+import { capitalize } from '../utils/othersUtils';
 const RecipeEdit = () => {
   //hooks
   const { listIngredientRecipe, deleteIngredientRecipeOfList, addIngredienteRecipe } =
@@ -59,8 +59,8 @@ const RecipeEdit = () => {
     const idRecipe = await editDataRecipeComplete(
       showNewMessage,
       editDataRecipe,
-      inputValues.name,
-      inputValues.description,
+      capitalize(inputValues.name),
+      capitalize(inputValues.description),
       parseInt(inputValues.time),
       inputValues.dificultad,
       parseInt(inputValues.porcion),

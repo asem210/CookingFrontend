@@ -10,8 +10,16 @@ export const capitalize = (input) => {
 
 export const lowerText = (input) => {
   let text = String(input);
-  if (text.length === 0) {
-    return '';
-  }
+  if (text.length === 0) return '';
+
   return text.toLowerCase();
+};
+
+export const capitalizeAllSentences = (input) => {
+  let text = String(input);
+  if (text.length === 0) return '';
+  return text
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 };
