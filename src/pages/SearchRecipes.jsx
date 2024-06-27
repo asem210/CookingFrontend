@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from "react";
 import NavBar from "../components/NavBar";
 import Footer from "../components/Footer";
-import { useParams } from "react-router-dom";
-import { useRecipe } from "../hooks/recipeHook";
-import { useMessage } from "../hooks/messageHook";
-import Loading from "../components/Loading";
-import { ExistPanelRecip } from "../components/ExistPanel";
-import { useIngredient } from "../hooks/ingredientHook";
 import Header from "../components/Header";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { IoOptionsOutline } from "react-icons/io5";
+import { IoIosArrowRoundBack, IoIosOptions } from "react-icons/io";
+import { useRecipe } from "../hooks/recipeHook";
+import { useIngredient } from "../hooks/ingredientHook";
+import CardRecipe from "../components/CardRecipe";
+import { useUser } from "../hooks/userHook";
+import { useNavigate } from "react-router-dom";
 
 const SearchRecipes = () => {
-  const { selectedIngredients, toggleIngredientSelected } = useIngredient();
-  const { searchedRecipes, saveSearchedRecipes, clearSearch } = useRecipe();
+  const { userId } = useUser();
+  const { searchedRecipes } = useRecipe();
   const [recipeCount, setRecipeCount] = useState(0);
+  const { selectedIngredients, toggleIngredientSelected } = useIngredient();
+  const [recetasSaveUser, setRecetasSaveUser] = useState([]);
+  const navigate = useNavigate();
+  const name_proyect = import.meta.env.VITE_NAME_PAGE;
 
   useEffect(() => {
     if (searchedRecipes) {
@@ -22,36 +24,134 @@ const SearchRecipes = () => {
         return count + (response.data ? response.data.length : 0);
       }, 0);
       setRecipeCount(totalRecipes);
-      console.log(`Número de recetas encontradas: ${totalRecipes}`);
 
-      // Realiza alguna acción basada en la cantidad de recetas
       if (totalRecipes === 0) {
         console.log("No se encontraron recetas.");
-        // Aquí puedes mostrar un mensaje al usuario o realizar alguna otra acción
       } else {
         console.log(`Se encontraron ${totalRecipes} recetas.`);
-        // Aquí puedes realizar alguna acción basada en el número de recetas encontradas
+        console.log(searchedRecipes);
       }
     }
   }, [searchedRecipes]);
+
+  const findBookMark = (id) => {
+    if (recetasSaveUser.length !== 0) {
+      const r = recetasSaveUser.find((item) => item.receta_id === id);
+      return !!r;
+    }
+    return false;
+  };
+
+  const navigateToHome = () => {
+    // Aquí deberías definir `name_proyect` o usar una ruta relativa según tu configuración
+    navigate(name_proyect + "/home");
+  };
+
+  const handleHover = (event) => {
+    event.currentTarget.classList.add("hover-effect");
+  };
+
+  const handleLeave = (event) => {
+    event.currentTarget.classList.remove("hover-effect");
+  };
+
+  // Filtrar las recetas por tipo
+  const exactRecipes =
+    searchedRecipes.find((response) => response.tipo === "Exacto")?.data || [];
+  console.log(exactRecipes);
+  const eqRecipes =
+    searchedRecipes.find((response) => response.tipo === "Eq")?.data || [];
+
   return (
-    <div className="flex flex-col h-auto w-screen overflow-x-hidden overflow-y-auto">
+    <div className="flex flex-col min-h-screen w-screen overflow-x-hidden">
       <NavBar />
-      <div className="w-full h-[80%] flex flex-col items-center">
+      <div className="flex flex-col flex-grow items-center">
         <Header />
-        <div className="flex flex-row mt-8 items-center w-screen">
-          <div className="flex flex-row items-center flex-shrink-0 w-1/2">
-            <IoIosArrowRoundBack size={25} />
+        <div className="w-[90%] flex flex-row items-center mt-10">
+          <div
+            className="flex flex-row items-center w-1/3 hover:bg-gray-200 rounded-md p-2 cursor-pointer"
+            onClick={navigateToHome}
+            onMouseEnter={handleHover}
+            onMouseLeave={handleLeave}
+          >
+            <IoIosArrowRoundBack size={36} />
             <p className="font-belleza text-[16px] text-negro ml-2">
               Realizar una nueva búsqueda
             </p>
           </div>
-          <div className="justify-center w-1/2">
+
+          <div className="w-1/3 flex justify-center">
             <p className="font-belleza text-[24px] text-negro">
               Resultados: {recipeCount}
             </p>
           </div>
-          <div className="flex-shrink-0 w-1/3"></div>
+
+          <div className="w-1/3"></div>
+        </div>
+        <div className="w-[90%] flex flex-col items-center mt-10">
+          {/* Renderizar la lista de recetas exactas */}
+          <h2 className="font-belleza text-[20px] text-negro text-left w-full ">
+            Recetas Exactas
+          </h2>
+          <section className="w-full flex justify-center">
+            {exactRecipes.length !== 0 ? (
+              <div className="grid grid-cols-4 grid-flow-row gap-5">
+                {exactRecipes.map((item, index) => (
+                  <CardRecipe
+                    img={
+                      item.img ||
+                      "https://static.vecteezy.com/system/resources/previews/004/639/366/non_2x/error-404-not-found-text-design-vector.jpg"
+                    }
+                    time={item.time || "xx"}
+                    porcion={item.porcion || "x"}
+                    dificulty={item.dificultad || "medio"}
+                    fitStep="Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada"
+                    name={item.name || "plato xx"}
+                    key={index}
+                    idReceta={item.id}
+                    date={item.date || "dd/mm/yyyy"}
+                    saveRecipe={userId !== item.user_id}
+                    editable={false}
+                    SavebookMark={() => findBookMark(item.id)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p>No se encontraron recetas exactas.</p>
+            )}
+          </section>
+
+          {/* Renderizar la lista de recetas similares */}
+          <h2 className="font-belleza text-[20px] text-negro text-left w-full ">
+            Recetas Similares
+          </h2>
+          <section className="w-full flex justify-center">
+            {eqRecipes.length !== 0 ? (
+              <div className="grid grid-cols-4 grid-flow-row gap-5">
+                {eqRecipes.map((item, index) => (
+                  <CardRecipe
+                    img={
+                      item.img ||
+                      "https://static.vecteezy.com/system/resources/previews/004/639/366/non_2x/error-404-not-found-text-design-vector.jpg"
+                    }
+                    time={item.time || "xx"}
+                    porcion={item.porcion || "x"}
+                    dificulty={item.dificultad || "medio"}
+                    fitStep="Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada"
+                    name={item.name || "plato xx"}
+                    key={index}
+                    idReceta={item.id}
+                    date={item.date || "dd/mm/yyyy"}
+                    saveRecipe={userId !== item.user_id}
+                    editable={false}
+                    SavebookMark={() => findBookMark(item.id)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p>No se encontraron recetas similares.</p>
+            )}
+          </section>
         </div>
       </div>
       <Footer />

@@ -131,6 +131,17 @@ const recipeService = {
       return null;
     }
   },
+  fuzzySearch: async (name) => {
+    try {
+      const { data } = await axios.get(
+        `${BASE_URL}/receta/fuzzysearch/${encodeURIComponent(name)}`
+      );
+      return data;
+    } catch (error) {
+      console.error("Error al buscar recetas por nombre:", error);
+      return null;
+    }
+  },
 };
 
 export default recipeService;
