@@ -78,8 +78,8 @@ const ShowRecipe = () => {
           <section className="w-[60%] items-center  text-center">
             <p className="font-bold font-belleza text-4xl ">{name}</p>
           </section>
-          <section className="w-[40%] items-center  text-start ">
-            <p className=" font-belleza text-2xl ">{description || ''}</p>
+          <section className="w-[50%] items-center  text-start ">
+            <p className=" font-belleza text-[15px] ">{description || ''}</p>
           </section>
           <section className="w-[60%] flex flex-col max-md:w-4/5  max-sm:w-full">
             <div className="flex justify-evenly items-center mt-5 ">
