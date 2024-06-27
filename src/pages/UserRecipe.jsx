@@ -51,7 +51,7 @@ const UserRecipe = () => {
                       time={item.time}
                       porcion={item.porcion}
                       dificulty={item.dificultad}
-                      fitStep="Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada"
+                      description={item.description}
                       name={item.name}
                       key={index}
                       idReceta={item.id}

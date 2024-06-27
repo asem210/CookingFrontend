@@ -20,7 +20,7 @@ const CardRecipe = ({
   porcion = 'x',
   name = 'plato xx',
   date = 'dd/mm/yyyy',
-  fitStep = 'Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada ',
+  description = 'Para el pollo, mezcla la sal con ajo, la pimienta, 1 taza de fécula, la harina, los huevos y la Leche Evaporada ',
   dificulty = 'medio',
   idReceta,
   SavebookMark = false,
@@ -110,7 +110,7 @@ const CardRecipe = ({
   const handleClick = () => {
     try {
       callPartsRecipe();
-      addItemDataEdit(idReceta, name, dificulty, porcion, time, date);
+      addItemDataEdit(idReceta, name, dificulty, porcion, time, date, description);
       changeImgRecipe(img);
     } catch (error) {
       console.log(error);
@@ -193,7 +193,7 @@ const CardRecipe = ({
             <p className="font-semibold text-[16px]  w-1/2  h-5  overflow-hidden"> {name}</p>
             <p className="font-semibold">Porciones: {porcion} </p>
           </div>
-          <p className="text-[12px] mx-5 mt-2 max-h-14 overflow-hidden ">{fitStep}</p>
+          <p className="text-[12px] mx-5 mt-2 max-h-14 overflow-hidden ">{description}</p>
         </div>
         <div
           className="font-belleza text-naranja flex items-center justify-center gap-2 mt-2 hover:text-orange-400 cursor-pointer"

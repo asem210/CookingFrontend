@@ -179,6 +179,7 @@ export const pushDataIngredientRecipe = async (showNewMessage, ing, id_receta) =
 export const pushDataRecipeComplete = async (
   showNewMessage,
   name,
+  description,
   time,
   dificultad,
   porcion,
@@ -191,7 +192,7 @@ export const pushDataRecipeComplete = async (
 
     const resPushDataRecipe = await recipeService.create(
       name,
-      'No hay desc',
+      description,
       imgUpload,
       dificultad,
       time,
@@ -226,6 +227,7 @@ export const editDataRecipeComplete = async (
   showNewMessage,
   editDataRecipe,
   name,
+  description,
   time,
   dificultad,
   porcion,
@@ -238,7 +240,7 @@ export const editDataRecipeComplete = async (
 
     const reseditDataRecipe = await recipeService.editRecipe(
       editDataRecipe.id,
-      'No hay desc',
+      description,
       imgUpload,
       name,
       dificultad,

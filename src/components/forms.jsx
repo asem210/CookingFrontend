@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { ImageUploader } from './uploadImage';
 import { useAuth } from '../hooks/authHook';
 import { useUser } from '../hooks/userHook';
+import { capitalize, lowerText } from '../utils/othersUtils';
 
 export const LoginForm = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
@@ -133,7 +134,7 @@ export const FormCrearIngrediente = () => {
           id: ingredienteRecipe.id,
           cantidad: formData.Cantidad,
           medicion: formData.Medición,
-          especificacion: formData.Especificación || '',
+          especificacion: lowerText(formData.Especificación || ''),
           name: formData.Ingrediente,
           ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
@@ -148,7 +149,7 @@ export const FormCrearIngrediente = () => {
           id: id_aux,
           cantidad: formData.Cantidad,
           medicion: formData.Medición,
-          especificacion: formData.Especificación || '',
+          especificacion: lowerText(formData.Especificación || ''),
           name: formData.Ingrediente,
           ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
@@ -283,16 +284,16 @@ export const FormCrearPaso = () => {
       if (step?.id !== undefined) {
         nuevoStep = {
           id: step.id,
-          description: formData.description,
-          name: formData.name,
+          description: capitalize(formData.description),
+          name: capitalize(formData.name),
         };
       } else {
         const id_aux = listStep?.length === 0 ? 0 : listStep[listStep?.length - 1].id + 1;
 
         nuevoStep = {
           id: id_aux,
-          description: formData.description,
-          name: formData.name,
+          description: capitalize(formData.description),
+          name: capitalize(formData.name),
         };
       }
 
