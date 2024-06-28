@@ -8,6 +8,7 @@ import { useIngredient } from "../hooks/ingredientHook";
 import CardRecipe from "../components/CardRecipe";
 import { useUser } from "../hooks/userHook";
 import { useNavigate } from "react-router-dom";
+import BackToHomeButton from "../components/ReturnTo";
 
 const SearchRecipes = () => {
   const { userId } = useUser();
@@ -41,20 +42,6 @@ const SearchRecipes = () => {
     }
     return false;
   };
-
-  const navigateToHome = () => {
-    // Aquí deberías definir `name_proyect` o usar una ruta relativa según tu configuración
-    navigate(name_proyect + "/home");
-  };
-
-  const handleHover = (event) => {
-    event.currentTarget.classList.add("hover-effect");
-  };
-
-  const handleLeave = (event) => {
-    event.currentTarget.classList.remove("hover-effect");
-  };
-
   // Filtrar las recetas por tipo
   const exactRecipes =
     searchedRecipes.find((response) => response.tipo === "Exacto")?.data || [];
@@ -68,17 +55,10 @@ const SearchRecipes = () => {
       <div className="flex flex-col flex-grow items-center">
         <Header />
         <div className="w-[90%] flex flex-row items-center mt-10">
-          <div
-            className="flex flex-row items-center w-1/3 hover:bg-gray-200 rounded-md p-2 cursor-pointer"
-            onClick={navigateToHome}
-            onMouseEnter={handleHover}
-            onMouseLeave={handleLeave}
-          >
-            <IoIosArrowRoundBack size={36} />
-            <p className="font-belleza text-[16px] text-negro ml-2">
-              Realizar una nueva búsqueda
-            </p>
-          </div>
+          <BackToHomeButton
+            text={"Realizar una nueva búsqueda"}
+            navigateTo={"home"}
+          />
 
           <div className="w-1/3 flex justify-center">
             <p className="font-belleza text-[24px] text-negro">

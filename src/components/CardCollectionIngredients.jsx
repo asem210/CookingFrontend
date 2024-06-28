@@ -100,7 +100,7 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
     <div className="border border-[#F2F2F2] rounded-lg shadow-lg p-6 bg-white">
       <div className="flex items-center justify-between mb-6">
         <p className="font-belleza font-bold text-xl">{title}</p>
-        <div className="flex items-center bg-gray-100 p-2 rounded-full w-1/2">
+        <div className="flex items-center bg-gray-100 p-2 rounded-full w-2/3 lg:w-3/4 md:w-1/2 sm:w-fukk">
           <input
             type="text"
             className="border-none outline-none bg-transparent w-full font-belleza px-2"
@@ -125,7 +125,7 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
         />
-        <div className="grid grid-cols-4 gap-4 mx-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mx-4">
           {visibleItems.map((item, index) => (
             <IngredientItem
               key={index}

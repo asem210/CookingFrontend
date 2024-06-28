@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import recipeService from "../apis/recipe";
 import images from "../constants/images";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
@@ -35,27 +35,30 @@ const Header = () => {
   };
 
   return (
-    <>
-      <h2 className="font-belleza text-[50px] text-negro">Bienvenido a</h2>
-      <figure className="overflow-y-hidden items-center justify-center flex h-20 w-full mt-[-10px]">
-        <img src={gif.link} alt="Loading..." className="h-[400%]" />
+    <div className="flex flex-col items-center w-full px-4 sm:px-6 md:px-8 lg:px-10">
+      <h2 className="font-belleza text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-negro mb-4 text-center">
+        Bienvenido a
+      </h2>
+      <figure className="overflow-hidden flex items-center justify-center h-20 w-full mb-4">
+        <img src={gif.link} alt="Loading..." className="h-48 md:h-48 lg:h-64" />
       </figure>
-      <p className="font-belleza text-[18px] text-negro">
+      <p className="font-belleza text-sm sm:text-base md:text-lg lg:text-xl text-negro text-center mb-4">
         Encuentra la receta perfecta con los ingredientes que tienes en casa
       </p>
-      <div className="w-1/4 my-2 flex items-center relative">
+      <div className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3 my-2 flex items-center relative">
         <input
           className="border border-black rounded-md p-1.5 w-full text-negro"
           value={recipeName}
           onChange={(e) => setRecipeName(e.target.value)}
           onKeyDown={handleSearchKeyDown}
+          placeholder="Buscar receta..."
         />
         <HiMagnifyingGlass
-          className="absolute left-[92%] cursor-pointer"
+          className="absolute right-2 cursor-pointer text-xl text-gray-600 hover:text-naranja"
           onClick={handleSearch}
         />
       </div>
-    </>
+    </div>
   );
 };
 
