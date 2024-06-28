@@ -11,7 +11,7 @@ import { useUser } from '../hooks/userHook';
 import { useMessage } from '../hooks/messageHook';
 // Import utils y helpers
 import { editDataUserComplete } from '../helpers/stateHelper';
-
+import { capitalizeAllSentences } from '../utils/othersUtils';
 const UserEdit = () => {
   //hooks
   const { name, username, surname, phone, image, email, imgEdit, changeImgEditHook } =
@@ -33,8 +33,8 @@ const UserEdit = () => {
   const onSubmit = async (formData) => {
     const resEdit = await editDataUserComplete(
       showNewMessage,
-      formData.name,
-      formData.surname,
+      capitalizeAllSentences(formData.name),
+      capitalizeAllSentences(formData.surname),
       formData.phone,
       imgEdit
     );
@@ -54,7 +54,7 @@ const UserEdit = () => {
             <figure className="overflow-hidden  w-1/2  min-w-48 h-44 rounded-[100%] flex items-center max-sm:min-w-48  ">
               <img src={imgEdit} className="w-full h-full" />
             </figure>
-            <p>{'username'} </p>
+            <p>{username || 'username'} </p>
             <ImageUploaderUser />
           </article>
 

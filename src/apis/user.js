@@ -48,13 +48,14 @@ const userService = {
     }
   },
 
-  createGoogle: async (email, name, surname, image) => {
+  createGoogle: async (email, name, surname, image, username) => {
     try {
       const requestData = {
         name,
         surname,
         email,
         image,
+        username,
       };
       const { data } = await axios.post(BASE_URL + '/auth/register/google', requestData);
       return data;
@@ -101,7 +102,7 @@ const userService = {
     }
   },
 
-  register: async (name, surname, email, password, phone, image) => {
+  register: async (name, surname, email, password, phone, image, username) => {
     try {
       const requestData = {
         name,
@@ -110,6 +111,7 @@ const userService = {
         password,
         phone,
         image,
+        username,
       };
       const { data } = await axios.post(BASE_URL + '/auth/register', requestData);
       return data;

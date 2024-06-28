@@ -16,6 +16,7 @@ const initialState = {
 
   editDataRecipe: {
     id: '',
+    description: '',
     name: '',
     dificultad: '',
     porcion: '',

@@ -22,6 +22,7 @@ const ShowRecipe = () => {
   const [showPanelExist, setshowPanelExist] = useState(false);
   const {
     name,
+    description,
     img,
     time,
     porcion,
@@ -77,7 +78,9 @@ const ShowRecipe = () => {
           <section className="w-[60%] items-center  text-center">
             <p className="font-bold font-belleza text-4xl ">{name}</p>
           </section>
-
+          <section className="w-[50%] items-center  text-start ">
+            <p className=" font-belleza text-[15px] ">{description || ''}</p>
+          </section>
           <section className="w-[60%] flex flex-col max-md:w-4/5  max-sm:w-full">
             <div className="flex justify-evenly items-center mt-5 ">
               <div className=" flex flex-col items-center justify-center  ">

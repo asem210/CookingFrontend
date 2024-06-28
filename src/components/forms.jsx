@@ -148,7 +148,7 @@ export const FormCrearIngrediente = () => {
           id: ingredienteRecipe.id,
           cantidad: formData.Cantidad,
           medicion: formData.Medición,
-          especificacion: formData.Especificación || "",
+          especificacion: lowerText(formData.Especificación || ""),
           name: formData.Ingrediente,
           ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
@@ -163,7 +163,7 @@ export const FormCrearIngrediente = () => {
           id: id_aux,
           cantidad: formData.Cantidad,
           medicion: formData.Medición,
-          especificacion: formData.Especificación || "",
+          especificacion: lowerText(formData.Especificación || ""),
           name: formData.Ingrediente,
           ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
@@ -298,8 +298,8 @@ export const FormCrearPaso = () => {
       if (step?.id !== undefined) {
         nuevoStep = {
           id: step.id,
-          description: formData.description,
-          name: formData.name,
+          description: capitalize(formData.description),
+          name: capitalize(formData.name),
         };
       } else {
         const id_aux =
@@ -307,8 +307,8 @@ export const FormCrearPaso = () => {
 
         nuevoStep = {
           id: id_aux,
-          description: formData.description,
-          name: formData.name,
+          description: capitalize(formData.description),
+          name: capitalize(formData.name),
         };
       }
 
@@ -397,13 +397,7 @@ export const RegisterForm = ({ action, data }) => {
         return;
       }
 
-      action(formData); // Llama a la función pasada como prop para actualizar el estado
-      // await Cookies.set("userData", JSON.stringify(data)); // Convertir el objeto a una cadena JSON antes de guardarlo en la cookie
-
-      // // Para obtener userData de la cookie
-      // const retrievedUserData = Cookies.get("userData");
-      // const userDataObject = JSON.parse(retrievedUserData); // Convertir la cadena JSON de vuelta a un objeto
-      // console.log(userDataObject); // Acceder a la propiedad email del objeto recuperado
+      action(formData);
       addMainUser(
         "",
         "",
@@ -468,12 +462,13 @@ export const MoreInfo = () => {
       }
 
       const result = await userService.register(
-        formData.name,
-        formData.surname,
+        capitalizeAllSentences(formData.name),
+        capitalizeAllSentences(formData.surname),
         email,
         password,
         phone,
-        imageUrl
+        imageUrl,
+        username
       );
 
       if (result.success === false) {

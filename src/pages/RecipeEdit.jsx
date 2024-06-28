@@ -21,7 +21,7 @@ import { useIngredient } from '../hooks/ingredientHook';
 import { useStep } from '../hooks/stepHook';
 //import helpers and utils
 import { editDataRecipeComplete } from '../helpers/stateHelper';
-
+import { capitalize } from '../utils/othersUtils';
 const RecipeEdit = () => {
   //hooks
   const { listIngredientRecipe, deleteIngredientRecipeOfList, addIngredienteRecipe } =
@@ -38,6 +38,7 @@ const RecipeEdit = () => {
     dificultad: editDataRecipe.dificultad,
     porcion: editDataRecipe.porcion,
     time: editDataRecipe.time,
+    description: editDataRecipe.description,
   });
 
   const handleChange = (event) => {
@@ -58,7 +59,8 @@ const RecipeEdit = () => {
     const idRecipe = await editDataRecipeComplete(
       showNewMessage,
       editDataRecipe,
-      inputValues.name,
+      capitalize(inputValues.name),
+      capitalize(inputValues.description),
       parseInt(inputValues.time),
       inputValues.dificultad,
       parseInt(inputValues.porcion),
@@ -81,6 +83,11 @@ const RecipeEdit = () => {
 
     if (!inputValues.name) {
       showNewMessage('warning', 'Por favor rellene el campo: Nombre de la receta');
+      return;
+    }
+
+    if (!inputValues.description) {
+      showNewMessage('warning', 'Por favor rellene el campo: Decripción de la receta');
       return;
     }
 
@@ -165,6 +172,20 @@ const RecipeEdit = () => {
             className="border border-black  rounded-lg  py-1 px-3 w-1/2 font-bold font-belleza text-[24px] max-md:w-full max-md:text-[20px]"
           />
         </section>
+        <section className="w-[60%] flex gap-4 items-center mt-3 max-lg:w-4/5 ">
+          <p className="font-belleza text-[17px] max-md:text-[15px] ">
+            Descripción de la receta:
+          </p>
+          <textarea
+            type="text"
+            name="description"
+            value={inputValues.description}
+            onChange={handleChange}
+            placeholder="Ingrese la descripción de la receta"
+            className="border border-black  rounded-lg  py-3 px-3 w-2/3 font-belleza text-[14px] max-md:w-full max-md:text-[12px] min-h-18 content-center "
+          />
+        </section>
+
         <section className="w-[60%] flex flex-col  max-lg:w-4/5">
           <p className="font-belleza text-[20px]">Ingredientes:</p>
           <FormCrearIngrediente />

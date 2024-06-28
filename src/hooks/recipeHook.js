@@ -47,8 +47,8 @@ export const useRecipe = () => {
     );
   };
 
-  const addItemDataEdit = (id, name, dificultad, porcion, time, date) => {
-    dispatch(addDataEdit({ id, name, dificultad, porcion, time, date }));
+  const addItemDataEdit = (id, name, dificultad, porcion, time, date, description) => {
+    dispatch(addDataEdit({ id, name, dificultad, porcion, time, date, description }));
   };
 
   const saveSearchedRecipes = (recipe) => {

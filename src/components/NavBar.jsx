@@ -27,7 +27,7 @@ const NavBar = () => {
   }, []);
 
   return (
-    <nav className="w-screen min-h-16 h-[10%] flex justify-between items-center  ">
+    <nav className="w-screen min-h-16 h-[10%] flex justify-between items-center mt-2  ">
       <ModalOptions isOpen={isModalOpen} onClose={closeModal} />
       <figure className="w-1/5 flex items-center">
         <img

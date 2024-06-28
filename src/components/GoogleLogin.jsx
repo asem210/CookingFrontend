@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import userService from "../apis/user";
-import { useNavigate } from "react-router-dom";
-import { useMessage } from "../hooks/messageHook";
-import { useAuth } from "../hooks/authHook";
-
+import React, { useState } from 'react';
+import { GoogleLogin } from '@react-oauth/google';
+import { jwtDecode } from 'jwt-decode';
+import userService from '../apis/user';
+import { useNavigate } from 'react-router-dom';
+import { useMessage } from '../hooks/messageHook';
+import { useAuth } from '../hooks/authHook';
+import {} from '../utils/othersUtils';
 export const LoginSocialMedia = () => {
   const { showNewMessage } = useMessage();
   const { login, logOut, token, status } = useAuth();
@@ -24,27 +24,28 @@ export const LoginSocialMedia = () => {
         if (userData.success) {
           const loginGoogle = await userService.loginGoogle(email);
           login();
-          navigate(name_proyect + "/home");
-          showNewMessage("success", "Sesión iniciada con éxito");
+          navigate(name_proyect + '/home');
+          showNewMessage('success', 'Sesión iniciada con éxito');
         } else {
-          console.log("2");
+          console.log('2');
           const newUser = await userService.createGoogle(
             email,
-            decoded.given_name,
-            decoded.family_name,
-            decoded.picture
+            capitalizeAllSentences(decoded.given_name),
+            capitalizeAllSentences(decoded.family_name),
+            decoded.picture,
+            String(email).split('@')[0]
           );
           const loginGogle = await userService.loginGoogle(email);
           login();
-          navigate(name_proyect + "/home");
-          showNewMessage("success", "Sesión iniciada con éxito");
+          navigate(name_proyect + '/home');
+          showNewMessage('success', 'Sesión iniciada con éxito');
         }
       } else {
-        console.log("No email found in decoded token.");
-        showNewMessage("warning", "No hay cuenta de google asociada");
+        console.log('No email found in decoded token.');
+        showNewMessage('warning', 'No hay cuenta de google asociada');
       }
     } catch (error) {
-      showNewMessage("error", error.message);
+      showNewMessage('error', error.message);
     }
   };
 
@@ -55,7 +56,7 @@ export const LoginSocialMedia = () => {
         <GoogleLogin
           onSuccess={loginSuccess}
           onError={() => {
-            console.log("Login Failed");
+            console.log('Login Failed');
           }}
         />
       </div>
