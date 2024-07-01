@@ -5,7 +5,7 @@ import userService from '../apis/user';
 import { useNavigate } from 'react-router-dom';
 import { useMessage } from '../hooks/messageHook';
 import { useAuth } from '../hooks/authHook';
-import {} from '../utils/othersUtils';
+import { capitalizeAllSentences } from '../utils/othersUtils';
 export const LoginSocialMedia = () => {
   const { showNewMessage } = useMessage();
   const { login, logOut, token, status } = useAuth();

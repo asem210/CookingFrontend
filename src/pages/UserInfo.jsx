@@ -15,7 +15,7 @@ const UserInfo = () => {
   return (
     <div className="container-page">
       <NavBar></NavBar>
-      <div className="w-screen h-[80%]  min-h-[78vh] flex flex-col items-center ">
+      <div className="w-screen h-[80%]  min-h-[81vh] flex flex-col items-center ">
         <section className="flex gap-10 mt-5  w-4/5 max-sm:w-full px-5  max-lg:items-center max-sm:flex-col max-sm:gap-1">
           <article className="w-1/3   flex flex-col items-center gap-2  ">
             <p className="font-belleza ">Foto de Perfil:</p>

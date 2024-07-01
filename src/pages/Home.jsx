@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import images from "../constants/images";
-import CardCollectionIngredients from "../components/CardCollectionIngredients";
-import { HiMagnifyingGlass } from "react-icons/hi2";
-import NavBar from "../components/NavBar";
-import Footer from "../components/Footer";
-import { useIngredient } from "../hooks/ingredientHook";
-import { useRecipe } from "../hooks/recipeHook";
-import { useNavigate } from "react-router-dom";
-import { useMessage } from "../hooks/messageHook";
-import Header from "../components/Header";
+import React, { useState, useEffect } from 'react';
+import images from '../constants/images';
+import CardCollectionIngredients from '../components/CardCollectionIngredients';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import { useIngredient } from '../hooks/ingredientHook';
+import { useRecipe } from '../hooks/recipeHook';
+import { useNavigate } from 'react-router-dom';
+import { useMessage } from '../hooks/messageHook';
+import Header from '../components/Header';
 import {
   getObjectById,
   fetchAllIngredients,
   searchRecipeByIngredients,
-} from "../helpers/homeHelpers";
+} from '../helpers/homeHelpers';
 
 const Home = () => {
   //hooks
@@ -62,16 +62,14 @@ const Home = () => {
   const ingredientsByCategory = categories.map((category) => {
     return {
       category,
-      ingredients: listIngredient.filter(
-        (ingredient) => ingredient.category === category
-      ),
+      ingredients: listIngredient.filter((ingredient) => ingredient.category === category),
     };
   });
 
   return (
     <div className="flex flex-col h-auto w-screen overflow-x-hidden overflow-y-auto">
       <NavBar />
-      <div className="w-screen h-auto flex flex-col items-center">
+      <div className="w-screen h-auto flex flex-col items-center min-h-[81vh]">
         <Header />
 
         <p className="font-belleza text-[18px] text-center sm:text-left">
@@ -92,9 +90,7 @@ const Home = () => {
           </div>
           <div className="w-full md:w-1/4 font-belleza h-full flex flex-col justify-end items-center my-4">
             <img src={step3.link} className="w-[180px] h-3/4 " />
-            <p className=" h-1/4 font-belleza text-[18px]">
-              Disfrutar de tu comida
-            </p>
+            <p className=" h-1/4 font-belleza text-[18px]">Disfrutar de tu comida</p>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-[90%] md:w-[70%] mt-4">

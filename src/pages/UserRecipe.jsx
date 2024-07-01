@@ -65,12 +65,12 @@ const UserRecipe = () => {
           </section>
         </div>
       ) : (
-        <div className="min-h-[77vh] items-center flex justify-center">
+        <div className="min-h-[81vh] items-center flex justify-center">
           {showPanelExist ? (
             <div className="flex flex-col items-center">
               <ExistPanelRecip title="No tiene recetas creadas"></ExistPanelRecip>
               <button
-                className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10"
+                className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10 max-sm:mx-0"
                 onClick={() => {
                   navigate(name_proyect + '/recipe/create');
                 }}

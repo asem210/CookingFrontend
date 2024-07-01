@@ -32,7 +32,7 @@ const NavBar = () => {
       <figure className="w-1/5 flex items-center">
         <img
           src={logo.link}
-          className="h-4/5 rounded-xl ml-[25%] cursor-pointer hover:shadow-sm"
+          className="h-4/5 rounded-xl ml-[25%] cursor-pointer hover:shadow-sm min-w-28"
           onClick={() => {
             navigate(name_proyect + '/home');
           }}

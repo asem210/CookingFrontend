@@ -30,7 +30,7 @@ const UserFavoriteRecipe = () => {
     <div className="flex flex-col  h-auto w-screen overflow-x-hidden overflow-y-auto ">
       <NavBar></NavBar>
       {recetasSaveUser.length !== 0 ? (
-        <div className="w-screen h-[80%]  min-h-[78vh] flex flex-col items-center gap-5">
+        <div className="w-screen h-[80%]  min-h-[80vh] flex flex-col items-center gap-5">
           <section className="w-3/5   items-center justify-center flex flex-col mt-10">
             <p className="font-belleza text-[18px] ">Encuentra la receta</p>
             <div className="w-1/2  my-2 flex items-center relative">
@@ -62,18 +62,10 @@ const UserFavoriteRecipe = () => {
           </section>
         </div>
       ) : (
-        <div className="min-h-[77vh] items-center flex justify-center">
+        <div className="min-h-[81vh] items-center flex justify-center">
           {showPanelExist ? (
-            <div className="flex flex-col items-center">
-              <ExistPanelRecip title="No tiene recetas creadas"></ExistPanelRecip>
-              <button
-                className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10"
-                onClick={() => {
-                  navigate(name_proyect + '/recipe/create');
-                }}
-              >
-                No tiene asignado ninguna receta en favoritos
-              </button>
+            <div className="flex flex-col items-center ">
+              <ExistPanelRecip title="No tiene asignado ninguna receta en favoritos"></ExistPanelRecip>
             </div>
           ) : (
             <Loading size={90}></Loading>
