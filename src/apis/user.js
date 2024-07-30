@@ -1,15 +1,15 @@
-import axios from 'axios';
-import { expirationTime } from '../utils/dateUtils';
+import axios from "axios";
+import { expirationTime } from "../utils/dateUtils";
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 if (!BASE_URL) {
-  throw new Error('BASE_URL is not defined');
+  throw new Error("BASE_URL is not defined");
 }
 
 const userService = {
   getAll: async () => {
     try {
-      const { data } = await axios.get(BASE_URL + '/auth/getall');
+      const { data } = await axios.get(BASE_URL + "/auth/getall");
       return data;
     } catch (error) {
       return null;
@@ -21,14 +21,14 @@ const userService = {
       const { data } = await axios.get(`${BASE_URL}/auth/getByEmail/${email}`);
       return data;
     } catch (error) {
-      console.error('Error fetching user by email:', error);
+      console.error("Error fetching user by email:", error);
       return null;
     }
   },
 
   getThisUser: async () => {
     try {
-      const { data } = await axios.get(BASE_URL + '/auth/getThis', {
+      const { data } = await axios.get(BASE_URL + "/auth/getThis", {
         headers: { token: localStorage.token },
       });
       return data;
@@ -39,7 +39,7 @@ const userService = {
 
   verify: async () => {
     try {
-      const { data } = await axios.get(BASE_URL + '/auth/verify', {
+      const { data } = await axios.get(BASE_URL + "/auth/verify", {
         headers: { token: localStorage.token },
       });
       return data;
@@ -57,7 +57,10 @@ const userService = {
         image,
         username,
       };
-      const { data } = await axios.post(BASE_URL + '/auth/register/google', requestData);
+      const { data } = await axios.post(
+        BASE_URL + "/auth/register/google",
+        requestData
+      );
       return data;
     } catch (error) {
       return null;
@@ -69,11 +72,14 @@ const userService = {
       const requestData = {
         email,
       };
-      const { data } = await axios.post(BASE_URL + '/auth/login/google', requestData);
+      const { data } = await axios.post(
+        BASE_URL + "/auth/login/google",
+        requestData
+      );
       if (data.success) {
         const token = data.data.token;
-        localStorage.setItem('token', token);
-        localStorage.setItem('timeExpired', JSON.stringify(expirationTime(60)));
+        localStorage.setItem("token", token);
+        localStorage.setItem("timeExpired", JSON.stringify(expirationTime(60)));
       }
 
       return data;
@@ -88,12 +94,12 @@ const userService = {
         email,
         password,
       };
-      const { data } = await axios.post(BASE_URL + '/auth/login', requestData);
+      const { data } = await axios.post(BASE_URL + "/auth/login", requestData);
 
       if (data.success) {
         const token = data.data.token;
-        localStorage.setItem('token', token);
-        localStorage.setItem('timeExpired', JSON.stringify(expirationTime(60)));
+        localStorage.setItem("token", token);
+        localStorage.setItem("timeExpired", JSON.stringify(expirationTime(60)));
       }
 
       return data;
@@ -113,7 +119,10 @@ const userService = {
         image,
         username,
       };
-      const { data } = await axios.post(BASE_URL + '/auth/register', requestData);
+      const { data } = await axios.post(
+        BASE_URL + "/auth/register",
+        requestData
+      );
       return data;
     } catch (error) {
       return null;
@@ -128,7 +137,24 @@ const userService = {
         phone,
         image,
       };
-      const { data } = await axios.patch(BASE_URL + '/auth/edit', requestData, {
+      const { data } = await axios.patch(BASE_URL + "/auth/edit", requestData, {
+        headers: { token: localStorage.token },
+      });
+      return data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  editTWO: async (name, surname, phone, image) => {
+    try {
+      const requestData = {
+        name,
+        surname,
+        phone,
+        image,
+      };
+      const { data } = await axios.patch(BASE_URL + "/auth/edit", requestData, {
         headers: { token: localStorage.token },
       });
       return data;
@@ -139,7 +165,7 @@ const userService = {
 
   delete: async () => {
     try {
-      const { data } = await axios.delete(BASE_URL + '/auth/delete', {
+      const { data } = await axios.delete(BASE_URL + "/auth/delete", {
         headers: { token: localStorage.token },
       });
       return data;
