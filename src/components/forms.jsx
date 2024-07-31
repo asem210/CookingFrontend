@@ -1,46 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { InputDefault, InputPassword, InputPhone } from './inputs';
-import userService from '../apis/user';
-import { useNavigate } from 'react-router-dom';
-import { ImageUploader } from './uploadImage';
-import { useAuth } from '../hooks/authHook';
-import { useUser } from '../hooks/userHook';
-import { capitalize, capitalizeAllSentences, lowerText } from '../utils/othersUtils';
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { InputDefault, InputPassword, InputPhone } from "./inputs";
+import userService from "../apis/user";
+import { useNavigate } from "react-router-dom";
+import { ImageUploader } from "./uploadImage";
+import { useAuth } from "../hooks/authHook";
+import { useUser } from "../hooks/userHook";
+import {
+  capitalize,
+  capitalizeAllSentences,
+  lowerText,
+} from "../utils/othersUtils";
 
 export const LoginForm = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const { login } = useAuth();
   const { register, handleSubmit } = useForm();
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
   const navigate = useNavigate();
   const { showNewMessage } = useMessage();
 
   const onSubmit = async (formData) => {
     try {
       if (!formData.email) {
-        showNewMessage('warning', 'Complete el campo del email');
+        showNewMessage("warning", "Complete el campo del email");
         return;
       }
 
       if (!formData.password) {
-        showNewMessage('warning', 'Complete el campo de la contraseña');
+        showNewMessage("warning", "Complete el campo de la contraseña");
         return;
       }
 
       const result = await userService.login(formData.email, formData.password);
 
       if (result.success == false) {
-        showNewMessage('error', result.error);
+        showNewMessage("error", result.message);
         return null;
       }
 
       login();
-      showNewMessage('success', 'Usuario Logeado');
-      navigate(name_proyect + '/home');
+      showNewMessage("success", "Usuario Logeado");
+      navigate(name_proyect + "/home");
     } catch (error) {
       console.log(error.message);
-      alert('Error al iniciar sesión');
+      alert("Error al iniciar sesión");
     }
   };
 
@@ -51,23 +55,26 @@ export const LoginForm = () => {
     >
       <div className="pt-5">
         <InputDefault
-          label={'Usuario o correo electrónico'}
-          placeholder={'Ingrese su usuario'}
+          label={"Usuario o correo electrónico"}
+          placeholder={"Ingrese su usuario"}
           action={register}
-          name={'email'}
+          name={"email"}
         />
       </div>
 
       <div className="pt-5">
         <InputPassword
-          label={'Contraseña'}
-          placeholder={'Ingrese su contraseña'}
+          label={"Contraseña"}
+          placeholder={"Ingrese su contraseña"}
           action={register}
           name="password"
         />
       </div>
 
-      <a href="#" className="font-belleza text-blue-600 pt-5 pb-5 block text-center">
+      <a
+        href="#"
+        className="font-belleza text-blue-600 pt-5 pb-5 block text-center"
+      >
         Olvidaste la contraseña? Haz click aquí
       </a>
 
@@ -82,20 +89,32 @@ export const LoginForm = () => {
 
 export default LoginForm;
 
-import { useMessage } from '../hooks/messageHook';
-import { FaCheck } from 'react-icons/fa';
-import { ImCross } from 'react-icons/im';
-import { useIngredient } from '../hooks/ingredientHook';
+import { useMessage } from "../hooks/messageHook";
+import { FaCheck } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
+import { useIngredient } from "../hooks/ingredientHook";
 import {
   InputFormCreateIng,
   InputSelectFormCreateIng,
   TextFormCreateIng,
   CheckBoxFormCreateIng,
-} from '../components/inputs';
-import ingredientService from '../apis/ingredient';
+} from "../components/inputs";
+import ingredientService from "../apis/ingredient";
 
 export const FormCrearIngrediente = () => {
-  const items = ['cdta', 'cda', 'tza', 'l', 'ml', 'g', 'kg', 'oz', 'lb', 'pt', 'und'];
+  const items = [
+    "cdta",
+    "cda",
+    "tza",
+    "l",
+    "ml",
+    "g",
+    "kg",
+    "oz",
+    "lb",
+    "pt",
+    "und",
+  ];
   const [names, setnames] = useState([]);
   const { showNewMessage } = useMessage();
   const {
@@ -110,17 +129,17 @@ export const FormCrearIngrediente = () => {
 
   const onSubmit = async (formData) => {
     if (!formData.Ingrediente) {
-      showNewMessage('warning', 'Por favor rellene el campo: Ingrediente');
+      showNewMessage("warning", "Por favor rellene el campo: Ingrediente");
       return;
     }
 
     if (!formData.Cantidad) {
-      showNewMessage('warning', 'Por favor rellene el campo: Cantidad');
+      showNewMessage("warning", "Por favor rellene el campo: Cantidad");
       return;
     }
 
     if (!formData.Medición) {
-      showNewMessage('warning', 'Por favor rellene el campo: Medicion');
+      showNewMessage("warning", "Por favor rellene el campo: Medicion");
       return;
     }
 
@@ -134,7 +153,7 @@ export const FormCrearIngrediente = () => {
           id: ingredienteRecipe.id,
           cantidad: formData.Cantidad,
           medicion: formData.Medición,
-          especificacion: lowerText(formData.Especificación || ''),
+          especificacion: lowerText(formData.Especificación || ""),
           name: formData.Ingrediente,
           ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
@@ -149,7 +168,7 @@ export const FormCrearIngrediente = () => {
           id: id_aux,
           cantidad: formData.Cantidad,
           medicion: formData.Medición,
-          especificacion: lowerText(formData.Especificación || ''),
+          especificacion: lowerText(formData.Especificación || ""),
           name: formData.Ingrediente,
           ingrediente_id: getIdByName.id,
           priority: formData.priority || false,
@@ -160,7 +179,7 @@ export const FormCrearIngrediente = () => {
       clearIngredientRecipeHook();
       reset();
     } catch (error) {
-      showNewMessage('error', 'Error al agregar el ingrediente ' + error);
+      showNewMessage("error", "Error al agregar el ingrediente " + error);
     }
   };
 
@@ -187,11 +206,11 @@ export const FormCrearIngrediente = () => {
 
   useEffect(() => {
     if (ingredienteRecipe) {
-      setValue('Ingrediente', ingredienteRecipe.name);
-      setValue('Cantidad', ingredienteRecipe.cantidad);
-      setValue('Medición', ingredienteRecipe.medicion);
-      setValue('Especificación', ingredienteRecipe.especificacion);
-      setValue('priority', ingredienteRecipe.priority || '');
+      setValue("Ingrediente", ingredienteRecipe.name);
+      setValue("Cantidad", ingredienteRecipe.cantidad);
+      setValue("Medición", ingredienteRecipe.medicion);
+      setValue("Especificación", ingredienteRecipe.especificacion);
+      setValue("priority", ingredienteRecipe.priority || "");
     }
   }, [ingredienteRecipe]);
 
@@ -202,44 +221,44 @@ export const FormCrearIngrediente = () => {
     >
       <div className="flex flex-row gap-2  max-md:flex-col w-full">
         <InputSelectFormCreateIng
-          label={'Ingrediente'}
-          placeholder={'Seleccione el Ingrediente'}
+          label={"Ingrediente"}
+          placeholder={"Seleccione el Ingrediente"}
           action={register}
-          name={'Ingrediente'}
+          name={"Ingrediente"}
           items={names || items}
-          itemDefault={'Selecciona Ingrediente'}
+          itemDefault={"Selecciona Ingrediente"}
         />
         <InputFormCreateIng
-          label={'Cantidad'}
-          placeholder={'Ingrese la cantidad'}
+          label={"Cantidad"}
+          placeholder={"Ingrese la cantidad"}
           action={register}
-          name={'Cantidad'}
+          name={"Cantidad"}
         />
         <InputSelectFormCreateIng
-          label={'Medición'}
-          placeholder={'Seleccione la Medición'}
+          label={"Medición"}
+          placeholder={"Seleccione la Medición"}
           action={register}
-          name={'Medición'}
+          name={"Medición"}
           items={items}
-          itemDefault={'Selecciona Medición'}
+          itemDefault={"Selecciona Medición"}
         />
       </div>
       <div className="flex flex-row gap-2 w-full">
         <InputFormCreateIng
-          label={'Especificación'}
-          placeholder={'Opcional'}
+          label={"Especificación"}
+          placeholder={"Opcional"}
           action={register}
-          name={'Especificación'}
+          name={"Especificación"}
         />
         <CheckBoxFormCreateIng
-          label={'Escencial'}
+          label={"Escencial"}
           action={register}
-          name={'priority'}
+          name={"priority"}
           width="w-1/3"
         />
         <div className="flex gap-3 mt-[5%]">
           <button type="submit" className="text-lime-500 hover:text-lime-600">
-            <FaCheck size={'30px'} />
+            <FaCheck size={"30px"} />
           </button>
           <button
             type="button"
@@ -249,7 +268,7 @@ export const FormCrearIngrediente = () => {
               clearIngredientRecipeHook();
             }}
           >
-            <ImCross size={'28px'} />
+            <ImCross size={"28px"} />
           </button>
         </div>
       </div>
@@ -257,24 +276,24 @@ export const FormCrearIngrediente = () => {
   );
 };
 
-import { useStep } from '../hooks/stepHook';
+import { useStep } from "../hooks/stepHook";
 
 export const FormCrearPaso = () => {
   const { register, handleSubmit, reset, watch, setValue } = useForm();
   const { listStep, step, clearStepHook, addStepToList } = useStep();
   const { showNewMessage } = useMessage();
 
-  const DescriptionInput = watch('description');
-  const nameInput = watch('name');
+  const DescriptionInput = watch("description");
+  const nameInput = watch("name");
 
   const onSubmit = async (formData) => {
     if (!nameInput) {
-      showNewMessage('error', 'Por favor rellene el campo: Nombre');
+      showNewMessage("error", "Por favor rellene el campo: Nombre");
       return;
     }
 
     if (!DescriptionInput) {
-      showNewMessage('error', 'Por favor rellene el campo: Descripción');
+      showNewMessage("error", "Por favor rellene el campo: Descripción");
 
       return;
     }
@@ -288,7 +307,8 @@ export const FormCrearPaso = () => {
           name: capitalize(formData.name),
         };
       } else {
-        const id_aux = listStep?.length === 0 ? 0 : listStep[listStep?.length - 1].id + 1;
+        const id_aux =
+          listStep?.length === 0 ? 0 : listStep[listStep?.length - 1].id + 1;
 
         nuevoStep = {
           id: id_aux,
@@ -302,20 +322,20 @@ export const FormCrearPaso = () => {
       reset();
     } catch (error) {
       console.log(error.message);
-      showNewMessage('error', 'Error al agregar Paso: ' + error.message);
+      showNewMessage("error", "Error al agregar Paso: " + error.message);
     }
   };
 
   useEffect(() => {
     if (step.name !== undefined) {
-      setValue('name', step.name);
-      setValue('description', step.description);
-      setValue('number', step.number);
+      setValue("name", step.name);
+      setValue("description", step.description);
+      setValue("number", step.number);
     }
   }, [step]);
 
   useEffect(() => {
-    setValue('number', listStep?.length + 1 || 1);
+    setValue("number", listStep?.length + 1 || 1);
   }, [listStep]);
 
   return (
@@ -325,32 +345,32 @@ export const FormCrearPaso = () => {
     >
       <div className="flex flex-row gap-3 w-full ">
         <InputFormCreateIng
-          label={'N°'}
-          placeholder={'-'}
+          label={"N°"}
+          placeholder={"-"}
           action={register}
-          name={'number'}
+          name={"number"}
           visible={true}
-          width={'w-1/4 max-md:w-1/6 '}
+          width={"w-1/4 max-md:w-1/6 "}
         />
 
         <InputFormCreateIng
-          label={'Nombre'}
-          placeholder={'Ingrese el nombre'}
+          label={"Nombre"}
+          placeholder={"Ingrese el nombre"}
           action={register}
-          name={'name'}
-          width={'w-3/4 max-md:w-10/12'}
+          name={"name"}
+          width={"w-3/4 max-md:w-10/12"}
         />
       </div>
       <div className="flex flex-row gap-8 w-full ">
         <TextFormCreateIng
-          label={'Descripción'}
-          placeholder={'Ingrese la descripción'}
+          label={"Descripción"}
+          placeholder={"Ingrese la descripción"}
           action={register}
-          name={'description'}
+          name={"description"}
         />
         <div className="flex gap-3 mt-[5%]">
           <button type="submit" className="text-lime-500 hover:text-lime-600">
-            <FaCheck size={'30px'} />
+            <FaCheck size={"30px"} />
           </button>
           <button
             type="button"
@@ -360,7 +380,7 @@ export const FormCrearPaso = () => {
               clearStepHook();
             }}
           >
-            <ImCross size={'28px'} />
+            <ImCross size={"28px"} />
           </button>
         </div>
       </div>
@@ -378,13 +398,21 @@ export const RegisterForm = ({ action, data }) => {
   const onSubmit = async (formData) => {
     try {
       if (!formData.email || !formData.username || !formData.password) {
-        showNewMessage('error', 'Faltan campos');
+        showNewMessage("error", "Faltan campos");
         return;
       }
 
       action(formData);
-      addMainUser('', '', formData.email, '', '', formData.password, formData.username);
-      navigate(name_proyect + '/register');
+      addMainUser(
+        "",
+        "",
+        formData.email,
+        "",
+        "",
+        formData.password,
+        formData.username
+      );
+      navigate(name_proyect + "/register");
     } catch (error) {
       console.log(error.message);
     }
@@ -397,20 +425,20 @@ export const RegisterForm = ({ action, data }) => {
     >
       <div className="pt-5 space-y-4">
         <InputDefault
-          label={'Correo electrónico'}
-          placeholder={'Ingrese su correo electrónico'}
+          label={"Correo electrónico"}
+          placeholder={"Ingrese su correo electrónico"}
           action={register}
           name="email"
         />
         <InputDefault
-          label={'Nombre de usuario'}
-          placeholder={'Ingrese su nombre de usuario'}
+          label={"Nombre de usuario"}
+          placeholder={"Ingrese su nombre de usuario"}
           action={register}
           name="username"
         />
         <InputPassword
-          label={'Contraseña'}
-          placeholder={'Ingrese su contraseña'}
+          label={"Contraseña"}
+          placeholder={"Ingrese su contraseña"}
           action={register}
           name="password"
         />
@@ -425,8 +453,8 @@ export const RegisterForm = ({ action, data }) => {
 export const MoreInfo = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const [phone, setPhone] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const [phone, setPhone] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const { email, username, password, clearStateUser } = useUser();
   const { showNewMessage } = useMessage();
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
@@ -434,7 +462,7 @@ export const MoreInfo = () => {
   const onSubmit = async (formData) => {
     try {
       if (!formData.name || !formData.surname || !phone || !imageUrl) {
-        showNewMessage('error', 'Faltan campos');
+        showNewMessage("error", "Faltan campos");
         return;
       }
 
@@ -449,13 +477,13 @@ export const MoreInfo = () => {
       );
 
       if (result.success === false) {
-        showNewMessage('error', result.message);
+        showNewMessage("error", result.message);
         return;
       }
 
       clearStateUser();
-      showNewMessage('success', 'Usuario registrado con éxito');
-      navigate(name_proyect + '/login');
+      showNewMessage("success", "Usuario registrado con éxito");
+      navigate(name_proyect + "/login");
     } catch (error) {
       console.log(error.message);
     }
@@ -469,14 +497,14 @@ export const MoreInfo = () => {
       <div className="pt-3 space-y-2 w-full">
         <div className="flex flex-row space-x-2">
           <InputDefault
-            label={'Nombres completos'}
-            placeholder={'Ingrese sus nombres'}
+            label={"Nombres completos"}
+            placeholder={"Ingrese sus nombres"}
             action={register}
             name="name"
           />
           <InputDefault
-            label={'Apellidos completos'}
-            placeholder={'Ingrese sus apellidos'}
+            label={"Apellidos completos"}
+            placeholder={"Ingrese sus apellidos"}
             action={register}
             name="surname"
           />
