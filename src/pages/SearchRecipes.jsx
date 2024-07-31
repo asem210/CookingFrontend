@@ -69,7 +69,7 @@ const SearchRecipes = () => {
           </h2>
           <section className="w-full flex justify-center">
             {exactRecipes.length !== 0 ? (
-              <div className="pb-4 grid grid-cols-4 max-lg:grid-cols-3 grid-flow-row gap-5  overflow-auto   max-md:grid-flow-col  max-md:grid-rows-none max-md:grid-cols-none  ">
+              <div className="pb-4 grid grid-cols-4 max-lg:grid-cols-3 grid-flow-row gap-5  overflow-auto   max-md:grid-flow-col  max-md:grid-rows-none max-md:grid-cols-none w-fit mx-auto ">
                 {exactRecipes.map((item, index) => (
                   <CardRecipe
                     img={

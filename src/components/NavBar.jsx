@@ -60,7 +60,7 @@ const NavBar = () => {
           </div>
         ) : (
           <button
-            className="bg-naranja py-3 px-8 rounded-xl text-white mt-4 hover:bg-red-500 mr-10 max-md:mr-2 max-md:text-[10px] max-md:py-2 max-md:mt-0   max-md:px-4"
+            className="bg-naranja py-3 px-8 rounded-xl text-white mt-4 hover:bg-red-500 mr-10   max-lg:px-6   max-lg:text-[13px]   max-md:mr-2 max-md:text-[10px]    max-md:py-2 max-md:mt-0   max-md:px-4"
             onClick={() => {
               navigate(name_proyect + '/login');
             }}

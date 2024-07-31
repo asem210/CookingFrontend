@@ -127,7 +127,7 @@ const CardRecipe = ({
     return <></>;
   }
   return (
-    <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden max-md:min-w-[50vw] pb-4">
+    <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden max-md:min-w-[50vw] pb-4 max-w-[50vw] max-sm:max-w-[80vw] ">
       <ModalDelete
         show={showModal}
         onClose={toggleModal}
@@ -158,7 +158,7 @@ const CardRecipe = ({
           ))}
 
         {editable && (
-          <div className="absolute top-[-10%]  left-[80%]">
+          <div className="absolute top-[-10%]  left-[80%] ">
             <TbAntennaBars1
               className=" text-white  cursor-pointer"
               size={'50px'}
@@ -183,19 +183,22 @@ const CardRecipe = ({
           </div>
         )}
 
-        <p className="absolute text-white font-belleza  top-[75%]  left-[5%] text-[17px]">
+        <p className="absolute text-white font-belleza  top-[75%]  left-[5%] text-[17px] truncate ">
           {dificulty}
         </p>
-        <div className="absolute text-white font-belleza items-center gap-2 flex top-[75%]  left-[65%] ">
+        <div className="absolute text-white font-belleza items-center gap-2 flex top-[75%]  left-[60%] ">
           <LuClock4 />
-          <p className="text-[18px]"> {time + ' min.'}</p>
+          <p className="text-[18px] truncate"> {time + ' min.'}</p>
         </div>
       </figure>
       <div className="mt-2 h-fit ">
         <div className="font-belleza ">
           <div className="flex justify-around font-belleza items-center">
-            <p className="font-semibold text-[16px]  w-1/2  h-5  overflow-hidden"> {name}</p>
-            <p className="font-semibold">Porciones: {porcion} </p>
+            <p className="font-semibold text-[16px]  w-1/2  h-5  overflow-hidden truncate">
+              {' '}
+              {name}
+            </p>
+            <p className="font-semibold truncate">Porciones: {porcion} </p>
           </div>
           <p className="text-[12px] mx-5 mt-2 max-h-14 overflow-hidden ">{description}</p>
         </div>

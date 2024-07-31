@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import recipeService from '../apis/recipe';
 import { useNavigate } from 'react-router-dom';
-
+import { useRecipe } from '../hooks/recipeHook';
 const Header = () => {
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const [recipeName, setRecipeName] = useState('');
+  const { saveSearchedRecipes } = useRecipe();
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -14,10 +15,11 @@ const Header = () => {
       if (fuzzySearchResults.data && fuzzySearchResults.data.length === 1) {
         const id = fuzzySearchResults.data[0].id; // Obtén el ID del resultado único
         navigate(`${name_proyect}/home/${id}`); // Navega a la ruta con el ID
+      } else {
+        saveSearchedRecipes(fuzzySearchResults.data);
+        navigate(`${name_proyect}/results`);
+        // console.log('Resultados de búsqueda:', fuzzySearchResults.data);
       }
-      // else {
-      //   console.log('Resultados de búsqueda:', fuzzySearchResults.data);
-      // }
     } catch (error) {
       console.log(error.message);
     }

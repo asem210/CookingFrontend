@@ -6,6 +6,8 @@ import Footer from '../components/Footer';
 import { InputFormStatic } from '../components/inputs';
 //import hook
 import { useUser } from '../hooks/userHook';
+//import icon
+import { PiUserCircle } from 'react-icons/pi';
 
 const UserInfo = () => {
   const { name, username, surname, phone, image, email } = useUser();

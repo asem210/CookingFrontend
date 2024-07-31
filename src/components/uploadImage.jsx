@@ -9,13 +9,14 @@ import { useMessage } from '../hooks/messageHook';
 export const ImageUploader = ({ imageUrl, setImageUrl }) => {
   const [imageUpload, setImageUpload] = useState(null);
   const [urlState, setUrlState] = useState(false);
+  const { showNewMessage } = useMessage();
 
   const auth = getAuth();
 
   const uploadImage = async (event) => {
     event.preventDefault(); // Evita que el formulario se envíe y recargue la página
     if (!imageUpload) {
-      alert('No se seleccionó ningún archivo');
+      showNewMessage('warning', 'No se seleccionó ninguna imagen');
       return;
     }
 
@@ -25,10 +26,8 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
 
       const imageRef = ref(storage, `platillo/${imageUpload.name + v4()}`);
       await uploadBytes(imageRef, imageUpload);
-      console.log('Imagen subida correctamente');
 
       const url = await getDownloadURL(imageRef);
-      console.log('URL de la imagen:', url);
       setImageUrl(url);
       setUrlState(true);
     } catch (error) {
@@ -46,11 +45,11 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
     if (urlState) {
       return (
         <div className=" mt-4">
-          <div className="">
+          <div className="mx-auto w-fit">
             <h1 className="text-[16px] font-bold">Previsualización de la Imagen</h1>
           </div>
           <div className="mt-2">
-            <img className="w-full max-w-[180px] mx-auto" src={imageUrl} alt="Imagen subida" />
+            <img className="w-full max-w-[160px] mx-auto" src={imageUrl} alt="Imagen subida" />
           </div>
         </div>
       );
@@ -60,16 +59,16 @@ export const ImageUploader = ({ imageUrl, setImageUrl }) => {
 
   return (
     <div className="mt-8 p-4 bg-gray-100 rounded-lg  w-full">
-      <h1 className="text-[16px] font-bold mb-4">Subir Imagen</h1>
-      <div className="flex flex-row space-x-2">
+      <h1 className="text-[16px] font-bold mb-4 ">Subir Imagen</h1>
+      <div className="flex flex-row space-x-2  items-center justify-center align-middle">
         <input
           type="file"
           onChange={handleOnChange}
-          className="border border-gray-300 rounded mb-2 "
+          className="font-belleza bg-gray-600 text-white rounded-md py-1  hover:bg-gray-500 max-md:text-[12px] max-md:w-3/4"
         />
         <button
           onClick={uploadImage}
-          className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600 h-fit"
+          className="font-belleza bg-blue-600 text-white rounded-md  py-3  max-md:py-1  px-2 hover:bg-blue-500 text-xs my-auto h-fit"
         >
           Subir Imagen
         </button>

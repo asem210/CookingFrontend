@@ -34,7 +34,7 @@ const Login = () => {
             </p>
           </div>
           <SwitchButtonLogin handleClick={handleOptionClick} option={selectedOption} />
-          <div className="flex flex-col pt-5  w-[329px] h-[59px] ">
+          <div className="flex flex-col pt-1  w-[329px] h-[59px] ">
             {/* Mostrar el formulario de login o registro */}
             {selectedOption === 'login' ? (
               <LoginForm />

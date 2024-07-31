@@ -14,7 +14,7 @@ const IngredientItem = ({ item, isSelected, toggleSelection, toggleIngredientSel
   <div className="flex flex-col items-center justify-center p-2 transition-transform duration-200 transform hover:scale-105">
     <img
       src={item.img}
-      className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 hover:cursor-pointer transition-all duration-200 ${
+      className={`border-2 border-red-500 rounded-full min-w-[70px] min-h-[70px] w-[70px] h-[70px] p-0.5 hover:cursor-pointer transition-all duration-200 ${
         isSelected ? 'grayscale' : ''
       }`}
       alt={item.name}
@@ -24,7 +24,7 @@ const IngredientItem = ({ item, isSelected, toggleSelection, toggleIngredientSel
         toggleIngredientSelected(item);
       }}
     />
-    <p className="font-belleza mt-2 text-sm text-gray-700">{item.name}</p>
+    <p className="font-belleza mt-2 text-sm text-gray-700 truncate">{item.name}</p>
   </div>
 );
 
@@ -99,7 +99,7 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
         <p className="font-belleza font-bold text-xl max-md:text-[17px]">
           {capitalizeAllSentences(title)}
         </p>
-        <div className="flex items-center bg-gray-100 p-2 rounded-lg w-2/3 lg:w-3/4 md:w-1/2 sm:w-full">
+        <div className="flex items-center bg-gray-100 p-2 rounded-lg w-2/3 lg:w-3/4 md:w-1/2 sm:w-full max-w-[60%]">
           <input
             type="text"
             className="border-none outline-none bg-transparent w-full font-belleza px-2 "

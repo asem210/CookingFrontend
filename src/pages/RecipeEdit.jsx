@@ -13,6 +13,7 @@ import { TbSquareChevronsRightFilled } from 'react-icons/tb';
 import { MdFamilyRestroom } from 'react-icons/md';
 import { MdAccessTimeFilled } from 'react-icons/md';
 import { HiMiniArrowLongLeft } from 'react-icons/hi2';
+import { HiOutlineDocumentPlus } from 'react-icons/hi2';
 
 //import hooks
 import { useRecipe } from '../hooks/recipeHook';
@@ -154,7 +155,12 @@ const RecipeEdit = () => {
             </p>
           </div>
         </section>
-
+        <section className="w-3/5   items-center justify-center flex flex-col   max-md:w-[80%] ">
+          <h2 className="flex flex-row gap-2 items-center max-md:flex-col  font-belleza text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-negro mb-4 text-center">
+            <HiOutlineDocumentPlus size={'65px'} />
+            Editar Receta
+          </h2>
+        </section>
         <section className="w-[60%] max-lg:w-4/5 mt-5">
           <ImageUploaderRecipe />
           <figure className="w-full h-[300px] overflow-hidden relative rounded-md mt-5 max-md:h-[200px]">
