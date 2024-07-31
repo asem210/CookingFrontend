@@ -13,6 +13,8 @@ import ingredientRecipeService from '../apis/ingredientRecipe';
 import { useStep } from '../hooks/stepHook';
 import ModalDelete from './ModalDelete';
 import saveRecipeService from '../apis/saveRecipe';
+import { useAuth } from '../hooks/authHook';
+import { useMessage } from '../hooks/messageHook';
 
 const CardRecipe = ({
   img = 'https://static.vecteezy.com/system/resources/previews/004/639/366/non_2x/error-404-not-found-text-design-vector.jpg',
@@ -36,6 +38,8 @@ const CardRecipe = ({
   const { addAllListIngredientRecipeHook } = useIngredient();
   const { addAllListStepHook } = useStep();
   const [showModal, setShowModal] = useState(false);
+  const { status } = useAuth();
+  const { showNewMessage } = useMessage();
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -44,12 +48,9 @@ const CardRecipe = ({
   const onhandleClick = (id) => {
     const deleteRecipe = async (id) => {
       try {
-        const resI = await stepService.deleteStepsOfRecipe(id);
-        console.log(resI);
-        const r = await ingredientRecipeService.deleteIngsOfRecipe(id);
-        console.log(r);
-        const res = await recipeService.deleteRecipe(id);
-        console.log(res);
+        await stepService.deleteStepsOfRecipe(id);
+        await ingredientRecipeService.deleteIngsOfRecipe(id);
+        await recipeService.deleteRecipe(id);
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -80,10 +81,14 @@ const CardRecipe = ({
   };
 
   const handleClickBookMark = (id) => {
+    if (!status) {
+      showNewMessage('warning', 'Necesita iniciar sesión');
+      return;
+    }
+
     const saveRecipe = async (id) => {
       try {
-        const resSave = await saveRecipeService.create(id);
-        console.log(resSave);
+        await saveRecipeService.create(id);
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -96,8 +101,7 @@ const CardRecipe = ({
   const handleClickBookMarkNo = (id) => {
     const unsaveRecipe = async (id) => {
       try {
-        const resunSave = await saveRecipeService.delete(id);
-        console.log(resunSave);
+        await saveRecipeService.delete(id);
       } catch (error) {
         console.log(error.message);
       } finally {
@@ -123,7 +127,7 @@ const CardRecipe = ({
     return <></>;
   }
   return (
-    <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden ">
+    <div className="rounded-xl border shadow-md max-h-[300px] overflow-hidden max-md:min-w-[50vw] pb-4">
       <ModalDelete
         show={showModal}
         onClose={toggleModal}

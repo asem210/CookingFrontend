@@ -73,7 +73,7 @@ export const LoginForm = () => {
 
       <input
         type="submit"
-        className="w-full md:w-[357px] h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer hover:bg-red-500"
+        className=" w-[329px] h-[49px] bg-naranja text-white rounded-[33px] m-auto text-[16px] font-belleza cursor-pointer hover:bg-red-500"
         value="Iniciar Sesión"
       />
     </form>

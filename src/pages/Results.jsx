@@ -61,7 +61,7 @@ const Results = () => {
         <section className="w-3/5   items-center justify-center flex flex-col">
           <h2 className="font-belleza text-[30px] ">Bienvenido a </h2>
           <figure className="overflow-y-hidden  items-center justify-center flex h-20 w-full mt-[-10px]">
-            <img src={gif.link} alt="Loading..." className="h-[400%] " />
+            <img src={'/logoGif.gif'} alt="Loading..." className="h-[400%] " />
           </figure>
 
           <p className="font-belleza text-[18px] ">

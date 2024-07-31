@@ -1,24 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { HiMagnifyingGlass } from "react-icons/hi2";
-import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
-import { useIngredient } from "../hooks/ingredientHook";
+import React, { useState, useEffect } from 'react';
+import { HiMagnifyingGlass } from 'react-icons/hi2';
+import { IoIosArrowForward, IoIosArrowBack } from 'react-icons/io';
+import { useIngredient } from '../hooks/ingredientHook';
 import {
   searchIngredients,
   getVisibleItems,
   calculateTotalPages,
-} from "../helpers/ingredientCardHelper";
+} from '../helpers/ingredientCardHelper';
 
-const IngredientItem = ({
-  item,
-  isSelected,
-  toggleSelection,
-  toggleIngredientSelected,
-}) => (
+import { capitalizeAllSentences } from '../utils/othersUtils';
+
+const IngredientItem = ({ item, isSelected, toggleSelection, toggleIngredientSelected }) => (
   <div className="flex flex-col items-center justify-center p-2 transition-transform duration-200 transform hover:scale-105">
     <img
       src={item.img}
       className={`border-2 border-red-500 rounded-full w-[70px] h-[70px] p-0.5 hover:cursor-pointer transition-all duration-200 ${
-        isSelected ? "grayscale" : ""
+        isSelected ? 'grayscale' : ''
       }`}
       alt={item.name}
       onClick={(e) => {
@@ -36,7 +33,7 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
   const [selectedArray, setSelectedArray] = useState([]);
   const [ingredient, setIngredient] = useState(null);
   const { toggleIngredientSelected } = useIngredient();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [allIngredients, setAllIngredients] = useState([]);
 
   const itemsPerPage = 4;
@@ -47,19 +44,19 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
 
   const handleSearch = async () => {
     try {
-      if (searchQuery === "") {
+      if (searchQuery === '') {
         setIngredient(null);
       } else {
         const data = await searchIngredients(searchQuery);
         setIngredient(data);
       }
     } catch (error) {
-      console.log("Error searching ingredients:", error);
+      console.log('Error searching ingredients:', error);
     }
   };
 
   const handleSearchKeyDown = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === 'Enter') {
       handleSearch();
     }
   };
@@ -97,13 +94,15 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
   };
 
   return (
-    <div className="border border-[#F2F2F2] rounded-lg shadow-lg p-6 bg-white">
+    <div className="border border-[#F2F2F2] rounded-lg shadow-lg p-6 bg-white ">
       <div className="flex items-center justify-between mb-6">
-        <p className="font-belleza font-bold text-xl">{title}</p>
-        <div className="flex items-center bg-gray-100 p-2 rounded-full w-2/3 lg:w-3/4 md:w-1/2 sm:w-fukk">
+        <p className="font-belleza font-bold text-xl max-md:text-[17px]">
+          {capitalizeAllSentences(title)}
+        </p>
+        <div className="flex items-center bg-gray-100 p-2 rounded-lg w-2/3 lg:w-3/4 md:w-1/2 sm:w-full">
           <input
             type="text"
-            className="border-none outline-none bg-transparent w-full font-belleza px-2"
+            className="border-none outline-none bg-transparent w-full font-belleza px-2 "
             placeholder="Buscar ingrediente..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -120,12 +119,12 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
         <IoIosArrowBack
           size="30px"
           className={`hover:cursor-pointer ${
-            currentPage === 1 ? "text-gray-300" : "text-black"
+            currentPage === 1 ? 'text-gray-300' : 'text-black'
           }`}
           onClick={handlePreviousPage}
           disabled={currentPage === 1}
         />
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mx-4">
+        <div className="grid grid-cols-4  max-lg:grid-cols-3 max-md:grid-cols-2   gap-4 mx-4">
           {visibleItems.map((item, index) => (
             <IngredientItem
               key={index}
@@ -139,7 +138,7 @@ const CardCollectionIngredients = ({ title, ingredientes }) => {
         <IoIosArrowForward
           size="30px"
           className={`hover:cursor-pointer ${
-            currentPage === totalPages ? "text-gray-300" : "text-black"
+            currentPage === totalPages ? 'text-gray-300' : 'text-black'
           }`}
           onClick={handleNextPage}
           disabled={currentPage === totalPages}

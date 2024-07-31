@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import images from '../constants/images';
 import CardCollectionIngredients from '../components/CardCollectionIngredients';
-import { HiMagnifyingGlass } from 'react-icons/hi2';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import { useIngredient } from '../hooks/ingredientHook';
@@ -9,11 +7,7 @@ import { useRecipe } from '../hooks/recipeHook';
 import { useNavigate } from 'react-router-dom';
 import { useMessage } from '../hooks/messageHook';
 import Header from '../components/Header';
-import {
-  getObjectById,
-  fetchAllIngredients,
-  searchRecipeByIngredients,
-} from '../helpers/homeHelpers';
+import { fetchAllIngredients, searchRecipeByIngredients } from '../helpers/homeHelpers';
 
 const Home = () => {
   //hooks
@@ -25,10 +19,6 @@ const Home = () => {
   const { showNewMessage } = useMessage();
   const name_proyect = import.meta.env.VITE_NAME_PAGE;
   const navigate = useNavigate();
-
-  const step1 = getObjectById(4, images);
-  const step2 = getObjectById(1, images);
-  const step3 = getObjectById(2, images);
 
   // UseEffect para actualizar los nombres de los ingredientes seleccionados
   useEffect(() => {
@@ -75,25 +65,25 @@ const Home = () => {
         <p className="font-belleza text-[18px] text-center sm:text-left">
           Es fácil, solo tienes que seguir tres sencillos pasos
         </p>
-        <div className="w-[90%] md:w-[60%] flex flex-col md:flex-row justify-evenly items-center text-center">
-          <div className="w-full md:w-1/4 h-full flex flex-col justify-end items-center my-4">
-            <img src={step1.link} className="w-[180px] h-3/4 " />
+        <div className="w-[90%] md:w-[60%] min-h-[35vh] flex flex-col md:flex-row justify-evenly items-center text-center ">
+          <div className="w-full md:w-1/4  h-full flex flex-col justify-end items-center my-4">
+            <img src={'/ingredients.svg'} className="w-[180px] h-3/4 " />
             <p className="h-1/4 font-belleza text-[18px]">
               Seleccionar los ingredientes que tengas en tu hogar
             </p>
           </div>
           <div className="w-full md:w-1/4 h-full flex flex-col justify-end items-center my-4">
-            <img src={step2.link} className="w-[180px] h-3/4 " />
+            <img src={'/recipeBook.svg'} className="w-[180px] h-3/4 " />
             <p className=" h-1/4 font-belleza text-[18px]">
               Elegir la receta que más te guste
             </p>
           </div>
           <div className="w-full md:w-1/4 font-belleza h-full flex flex-col justify-end items-center my-4">
-            <img src={step3.link} className="w-[180px] h-3/4 " />
+            <img src={'/cookingPerson.svg'} className="w-[180px] h-3/4 " />
             <p className=" h-1/4 font-belleza text-[18px]">Disfrutar de tu comida</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-[90%] md:w-[70%] mt-4">
+        <div className="grid grid-cols-2   max-xl:grid-cols-1   gap-4 w-[90%] md:w-[70%] mt-4">
           {ingredientsByCategory.map(({ category, ingredients }) => (
             <CardCollectionIngredients
               key={category}

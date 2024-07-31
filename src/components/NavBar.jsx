@@ -31,7 +31,7 @@ const NavBar = () => {
       <ModalOptions isOpen={isModalOpen} onClose={closeModal} />
       <figure className="w-1/5 flex items-center">
         <img
-          src={logo.link}
+          src={'/logo.svg'}
           className="h-4/5 rounded-xl ml-[25%] cursor-pointer hover:shadow-sm min-w-28"
           onClick={() => {
             navigate(name_proyect + '/home');
@@ -60,7 +60,7 @@ const NavBar = () => {
           </div>
         ) : (
           <button
-            className="bg-naranja py-3 px-8 rounded-2xl text-white mt-4 hover:bg-red-500 mr-10 max-md:mr-2 max-md:text-[10px] max-md:py-2 max-md:mt-0"
+            className="bg-naranja py-3 px-8 rounded-xl text-white mt-4 hover:bg-red-500 mr-10 max-md:mr-2 max-md:text-[10px] max-md:py-2 max-md:mt-0   max-md:px-4"
             onClick={() => {
               navigate(name_proyect + '/login');
             }}

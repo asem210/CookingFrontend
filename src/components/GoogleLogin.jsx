@@ -15,9 +15,7 @@ export const LoginSocialMedia = () => {
   const navigate = useNavigate();
   const loginSuccess = async (credentialResponse) => {
     try {
-      console.log(credentialResponse);
       const decoded = jwtDecode(credentialResponse?.credential);
-      console.log(decoded);
       const email = decoded.email;
       if (email) {
         const userData = await userService.getByEmail(email);
@@ -27,8 +25,7 @@ export const LoginSocialMedia = () => {
           navigate(name_proyect + '/home');
           showNewMessage('success', 'Sesión iniciada con éxito');
         } else {
-          console.log('2');
-          const newUser = await userService.createGoogle(
+          await userService.createGoogle(
             email,
             capitalizeAllSentences(decoded.given_name),
             capitalizeAllSentences(decoded.family_name),
